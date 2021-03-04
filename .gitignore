@@ -1,0 +1,5 @@
+node_modules
+.idea
+.env
+.DS_STORE
+docker-compose.yml

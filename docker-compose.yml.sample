@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  mysql:
+    container_name: moderncloud_mysql
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: "project"
+      MYSQL_ROOT_PASSWORD: "password"
+    volumes:
+      - ./backend/migration:/docker-entrypoint-initdb.d
+  rabbitmq:
+    container_name: moderncloud_rabbitmq
+    image: rabbitmq:3.8-alpine
+    ports:
+      - 5672:5672
