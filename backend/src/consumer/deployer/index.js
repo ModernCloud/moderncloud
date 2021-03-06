@@ -86,8 +86,12 @@ class Deployer {
         return path.join(this.getProjectRoot(), 'tmp');
     }
 
-    getPackagesRoot() {
+    getPackagesNodejsRoot() {
         return path.join(this.getProjectRoot(), 'packages', 'nodejs');
+    }
+
+    getPackagesRoot() {
+        return path.join(this.getProjectRoot(), 'packages');
     }
 
     getTerraformTemplates() {
