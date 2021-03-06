@@ -15,6 +15,20 @@ axios.interceptors.request.use(
     err => Promise.reject(err)
 );
 
+axios.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        if (error.response.status === 401) {
+            store.commit('clearSelectedProject');
+            store.commit('logout');
+            router.push({path: '/login'});
+        }
+        return Promise.reject(error);
+    }
+);
+
 Vue.config.productionTip = false
 
 new Vue({
