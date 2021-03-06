@@ -21,7 +21,7 @@
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.4",
     "sqs-consumer": "^5.5.0",
-    "template-file": "^5.1.0",
+    "twig": "^1.15.4",
     "uuid": "^8.3.2"
   }
 }

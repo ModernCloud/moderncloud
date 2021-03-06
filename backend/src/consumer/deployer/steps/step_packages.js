@@ -1,16 +1,15 @@
 const path = require('path');
-const fs = require('fs');
 const shelljs = require('shelljs');
-const TemplateFile = require('template-file');
 const { Package } = require('../../../common/db');
+const render = require('../../../common/template/render');
 
 async function createPackageFile(job) {
-    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'package.json'), path.join(job.getPackagesRoot(), 'package.json'));
     let packages = await Package.query().orderBy('name');
-    let newContent = await TemplateFile.renderFile(path.join(job.getPackagesRoot(), 'package.json'), {
-        packages: packages
-    });
-    fs.writeFileSync(path.join(job.getPackagesRoot(), 'package.json'), newContent);
+    render(
+        path.join(job.getTerraformTemplates(), 'package.json.twig'),
+        path.join(job.getPackagesRoot(), 'package.json'),
+        {packages: packages}
+    )
 }
 
 async function runNpmInstall(job) {
