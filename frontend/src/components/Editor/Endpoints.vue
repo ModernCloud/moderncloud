@@ -10,8 +10,8 @@
       <sui-icon name="spinner" loading v-if="loading" />
       <div v-if="loading === false">
         <div style="display: flex; align-items: center; margin-bottom: 4px; font-size: 11px;" v-for="item in items" :key="item.id">
-          <sui-button size="mini" basic style="flex-grow: 1; text-align: left" @click="openFile(item.id)" :loading="item.id === fileIsOpening" :active="currentFile.id === item.id && currentFile.type === 'endpoint'">
-            <sui-label size="mini" style="width: 50px; margin-right: 2px;" :color="methodLabelColor(item.method)">{{item.method}}</sui-label> {{item.path}}
+          <sui-button size="mini" basic style="flex-grow: 1; text-align: left; padding: 8px;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" :active="currentFile.id === item.id && currentFile.type === 'endpoint'">
+            <small style="width: 35px; margin-right: 2px; display: inline-block">{{item.method}}</small> -> {{item.path}}
           </sui-button>
           <sui-dropdown icon="ellipsis vertical" pointing="right top">
             <sui-dropdown-menu style="right: 0;left: auto;">

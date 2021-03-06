@@ -10,7 +10,7 @@
       <sui-icon name="spinner" loading v-if="loading" />
       <div v-if="loading === false">
         <div style="display: flex; align-items: center; margin-bottom: 4px; font-size: 11px;" v-for="item in items" :key="item.id">
-          <sui-button size="mini" basic style="flex-grow: 1; text-align: left">
+          <sui-button size="mini" basic style="flex-grow: 1; text-align: left; padding: 8px;">
             {{item.name}}: {{item.version}}
           </sui-button>
           <sui-dropdown icon="ellipsis vertical" pointing="right top">

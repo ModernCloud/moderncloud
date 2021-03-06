@@ -1,5 +1,6 @@
 <template>
   <header>
+    <Environments v-if="show_environments" />
     <sui-menu attached="top">
       <sui-dropdown item icon="settings" simple>
         <sui-dropdown-menu style="width: 200px;">
@@ -22,17 +23,23 @@
         <div style="color: #777;">Current Project</div>
       </div>
       <sui-menu-menu position="right">
-        <sui-menu-item>Beta</sui-menu-item>
+        <a is="sui-menu-item" @click="show_environments = true">Environments</a>
       </sui-menu-menu>
     </sui-menu>
   </header>
 </template>
 
 <script>
+import Environments from '../Environments/Environments.vue';
+
 export default {
+  components: {
+    Environments
+  },
   data() {
     return {
-      project_id: null
+      project_id: null,
+      show_environments: false
     }
   },
   watch: {
@@ -57,6 +64,9 @@ export default {
       this.$store.commit('logout');
       this.$store.commit('clearSelectedProject');
       this.$router.push({path: '/login'});
+    },
+    hideEnvironments() {
+      this.show_environments = false;
     }
   }
 }

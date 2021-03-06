@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const JWT = require('../jwt');
 const ApiAction = require('../action');
 const ApiError = require('../error');
-const { User, Project } = require('../../common/db');
+const { User, Project, Environment, Endpoint, Function } = require('../../common/db');
 
 class SignupAction extends ApiAction
 {
@@ -13,6 +13,9 @@ class SignupAction extends ApiAction
         await this.createUser();
         await this.createToken();
         await this.createDefaultProject();
+        await this.createDefaultEnvironments();
+        await this.createDefaultEndpoints();
+        await this.createDefaultFunctions();
         return this.response.success({
             token: this.token,
             user: {
@@ -54,7 +57,58 @@ class SignupAction extends ApiAction
     async createDefaultProject() {
         this.project = await Project.query().insert({
             user_id: this.user.id,
-            name: 'Default'
+            name: 'default'
+        });
+    }
+
+    async createDefaultEnvironments() {
+        await Environment.query().insert({
+            user_id: this.user.id,
+            project_id: this.project.id,
+            name: 'dev',
+            region: 'us-east-1'
+        });
+        await Environment.query().insert({
+            user_id: this.user.id,
+            project_id: this.project.id,
+            name: 'prod',
+            region: 'us-east-1'
+        });
+    }
+
+    async createDefaultEndpoints() {
+        await Endpoint.query().insert({
+            user_id: this.user.id,
+            project_id: this.project.id,
+            name: 'endpoint_function_' + Date.now(),
+            main_file: 'index.js',
+            handler: 'index.handler',
+            runtime: 'nodejs14.x',
+            code: `exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({time: Date.now(), message: "my endpoint"}),
+  }
+}`,
+            method: 'GET',
+            path: '/hello-world'
+        });
+    }
+
+    async createDefaultFunctions() {
+        await Function.query().insert({
+            user_id: this.user.id,
+            project_id: this.project.id,
+            name: 'my-function',
+            main_file: 'index.js',
+            handler: 'index.handler',
+            runtime: 'nodejs14.x',
+            code: `exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({time: Date.now(), message: "my function"}),
+  }
+}`,
         });
     }
 }

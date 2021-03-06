@@ -1,5 +1,15 @@
 version: '3.8'
 services:
+  postgres:
+    container_name: moderncloud_postgres
+    image: postgres:13.2
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: "project"
+      POSTGRES_PASSWORD: "password"
+    volumes:
+      - ./backend/migration:/docker-entrypoint-initdb.d
   mysql:
     container_name: moderncloud_mysql
     image: mysql:5.7

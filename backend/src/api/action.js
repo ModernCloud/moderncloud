@@ -41,7 +41,7 @@ class ApiAction {
     async checkUser() {
         let jwtResult = await JWT.verify(this.req);
         let user = await User.query().findById(jwtResult.data.id);
-        if (!user instanceof User) {
+        if (!(user instanceof User)) {
             throw new ApiError('Unauthorized', 10005, 401);
         }
         this.currentUser = user;

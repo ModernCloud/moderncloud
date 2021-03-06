@@ -12,8 +12,9 @@ resource "aws_lambda_function" "{{ function.name }}_function" {
   handler = "{{ function.handler }}"
   runtime = "{{ function.runtime }}"
   role = aws_iam_role.lambda_iam_role.arn
+  layers = [aws_lambda_layer_version.{{project.name}}_{{environment.name}}_packages.arn]
 }
 
-output "invoke_arn" {
+output "{{function.name}}_invoke_arn" {
   value = aws_lambda_function.{{function.name}}_function.invoke_arn
 }

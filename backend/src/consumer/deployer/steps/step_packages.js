@@ -14,7 +14,7 @@ async function createPackageFile(job) {
 }
 
 async function runNpmInstall(job) {
-    await job.addLog(`$ npm install --prefix "${job.getPackagesRoot()}"`);
+    await job.addLog(`$ npm install`);
     let result = shelljs.exec(`npm install --prefix "${job.getPackagesRoot()}"`, {silent: true});
     await job.addLog(result.stdout || result.stderr);
     if (result.code > 0) {

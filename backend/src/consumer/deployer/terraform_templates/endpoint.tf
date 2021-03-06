@@ -12,6 +12,7 @@ resource "aws_lambda_function" "{{ endpoint.name }}_function" {
   handler = "{{ endpoint.handler }}"
   runtime = "{{ endpoint.runtime }}"
   role = aws_iam_role.lambda_iam_role.arn
+  layers = [aws_lambda_layer_version.{{project.name}}_{{environment.name}}_packages.arn]
 }
 
 resource "aws_lambda_permission" "{{ endpoint.name }}_permission" {
@@ -21,6 +22,6 @@ resource "aws_lambda_permission" "{{ endpoint.name }}_permission" {
   source_arn = "${aws_api_gateway_deployment.{{project.name}}_{{environment.name}}_api_deployment.execution_arn}/*/*"
 }
 
-output "invoke_arn" {
+output "{{endpoint.name}}_invoke_arn" {
   value = aws_lambda_function.{{endpoint.name}}_function.invoke_arn
 }

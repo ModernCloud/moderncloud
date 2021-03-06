@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `project` (
     user_id BIGINT UNSIGNED NOT NULL,
     name VARCHAR(50) NOT NULL,
     INDEX user_idx (user_id),
+    UNIQUE name_uniq (user_id, name),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
@@ -52,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `endpoint` (
     method VARCHAR(50) NOT NULL,
     path VARCHAR(255) NOT NULL,
     INDEX project_idx (project_id),
-    UNIQUE path_uniq (method, path),
+    UNIQUE path_uniq (project_id, method, path),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
