@@ -1,7 +1,7 @@
 <template>
   <div class="centered-content">
     <sui-segment raised>
-      <h3>ModernCloud</h3>
+      <h3>Modern Cloud</h3>
       <sui-form :loading="loading" @submit.prevent="submit" :error="hasError">
         <sui-message error>
           <p>{{errorMessage}}</p>
