@@ -7,6 +7,9 @@ aside#editor-aside {
       display: flex;
       align-items: center;
       cursor: pointer;
+      height: 50px;
+      border-bottom: 1px solid rgba(131, 197, 190, .5);
+      margin-bottom: 10px;
 
       .name {
         font-size: 20px;
@@ -34,10 +37,6 @@ aside#editor-aside {
           color: #fff;
         }
       }
-
-      height: 50px;
-      border-bottom: 1px solid #dedede;
-      margin-bottom: 10px;
     }
 
     &.projects {

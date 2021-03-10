@@ -135,6 +135,8 @@ export default {
         let file = {
           id: id,
           type: 'endpoint',
+          name: response.data.endpoint.user_name,
+          method: response.data.endpoint.method,
           sourceCode: response.data.endpoint.code
         }
         CodeEditorEvents.$emit('openFile', file);

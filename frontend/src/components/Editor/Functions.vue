@@ -124,6 +124,7 @@ export default {
         let response = await axios.get('/api/functions/' + id);
         let file = {
           id: id,
+          name: response.data.function.name,
           type: 'function',
           sourceCode: response.data.function.code
         }
