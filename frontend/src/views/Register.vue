@@ -60,7 +60,6 @@ export default {
           this.errorMessage = 'An error occurred!';
         }
         this.hasError = true;
-      } finally {
         this.loading = false;
       }
     }
