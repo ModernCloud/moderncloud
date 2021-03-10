@@ -3,9 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios';
-import SuiVue from 'semantic-ui-vue';
-Vue.use(SuiVue);
-import 'semantic-ui-css/semantic.min.css';
+import './assets/app.scss';
 
 axios.interceptors.request.use(
     reqConfig => {

@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-weight: normal;
+  overflow: hidden;
+}
+
+.app {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: auto 1fr;
+}
+
+header {
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
+  grid-column: 1/-1;
+  -ms-grid-column-span: 2;
+  grid-row: 2;
+  border-bottom: 1px solid #ddd;
+}
+
+aside {
+  z-index: 100000;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .16);
+  border-right: 1px solid #dedede;
+  grid-row: 2;
+  grid-column: 1;
+  width: 250px;
+  overflow-y: auto;
+}
+
+@media (max-width: 992px) {
+  aside {
+    width: 64px;
+  }
+}
+
+[role=main] {
+  grid-row: 2;
+  grid-column: 2;
+  height: 100%;
+  overflow-y: auto;
+}

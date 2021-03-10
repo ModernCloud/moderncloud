@@ -8,12 +8,12 @@
   },
   "dependencies": {
     "axios": "^0.21.1",
+    "bootstrap": "^5.0.0-beta2",
     "core-js": "^3.6.5",
     "moment": "^2.29.1",
     "monaco-editor": "^0.22.0",
-    "semantic-ui-css": "^2.4.1",
-    "semantic-ui-vue": "^0.11.0",
     "vue": "^2.6.12",
+    "vue-popperjs": "^2.3.0",
     "vue-router": "^3.2.0",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4"
@@ -30,8 +30,7 @@
     "sass": "^1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-store": "~0.0.7",
-    "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.7.0"
+    "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
     "root": true,

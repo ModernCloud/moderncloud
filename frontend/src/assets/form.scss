@@ -1,0 +1,58 @@
+.form-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(60, 65, 73);
+  margin-bottom: 2px;
+}
+
+.form-check-label {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(60, 65, 73);
+  margin-bottom: 2px;
+
+  input {
+    margin-right: 5px;
+  }
+}
+
+.btn {
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 13px;
+  min-width: 80px;
+}
+
+.btn-primary {
+  color: #000;
+  border: 1px solid rgb(131, 197, 190);
+  box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px;
+  background: rgba(0, 109, 119, .2);
+
+  &:hover {
+    color: #000;
+    background: rgba(0, 109, 119, .4);
+    border: 1px solid rgb(131, 197, 190);
+    box-shadow: rgb(0 0 0 / 7%) 0px 1px 2px;
+  }
+}
+
+.form-control, .form-select {
+  padding: 6px 12px;
+  font-weight: 400;
+  font-size: 13px;
+  color: rgb(40, 42, 48);
+}
+
+.form-control {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(223, 225, 228);
+}
+
+.alert {
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 400;
+}

@@ -1,0 +1,53 @@
+aside#settings-aside {
+  section {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &.title {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      height: 50px;
+      border-bottom: 1px solid #dedede;
+      margin-bottom: 10px;
+
+      .name {
+        font-size: 18px;
+        line-height: 18px;
+        text-decoration: none;
+        color: rgb(2, 48, 71);
+        margin-left: 10px;
+      }
+    }
+
+    &.links {
+      .title {
+        font-weight: 500;
+        padding: 8px;
+        color: rgba(0, 0, 0, .4);
+        font-size: 11px;
+      }
+
+      a {
+        color: #000;
+        padding: 8px 10px;
+        text-decoration: none;
+        font-weight: 400;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+        border-radius: 4px;
+
+        svg {
+          color: rgba(0, 109, 119);
+          margin-right: 4px;
+        }
+
+        &:hover, &.active {
+          background: rgb(131, 197, 190, .4);
+        }
+      }
+    }
+  }
+}

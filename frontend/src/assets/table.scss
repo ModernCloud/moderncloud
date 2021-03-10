@@ -1,0 +1,20 @@
+table {
+  thead {
+    th {
+      font-weight: 500;
+      font-size: 13px;
+      color: #000;
+      background: rgba(0, 0, 0, .05) !important;
+      border-bottom: 1px solid #ddd !important;
+    }
+  }
+
+  tbody {
+    td {
+      font-weight: 400;
+      font-size: 13px;
+      color: #000;
+      padding: 8px 8px !important;
+    }
+  }
+}

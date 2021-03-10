@@ -16,6 +16,7 @@ class UpdateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
+            user_name: Joi.string().optional(),
             method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').optional(),
             path: Joi.string().optional(),
             code: Joi.string().optional()
@@ -36,6 +37,9 @@ class UpdateAction extends ApiAction
 
     async updateEndpoint() {
         let updateParams = {};
+        if (this.validRequest.user_name) {
+            updateParams.user_name = this.validRequest.user_name;
+        }
         if (this.validRequest.method) {
             updateParams.method = this.validRequest.method;
         }

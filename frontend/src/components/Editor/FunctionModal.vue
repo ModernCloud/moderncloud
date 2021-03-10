@@ -1,22 +1,32 @@
 <template>
-  <sui-modal :open="visible">
-    <sui-modal-header>{{actionName}} Function</sui-modal-header>
-    <sui-modal-content>
-      <sui-form :loading="loading" @submit.prevent="submit" :error="hasError">
-        <sui-message error>
-          <p>An error occurred!</p>
-        </sui-message>
-        <sui-form-field>
-          <label>Name</label>
-          <input type="text" v-model="form.name" />
-        </sui-form-field>
-      </sui-form>
-    </sui-modal-content>
-    <sui-modal-actions>
-      <sui-button basic @click="closeModal">Cancel</sui-button>
-      <sui-button positive @click="submit">{{actionName}}</sui-button>
-    </sui-modal-actions>
-  </sui-modal>
+  <div class="modal" v-if="visible">
+    <div class="wrapper">
+      <div class="header">
+        <div class="title">{{actionName}} Function</div>
+        <a href="javascript:;" class="close" @click="closeModal">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M10 10l4 4m0 -4l-4 4" /></svg>
+        </a>
+      </div>
+      <div class="body">
+        <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
+        <form @submit.prevent="submit">
+          <div>
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" v-model="form.name" />
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" @click="submit" :disabled="loading">
+          <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+          {{actionName}}
+        </button>
+        <button type="button" class="btn" @click="closeModal" :disabled="loading">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -52,6 +62,7 @@ export default {
     },
     closeModal() {
       this.visible = !this.visible;
+      this.hasError = false;
       this.form.name = '';
       this.current_id = 0;
     },
@@ -76,6 +87,7 @@ export default {
         }
       } catch (e) {
         console.log(e);
+        this.hasError = true;
       } finally {
         this.loading = false;
       }

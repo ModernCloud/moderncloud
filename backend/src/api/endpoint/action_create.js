@@ -14,6 +14,7 @@ class CreateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
+            user_name: Joi.string().required(),
             method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').required(),
             path: Joi.string().required()
         });
@@ -24,6 +25,7 @@ class CreateAction extends ApiAction
         this.endpoint = await Endpoint.query().insert({
             user_id: this.currentUser.id,
             project_id: this.validRequest.project_id,
+            user_name: this.validRequest.user_name,
             name: 'endpoint_function_' + Date.now(),
             main_file: 'index.js',
             handler: 'index.handler',

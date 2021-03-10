@@ -1,43 +1,69 @@
 <template>
-  <div>
+  <section class="accordion">
+    <Confirm ref="confirmModal" message="Selected function will be deleted. Do you want to continue?" @yes="deleteItem" />
     <FunctionModal ref="modal" @added="added" @updated="updated" />
-    <sui-accordion-title is="sui-menu-header">
-      <sui-icon name="dropdown" />
+    <div class="section-title" @click="showContent=!showContent">
+      <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
+      <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
       Functions
-    </sui-accordion-title>
-    <sui-accordion-content style="font-size: 12px; padding-left: 10px;">
-      <div style="margin-bottom: 10px;"><a href="javascript:;" @click="openNewModal"><sui-icon name="plus square" outline /> New Function</a></div>
-      <sui-icon name="spinner" loading v-if="loading" />
-      <div v-if="loading === false">
-        <div style="display: flex; align-items: center; margin-bottom: 4px; font-size: 11px;" v-for="item in items" :key="item.id">
-          <sui-button size="mini" basic style="flex-grow: 1; text-align: left; padding: 8px;" :loading="item.id === fileIsOpening" @click="openFile(item.id)" :active="currentFile.id === item.id && currentFile.type === 'function'">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
-            {{item.name}}
-          </sui-button>
-          <sui-dropdown icon="ellipsis vertical" pointing="right top">
-            <sui-dropdown-menu style="right: 0;left: auto;">
-              <sui-dropdown-item @click="openEditModal(item.id)">Edit</sui-dropdown-item>
-              <sui-dropdown-item @click="deleteItem(item.id)">Delete</sui-dropdown-item>
-            </sui-dropdown-menu>
-          </sui-dropdown>
+      <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
+    </div>
+    <transition name="slide">
+      <div v-if="showContent" class="content">
+        <div v-if="loading === false">
+          <a href="javascript:;" class="new-link" @click="openNewModal">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="9" y1="12" x2="15" y2="12" /><line x1="12" y1="9" x2="12" y2="15" /><path d="M4 6v-1a1 1 0 0 1 1 -1h1m5 0h2m5 0h1a1 1 0 0 1 1 1v1m0 5v2m0 5v1a1 1 0 0 1 -1 1h-1m-5 0h-2m-5 0h-1a1 1 0 0 1 -1 -1v-1m0 -5v-2m0 -5" /></svg>
+            New Function
+          </a>
+          <div v-for="item in items" :key="item.id">
+            <div class="item">
+              <a href="javascript:;" style="padding-left: 10px; flex-grow: 1; display: flex; align-items: center" @click="openFile(item.id)" :loading="item.id === fileIsOpening">
+                {{item.name}}
+              </a>
+              <popper trigger="clickToToggle" :options="{placement: 'bottom-end'}" :visible-arrow="false">
+                <a href="javascript:;" slot="reference" style="color: #aaa;">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
+                </a>
+                <div class="popper">
+                  <div class="popper-menu">
+                    <a href="javascript:;" @click="openEditModal(item.id)">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" /><path d="M16 5l3 3" /><path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" /></svg>
+                      Edit
+                    </a>
+                    <a href="javascript:;" @click="$refs.confirmModal.show({id: item.id})">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="4" y1="7" x2="20" y2="7" /><line x1="10" y1="11" x2="10" y2="17" /><line x1="14" y1="11" x2="14" y2="17" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg>
+                      Delete
+                    </a>
+                  </div>
+                </div>
+              </popper>
+            </div>
+          </div>
         </div>
       </div>
-    </sui-accordion-content>
-  </div>
+    </transition>
+  </section>
 </template>
 
 <script>
+import Confirm from '../Confirm.vue';
+import Popper from 'vue-popperjs';
+import 'vue-popperjs/dist/vue-popper.css';
 import {CodeEditorEvents} from './code_editor_events';
 import FunctionModal from './FunctionModal.vue';
 import axios from "axios";
 
 export default {
   components: {
+    Confirm,
+    Popper,
     FunctionModal
   },
   data() {
     return {
       loading: true,
+      showContent: false,
       items: [],
       fileIsOpening: null,
       currentFile: {
@@ -121,14 +147,11 @@ export default {
         console.log(e);
       }
     },
-    async deleteItem(id) {
-      if (confirm('Are you sure?') === false) {
-        return;
-      }
+    async deleteItem(selectedItem) {
       this.loading = true;
       try {
-        await axios.delete('/api/functions/' + id);
-        CodeEditorEvents.$emit('removeFile', {id: id, type: 'function', sourceCode: null});
+        await axios.delete('/api/functions/' + selectedItem.id);
+        CodeEditorEvents.$emit('removeFile', {id: selectedItem.id, type: 'function', sourceCode: null});
       } catch (e) {
         console.log(e);
       } finally {
@@ -138,3 +161,44 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.new-link {
+  margin-bottom: 5px;
+  margin-left: 7px;
+  color: #003049;
+  font-size: 12px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-right: 5px;
+  }
+
+  &:hover {
+    color: rgb(131, 197, 190);
+  }
+}
+
+.item {
+  color: #000;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  margin-bottom: 2px;
+
+  a {
+    text-decoration: none;
+    color: #000;
+    padding: 8px;
+  }
+
+  &:hover {
+    background: rgb(131, 197, 190, .4);
+  }
+}
+</style>

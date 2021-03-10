@@ -17,11 +17,20 @@ export default {
       this.monacoEditor.setValue(this.value);
     }
   },
-  mounted() {
+  async mounted() {
+    monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+      noSemanticValidation: true,
+      noSyntaxValidation: false
+    });
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+      target: monaco.languages.typescript.ScriptTarget.ES6,
+      allowNonTsExtensions: true,
+      allowJs: true,
+    });
     this.monacoEditor = monaco.editor.create(document.getElementById('editor'), {
       value: this.value,
       language: "javascript",
-      theme: "vs-dark",
+      theme: "vs-light",
       automaticLayout: true,
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
@@ -29,6 +38,29 @@ export default {
     this.monacoEditor.getModel().onDidChangeContent(() => {
       this.$emit('change', this.monacoEditor.getValue())
     });
+  },
+  methods: {
+    async addExtraLib(name, version) {
+      let url = 'https://unpkg.com/' + name + '@' + version;
+      console.log(url);
+      /*
+      let response = await fetch(url);
+      let body = await response.text();
+      let pkgUrl = response.url;
+      let urlParts = pkgUrl.split('/');
+      if (urlParts.indexOf('.d.ts') > -1) {
+        monaco.languages.typescript.typescriptDefaults.addExtraLib(
+            body,
+            `js:${name}`
+        );
+      } else {
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(
+            body,
+            `js:${name}`
+        );
+      }
+      */
+    }
   }
 }
 </script>

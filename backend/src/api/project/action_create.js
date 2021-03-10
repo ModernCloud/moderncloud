@@ -47,6 +47,7 @@ class CreateAction extends ApiAction
         await Endpoint.query().insert({
             user_id: this.currentUser.id,
             project_id: this.project.id,
+            user_name: 'Hello World',
             name: 'endpoint_function_' + Date.now(),
             main_file: 'index.js',
             handler: 'index.handler',

@@ -1,0 +1,40 @@
+.popper {
+  border: none;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, .2) !important;
+  padding: 0px !important;
+
+  .popper__arrow {
+    display: none;
+  }
+}
+
+.popper-menu {
+  width: auto;
+  text-align: left;
+
+  .title {
+    font-weight: 500;
+    padding: 8px;
+    color: rgba(0, 0, 0, .4);
+    font-size: 11px;
+  }
+
+  a {
+    color: #000;
+    padding: 8px;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+
+    svg {
+      color: rgba(0, 109, 119);
+      margin-right: 4px;
+    }
+
+    &:hover {
+      background: rgb(131, 197, 190, .4);
+    }
+  }
+}

@@ -21,6 +21,11 @@ const routes = [
         meta: {requiresAuth: true},
       },
       {
+        path: 'billing',
+        component: () => import(/* webpackChunkName: "settings_billing" */ '../views/dashboard/Settings/Billing.vue'),
+        meta: {requiresAuth: true},
+      },
+      {
         path: 'projects',
         component: () => import(/* webpackChunkName: "settings_projects" */ '../views/dashboard/Settings/Projects.vue'),
         meta: {requiresAuth: true},

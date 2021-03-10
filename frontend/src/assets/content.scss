@@ -1,0 +1,56 @@
+.divider {
+  height: 1px;
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+a {
+  text-decoration: none;
+}
+
+.page {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  -webkit-box-align: center;
+  align-items: center;
+  margin: 64px 40px;
+
+  .content {
+    .header {
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      align-items: center;
+
+      .title {
+        font-style: normal;
+        color: rgb(40, 42, 48);
+        font-weight: 500;
+        line-height: 32px;
+        font-size: 24px;
+        letter-spacing: -0.01em;
+        margin-bottom: 5px;
+      }
+
+      .subtitle {
+        font-style: normal;
+        line-height: normal;
+        color: rgb(107, 111, 118);
+        font-weight: 400;
+        font-size: 13px;
+      }
+
+      .actions {
+        margin-left: auto;
+      }
+    }
+
+    display: flex;
+    flex: initial;
+    flex-direction: column;
+    max-width: 640px;
+    width: 100%;
+  }
+}
