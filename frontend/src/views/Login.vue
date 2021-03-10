@@ -57,13 +57,17 @@ export default {
 
 <style lang="scss" scoped>
   .centered-content {
+    position: relative;
+    height: 100vh;
     display: flex;
-    margin-top: 50px;
-    min-height: 500px;
     align-items: center;
     justify-content: center;
+    background: rgb(108,58,180);
+    background: linear-gradient(321deg, rgba(108,58,180,0.5536589635854341) 0%, rgba(253,29,47,0.5060399159663865) 50%, rgba(69,222,252,0.4948354341736695) 100%);
 
     .segment {
+      background: #fff;
+      margin-top: 50px;
       width: 400px;
       padding: 20px;
 
