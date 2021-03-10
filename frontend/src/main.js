@@ -5,6 +5,8 @@ import store from './store'
 import axios from 'axios';
 import './assets/app.scss';
 
+document.getElementById('loading').remove();
+
 axios.interceptors.request.use(
     reqConfig => {
         reqConfig.headers.Authorization = 'Bearer ' + store.state.account.token;
