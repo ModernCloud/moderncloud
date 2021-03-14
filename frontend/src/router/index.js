@@ -29,6 +29,12 @@ const routes = [
         path: 'projects',
         component: () => import(/* webpackChunkName: "settings_projects" */ '../views/dashboard/Settings/Projects.vue'),
         meta: {requiresAuth: true},
+      },
+      {
+        path: 'environments/:project_id',
+        name: 'environments',
+        component: () => import(/* webpackChunkName: "settings_environments" */ '../views/dashboard/Settings/Environments.vue'),
+        meta: {requiresAuth: true},
       }
     ]
   },

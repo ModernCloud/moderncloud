@@ -5,11 +5,35 @@
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr auto;
 
-  .files {
+  .tools {
     height: 50px;
-    border-bottom: 1px solid rgba(131, 197, 190, .5);
     display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    padding-bottom: 1px;
+    align-items: center;
+  }
+
+  .info-button {
+    @extend .btn;
+    @extend .btn-primary;
+    margin-left: auto;
+    line-height: 15px;
+    height: 30px;
+    min-width: 30px;
+    margin-right: 20px;
+    color: rgba(0, 109, 119);
+
+    &:active, &:focus {
+      @extend .btn-primary;
+    }
+  }
+
+  .files {
+    display: flex;
+    height: 50px;
     padding-left: 20px;
+    padding-bottom: 1px;
     align-items: flex-end;
 
     .file {
@@ -25,6 +49,8 @@
       align-items: center;
       cursor: pointer;
 
+      @extend .select-none;
+
       .name {
         padding: 4px 8px;
         border-top-right-radius: 4px;
@@ -32,7 +58,6 @@
 
       .action {
         padding: 4px 8px;
-        border-left: 1px solid #ddd;
         border-top-right-radius: 4px;
 
         &:hover {
@@ -41,15 +66,41 @@
       }
 
       &.open, &:hover {
-        background: rgba(131, 197, 190, .5);
-        border-left: 1px solid rgba(131, 197, 190, .5);
-        border-right: 1px solid rgba(131, 197, 190, .5);
-        border-top: 1px solid rgba(131, 197, 190, .5);
-
-        .action {
-          border-left: 1px solid rgb(131, 197, 190);
-        }
+        background: rgba(0, 0, 0, .1);
+        border-left: 1px solid rgba(0, 0, 0, .2);
+        border-right: 1px solid rgba(0, 0, 0, .2);
+        border-top: 1px solid rgba(0, 0, 0, .2);
       }
+    }
+  }
+
+  .info-panel {
+    .section-header {
+      background: rgba(0, 0, 0, .03);
+      border-radius: 4px;
+      display: flex;
+      padding: 8px;
+      margin: 10px 0;
+      align-items: baseline;
+
+      h3 {
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      button {
+        margin-left: auto;
+      }
+    }
+
+    th {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    td {
+      font-size: 13px;
+      font-weight: 400;
     }
   }
 }

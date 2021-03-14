@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `deployment` (
     user_id BIGINT UNSIGNED NOT NULL,
     project_id BIGINT UNSIGNED NOT NULL,
     environment_id BIGINT UNSIGNED NOT NULL,
+    output JSON DEFAULT NULL,
     current_status INT NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,

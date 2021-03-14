@@ -19,7 +19,7 @@
           <div v-for="item in items" :key="item.id">
             <div class="item">
               <a href="javascript:;" style="padding-left: 10px; flex-grow: 1; display: flex; align-items: center" @click="openFile(item.id)" :loading="item.id === fileIsOpening">
-                {{item.name}}
+                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 150px;">{{item.name}}</div>
               </a>
               <popper trigger="clickToToggle" :options="{placement: 'bottom-end'}" :visible-arrow="false">
                 <a href="javascript:;" slot="reference" style="color: #aaa;">
@@ -126,7 +126,8 @@ export default {
           id: id,
           name: response.data.function.name,
           type: 'function',
-          sourceCode: response.data.function.code
+          sourceCode: response.data.function.code,
+          function_name: response.data.function.name
         }
         CodeEditorEvents.$emit('openFile', file);
       } catch (e) {

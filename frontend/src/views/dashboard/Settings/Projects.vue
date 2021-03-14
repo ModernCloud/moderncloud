@@ -19,16 +19,15 @@
         <table v-if="initialized" class="table table-hover" style="margin-top: 10px;">
           <thead>
             <tr>
-              <th style="width: 30px;"></th>
+              <th style="width: 150px;"></th>
               <th>Project</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="project in $store.state.project.projects" :key="project.id">
               <td>
-                <a href="javascript:;" @click="openEditModal(project.id)">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 15l8.385 -8.415a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3z" /><path d="M16 5l3 3" /><path d="M9 7.07a7.002 7.002 0 0 0 1 13.93a7.002 7.002 0 0 0 6.929 -5.999" /></svg>
-                </a>
+                <a href="javascript:;" @click="openEditModal(project.id)">Edit</a> -
+                <router-link :to="{name: 'environments', params: {project_id: project.id}}">Environments</router-link>
               </td>
               <td>{{project.name}}</td>
             </tr>

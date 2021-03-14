@@ -1,0 +1,65 @@
+.drawer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 500000;
+  background: rgba(0, 0, 0, .4);
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: not-allowed;
+  justify-self: auto;
+
+  .wrapper {
+    cursor: auto;
+    background: #fff;
+    box-shadow: -1px 1px 8px rgba(255, 255, 255, .2);
+    border-left: 1px solid rgba(0, 0, 0, .4);
+    width: 600px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+
+    .header {
+      display: flex;
+      padding: 10px;
+      align-items: center;
+      line-height: 30px;
+      border-bottom: 1px solid #ddd;
+
+      .title {
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 30px;
+        display: flex;
+        align-items: center;
+      }
+
+      .close {
+        margin-left: auto;
+        color: rgba(0, 0, 0, .6);
+        text-underline: none;
+        line-height: 18px;
+
+        &:hover {
+          color: rgb(0, 0, 0);
+        }
+      }
+    }
+
+    .body {
+      overflow-y: auto;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 400;
+    }
+  }
+}

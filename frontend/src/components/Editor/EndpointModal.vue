@@ -1,6 +1,6 @@
 <template>
   <div class="modal" v-if="visible">
-    <div class="wrapper">
+    <div class="modal-wrapper">
       <div class="header">
         <div class="title">{{actionName}} Endpoint</div>
         <a href="javascript:;" class="close" @click="closeModal">

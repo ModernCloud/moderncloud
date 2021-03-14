@@ -29,7 +29,7 @@
                   'color': methodLabelColor(item.method),
                   'font-size': '10px'
                 }">{{item.method}}</small>
-                {{item.user_name}}
+                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 110px;">{{item.user_name}}</div>
               </a>
               <popper trigger="clickToToggle" :options="{placement: 'bottom-end'}" :visible-arrow="false">
                 <a href="javascript:;" slot="reference" style="color: #aaa;">
@@ -137,7 +137,9 @@ export default {
           type: 'endpoint',
           name: response.data.endpoint.user_name,
           method: response.data.endpoint.method,
-          sourceCode: response.data.endpoint.code
+          sourceCode: response.data.endpoint.code,
+          function_name: response.data.endpoint.name,
+          path: response.data.endpoint.path
         }
         CodeEditorEvents.$emit('openFile', file);
       } catch (e) {

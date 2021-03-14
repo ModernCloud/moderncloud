@@ -1,8 +1,8 @@
 <template>
   <div class="modal confirm-modal" v-if="visible">
-    <div class="wrapper">
+    <div class="modal-wrapper">
       <div class="body">
-        <p>{{message}}</p>
+        <p v-html="message"></p>
       </div>
       <div class="actions">
         <button type="submit" class="btn btn-danger" @click="$emit('yes', currentData); visible = false;">Yes</button>

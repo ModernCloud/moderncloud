@@ -1,21 +1,27 @@
 <template>
   <div role="main">
     <div id="code-editor">
-      <div class="files">
-        <div class="file" :class="{open: item.id === file.id && item.type === file.type}" v-for="item in files" :key="item.type + '_' + item.id">
-          <div class="name" @click="openFile(item)">
-            <small v-if="item.type === 'endpoint'" :style="{
+      <InfoPanel ref="info" />
+      <div class="tools">
+        <div class="files">
+          <div class="file" :class="{open: item.id === file.id && item.type === file.type}" v-for="item in files" :key="item.type + '_' + item.id">
+            <div class="name" @click="openFile(item)">
+              <small v-if="item.type === 'endpoint'" :style="{
                   'display': 'inline-block',
                   'font-weight': 600,
                   'margin-right': '2px',
                   'color': methodLabelColor(item.method),
-                  'font-size': '10px'
+                  'font-size': '9px'
                 }">{{item.method}}</small>
-            <svg v-if="item.type === 'function'" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
-            {{item.name}}
+              <svg v-if="item.type === 'function'" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
+              {{item.name}}
+            </div>
+            <div class="action" @click="removeFile(item)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></div>
           </div>
-          <div class="action" @click="removeFile(item)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></div>
         </div>
+        <button type="button" class="info-button" v-if="files.length > 0" @click="showPanel">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="18" height="18" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="currentColor" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 4v16l13 -8z" /></svg>
+        </button>
       </div>
       <monaco-editor ref="monaco" class="monaco-editor" v-if="hasSourceCode" v-model="sourceCode" @change="changed"></monaco-editor>
       <div v-if="hasSourceCode === false" style="height: 100%; display: flex; align-items: center; justify-content: center; background: #efefef; font-size: 15px; color: #ccc;">
@@ -30,10 +36,12 @@ import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import {CodeEditorEvents} from './code_editor_events';
 import MonacoEditor from './MonacoEditor.vue';
+import InfoPanel from './InfoPanel.vue';
 
 export default {
   components: {
-    MonacoEditor
+    MonacoEditor,
+    InfoPanel
   },
   data() {
     return {
@@ -82,6 +90,7 @@ export default {
           this.file = {id: null, name: null, type: null, sourceCode: null};
           this.hasSourceCode = false;
           this.sourceCode = null;
+          CodeEditorEvents.$emit('empty');
         } else {
           this.file = this.files[0];
           this.sourceCode = this.file.sourceCode;
@@ -105,6 +114,9 @@ export default {
       } else {
         return '#55a630';
       }
+    },
+    showPanel() {
+      this.$refs.info.show(this.file);
     }
   }
 }

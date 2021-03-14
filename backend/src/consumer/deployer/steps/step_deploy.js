@@ -1,4 +1,5 @@
 const shelljs = require('shelljs');
+const {Deployment} = require('../../../common/db');
 
 async function runInit(job) {
     await job.addLog(`$ terraform init`);
@@ -27,10 +28,23 @@ async function runApply(job) {
     }
 }
 
+async function runOutput(job) {
+    await job.addLog(`$ terraform output -json`);
+    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} output -json -no-color`, {silent: true});
+    await job.addLog(result.stdout || result.stderr);
+    if (result.code > 0) {
+        throw new Error(`Failed: terraform output | Deployment: ${job.deployment.id}`);
+    }
+    await Deployment.query()
+        .where('id', this.deployment.id)
+        .update({'json': JSON.stringify(result.stdout)});
+}
+
 module.exports = {
     run: async (job) => {
         await runInit(job);
         await runPlan(job); // TODO: Save plan file and use with apply
         await runApply(job);
+        await runOutput(job);
     }
 }

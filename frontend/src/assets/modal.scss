@@ -10,12 +10,12 @@
   display: flex;
   align-items: center;
 
-  .wrapper {
+  .modal-wrapper {
     background: #fff;
     box-shadow: 0 1px 32px rgba(255, 255, 255, .2);
     border: 1px solid rgba(0, 0, 0, .4);
     width: 500px;
-    margin:0 auto;
+    margin: 0 auto;
     border-radius: 4px;
 
     .header {
@@ -32,6 +32,7 @@
         font-size: 18px;
         font-weight: 500;
         line-height: 30px;
+        @extend .select-none;
       }
 
       .close {
@@ -64,7 +65,7 @@
 
   &.confirm-modal {
 
-    .wrapper {
+    .modal-wrapper {
       width: 350px;
 
       .body {
