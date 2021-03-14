@@ -1,8 +1,9 @@
 {
   "scripts": {
     "test": "jest",
-    "serve_api": "nodemon --watch ./src/api --watch ./src/common src/api",
-    "serve_deployer": "node src/consumer deployer"
+    "serve_api": "node src/api",
+    "serve_deployer": "node src/consumer deployer",
+    "dev_api": "nodemon --watch ./src/api --watch ./src/common src/api"
   },
   "dependencies": {
     "amqplib": "^0.7.0",
