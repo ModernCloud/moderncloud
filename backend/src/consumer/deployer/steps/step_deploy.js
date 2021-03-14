@@ -36,8 +36,8 @@ async function runOutput(job) {
         throw new Error(`Failed: terraform output | Deployment: ${job.deployment.id}`);
     }
     await Deployment.query()
-        .where('id', this.deployment.id)
-        .update({'json': JSON.stringify(result.stdout)});
+        .where('id', job.deployment.id)
+        .update({'output': result.stdout});
 }
 
 module.exports = {
