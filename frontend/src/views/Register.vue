@@ -1,7 +1,7 @@
 <template>
   <div class="centered-content">
     <div class="segment shadow-lg rounded">
-      <h3>ModernCloud</h3>
+      <h3>Modern Cloud</h3>
       <form @submit.prevent="submit">
         <div class="alert alert-danger" v-if="hasError">{{errorMessage}}</div>
         <div class="mb-2">
@@ -74,8 +74,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(17,30,48);
-  background: linear-gradient(0deg, rgba(17,30,48,1) 0%, rgba(9,79,121,1) 22%, rgba(0,211,255,1) 100%);
+  box-shadow: 0 30px 100px rgb(29, 53, 87);
+  background: rgb(168, 218, 220);
+  background: linear-gradient(0deg, rgba(168, 218, 220) 10%, rgba(168, 218, 220, .5) 100%);
 
   .segment {
     background: #fff;
@@ -85,6 +86,10 @@ export default {
 
     h3 {
       text-align: center;
+      color: rgb(29, 53, 87);
+      font-size: 35px;
+      margin-bottom: 30px;
+      font-family: Edition, serif;
     }
   }
 }

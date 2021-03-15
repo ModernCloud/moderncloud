@@ -3,11 +3,12 @@
     <Confirm ref="confirmModal" message="Selected endpoint will be deleted. Do you want to continue?" @yes="deleteItem" />
     <EndpointModal ref="modal" @added="added" @updated="updated" />
     <div class="section-title" @click="showContent=!showContent">
-      <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
-      <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="4" width="16" height="16" rx="1" /><line x1="4" y1="8" x2="20" y2="8" /><line x1="8" y1="4" x2="8" y2="8" /></svg>
       Endpoints
       <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
+      <div style="margin-left: auto;">
+        <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
+        <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
+      </div>
     </div>
     <transition name="slide">
       <div v-if="showContent" class="content">
@@ -22,17 +23,15 @@
                 <small :style="{
                   width: '38px',
                   'display': 'inline-block',
-                  'padding': '2px',
-                  'border-radius': '4px',
                   'font-weight': 600,
-                  'margin-right': '2px',
+                  'margin-right': '5px',
                   'color': methodLabelColor(item.method),
-                  'font-size': '10px'
+                  'font-size': '9px'
                 }">{{item.method}}</small>
-                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 110px;">{{item.user_name}}</div>
+                <div class="item-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 145px;">{{item.user_name}}</div>
               </a>
               <popper trigger="clickToToggle" :options="{placement: 'bottom-end'}" :visible-arrow="false">
-                <a href="javascript:;" slot="reference" style="color: #aaa;">
+                <a href="javascript:;" slot="reference" style="color: #fff;">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="1" /><circle cx="12" cy="19" r="1" /><circle cx="12" cy="5" r="1" /></svg>
                 </a>
                 <div class="popper">
@@ -191,7 +190,7 @@ export default {
   .new-link {
     margin-bottom: 5px;
     margin-left: 7px;
-    color: #003049;
+    color: rgb(131, 197, 190);
     font-size: 12px;
     text-decoration: none;
     display: flex;
@@ -202,12 +201,11 @@ export default {
     }
 
     &:hover {
-      color: rgb(131, 197, 190);
+      color: #fff;
     }
   }
 
   .item {
-    color: #000;
     text-decoration: none;
     font-weight: 400;
     font-size: 12px;
@@ -218,12 +216,16 @@ export default {
 
     a {
       text-decoration: none;
-      color: #000;
+      color: #cbd4db;
       padding: 8px;
     }
 
     &:hover {
-      background: rgb(131, 197, 190, .4);
+      color: rgb(131, 197, 190);
+
+      .item-name {
+        color: rgb(131, 197, 190);
+      }
     }
   }
 </style>

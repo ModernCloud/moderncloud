@@ -8,14 +8,15 @@ aside#settings-aside {
       align-items: center;
       cursor: pointer;
       height: 50px;
-      border-bottom: 1px solid rgba(131, 197, 190, .5);
+      border-bottom: 1px solid rgb(39, 50, 64);
       margin-bottom: 10px;
 
       .name {
         font-size: 18px;
         line-height: 18px;
         text-decoration: none;
-        color: rgb(2, 48, 71);
+        font-weight: 400;
+        color: #fff;
         margin-left: 10px;
       }
     }
@@ -29,11 +30,11 @@ aside#settings-aside {
       }
 
       a {
-        color: #000;
+        color: #fff;
         padding: 8px 10px;
         text-decoration: none;
         font-weight: 400;
-        font-size: 12px;
+        font-size: 14px;
         display: flex;
         align-items: center;
         margin-bottom: 5px;
@@ -45,7 +46,8 @@ aside#settings-aside {
         }
 
         &:hover, &.active {
-          background: rgb(131, 197, 190, .4);
+          color: #fff;
+          background: rgb(29, 53, 87, .4);
         }
       }
     }

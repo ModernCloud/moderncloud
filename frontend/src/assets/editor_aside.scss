@@ -1,21 +1,19 @@
 aside#editor-aside {
   section {
-    padding-left: 10px;
-    padding-right: 10px;
-
     &.brand {
       display: flex;
       align-items: center;
       cursor: pointer;
       height: 50px;
-      border-bottom: 1px solid rgba(0, 0, 0, .2);
-      margin-bottom: 10px;
+      border-bottom: 1px solid rgb(39, 50, 64);
+      padding: 0 8px;
 
       .name {
-        font-size: 20px;
-        line-height: 20px;
+        font-size: 18px;
+        line-height: 18px;
         text-decoration: none;
-        color: rgb(2, 48, 71);
+        color: #fff;
+        font-family: Edition, serif;
       }
 
       .menu {
@@ -25,40 +23,37 @@ aside#editor-aside {
         font-weight: 600;
         align-items: center;
         padding: 5px;
-        color: rgb(2, 48, 71);
+        color: #fff;
         border-radius: 4px;
-        background: rgba(0, 109, 119, .2);
-        border: 1px solid rgb(131, 197, 190);
+        border: 1px solid rgba(255, 255, 255, .2);
+        background: rgb(29, 53, 87);
       }
 
       &:hover {
         .menu {
-          background: rgb(131, 197, 190);
-          color: #fff;
+          background: rgb(29, 53, 87, .8);
         }
       }
     }
 
     &.projects {
       cursor: pointer;
-      border-radius: 4px;
-      border: 1px solid rgb(131, 197, 190);
-      margin: 10px;
-      padding: 5px;
+      border-bottom: 1px solid rgb(39, 50, 64);
+      padding: 10px;
       display: flex;
       align-items: center;
 
       .current-project {
         .name {
-          color: rgb(2, 48, 71);
-          font-size: 14px;
+          color: rgb(203, 212, 219);
+          font-size: 16px;
           font-weight: 600;
         }
 
         .description {
-          color: rgb(0, 0, 0, .4);
+          color: rgb(203, 212, 219, .7);
           font-size: 12px;
-          font-weight: 300;
+          font-weight: 400;
         }
       }
 
@@ -66,30 +61,29 @@ aside#editor-aside {
         margin-left: auto;
       }
 
-      background: rgba(0, 109, 119, .2);
       &:hover {
-        background: rgb(131, 197, 190);
+        background: rgb(29, 53, 87, .4);
       }
     }
 
     &.accordion {
+      border-bottom: 1px solid rgb(39, 50, 64);
+
       .section-title {
-        font-size: 13px;
-        font-stretch: 100%;
-        font-weight: 500;
+        padding: 20px 8px;
+        font-size: 14px;
+        font-weight: 400;
         font-style: normal;
         text-overflow: ellipsis;
-        color: rgb(44, 47, 50);
+        color: #cbd4db;
         overflow: hidden;
         white-space: nowrap;
-        padding: 0px 8px;
         height: 28px;
         line-height: 28px;
         display: flex;
         align-items: center;
         cursor: pointer;
         border: 1px solid transparent;
-        margin-bottom: 3px;
 
         svg:first-child {
           margin-right: 5px;
@@ -101,14 +95,13 @@ aside#editor-aside {
         }
 
         &:hover {
-          background: rgba(216, 218, 229, .2);
-          border-radius: 4px;
-          border: 1px solid rgb(237, 238, 243);
+          background: rgb(29, 53, 87, .4);
+          color: #fff;
         }
       }
 
       .content {
-        padding-left: 28px;
+        padding-top: 10px;
       }
 
       .slide-enter-active {

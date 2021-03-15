@@ -3,11 +3,12 @@
     <Confirm ref="confirmModal" message="Selected function will be deleted. Do you want to continue?" @yes="deleteItem" />
     <FunctionModal ref="modal" @added="added" @updated="updated" />
     <div class="section-title" @click="showContent=!showContent">
-      <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
-      <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
       Functions
       <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
+      <div style="margin-left: auto">
+        <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
+        <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
+      </div>
     </div>
     <transition name="slide">
       <div v-if="showContent" class="content">
@@ -19,7 +20,7 @@
           <div v-for="item in items" :key="item.id">
             <div class="item">
               <a href="javascript:;" style="padding-left: 10px; flex-grow: 1; display: flex; align-items: center" @click="openFile(item.id)" :loading="item.id === fileIsOpening">
-                <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 150px;">{{item.name}}</div>
+                <div class="item-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 170px;">{{item.name}}</div>
               </a>
               <popper trigger="clickToToggle" :options="{placement: 'bottom-end'}" :visible-arrow="false">
                 <a href="javascript:;" slot="reference" style="color: #aaa;">
@@ -168,7 +169,7 @@ export default {
 .new-link {
   margin-bottom: 5px;
   margin-left: 7px;
-  color: #003049;
+  color: rgb(131, 197, 190);
   font-size: 12px;
   text-decoration: none;
   display: flex;
@@ -179,12 +180,11 @@ export default {
   }
 
   &:hover {
-    color: rgb(131, 197, 190);
+    color: #fff;
   }
 }
 
 .item {
-  color: #000;
   text-decoration: none;
   font-weight: 400;
   font-size: 12px;
@@ -195,12 +195,16 @@ export default {
 
   a {
     text-decoration: none;
-    color: #000;
+    color: #cbd4db;
     padding: 8px;
   }
 
   &:hover {
-    background: rgb(131, 197, 190, .4);
+    color: rgb(131, 197, 190);
+
+    .item-name {
+      color: rgb(131, 197, 190);
+    }
   }
 }
 </style>

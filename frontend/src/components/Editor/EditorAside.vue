@@ -2,7 +2,7 @@
   <aside id="editor-aside">
     <popper trigger="clickToToggle" :options="{placement: 'bottom-end'}" :visible-arrow="false">
       <section class="brand" slot="reference">
-        <router-link to="/" class="name"><span>Modern</span><span>Cloud</span></router-link>
+        <router-link to="/" class="name">Modern Cloud</router-link>
         <div class="menu">{{$store.state.account.user.name.split(' ').map(item => {return item[0];}).join('')}}</div>
       </section>
       <div class="popper">

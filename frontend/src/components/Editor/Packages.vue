@@ -3,11 +3,12 @@
     <Confirm ref="confirmModal" message="Selected package will be deleted. Do you want to continue?" @yes="deleteItem" />
     <PackageModal ref="modal" @added="added" @updated="updated" />
     <div class="section-title" @click="showContent=!showContent">
-      <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
-      <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" /><line x1="12" y1="12" x2="20" y2="7.5" /><line x1="12" y1="12" x2="12" y2="21" /><line x1="12" y1="12" x2="4" y2="7.5" /></svg>
       Packages
       <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
+      <div style="margin-left: auto">
+        <svg v-if="showContent === false" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>
+        <svg v-if="showContent" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="6 9 12 15 18 9" /></svg>
+      </div>
     </div>
     <transition name="slide">
       <div v-if="showContent" class="content">
@@ -18,7 +19,7 @@
           </a>
           <div v-for="item in items" :key="item.id">
             <div class="item" style="margin-bottom: 8px;">
-              <div style="flex-grow: 1; padding-left: 10px;">
+              <div style="flex-grow: 1; padding-left: 10px;" class="item-name">
                 {{item.name}}
                 <div style="font-size: 10px; color: #aaa;">version: {{item.version}}</div>
               </div>
@@ -121,7 +122,7 @@ export default {
 .new-link {
   margin-bottom: 5px;
   margin-left: 7px;
-  color: #003049;
+  color: rgb(131, 197, 190);
   font-size: 12px;
   text-decoration: none;
   display: flex;
@@ -132,12 +133,11 @@ export default {
   }
 
   &:hover {
-    color: rgb(131, 197, 190);
+    color: #fff;
   }
 }
 
 .item {
-  color: #000;
   text-decoration: none;
   font-weight: 400;
   font-size: 12px;
@@ -148,12 +148,16 @@ export default {
 
   a {
     text-decoration: none;
-    color: #000;
+    color: #cbd4db;
     padding: 8px;
   }
 
   &:hover {
-    background: rgb(131, 197, 190, .4);
+    color: rgb(131, 197, 190);
+
+    .item-name {
+      color: rgb(131, 197, 190);
+    }
   }
 }
 </style>
