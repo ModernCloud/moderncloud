@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
-const { Function, Endpoint } = require('../../../common/db');
+const { Function, Endpoint, Dynamodb } = require('../../../common/db');
 const render = require('../../../common/template/render');
 
 async function updateTerraformFiles(job) {
@@ -109,6 +109,24 @@ async function createPackages(job) {
     )
 }
 
+async function createDynamoDBFiles(job) {
+    let tables = await Dynamodb.query().where('project_id', job.project.id);
+    for (const row of tables) {
+        render(
+            path.join(job.getTerraformTemplates(), 'dynamodb.tf.twig'),
+            path.join(job.getTerraformRoot(), `dynamodb_${row.name}.tf`),
+            {
+                project: job.project,
+                environment: job.environment,
+                table: {
+                    ...row,
+                    attributes: JSON.parse(row.attributes)
+                }
+            }
+        )
+    }
+}
+
 module.exports = {
     run: async (job) => {
         await removeFiles(job);
@@ -117,5 +135,6 @@ module.exports = {
         await createApiGatewayFiles(job);
         await createEndpointFiles(job);
         await createPackages(job);
+        await createDynamoDBFiles(job);
     }
 }

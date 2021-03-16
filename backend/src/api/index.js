@@ -16,5 +16,6 @@ require('./function')(app);
 require('./project')(app);
 require('./endpoint')(app);
 require('./package')(app);
+require('./dynamodb')(app);
 
 app.listen(process.env.PORT, () => console.log(`Listening on port: ${process.env.PORT}`));

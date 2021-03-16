@@ -42,6 +42,7 @@
     <Endpoints />
     <Functions />
     <Packages />
+    <DynamoDB />
   </aside>
 </template>
 
@@ -51,9 +52,11 @@ import 'vue-popperjs/dist/vue-popper.css';
 import Endpoints from './Endpoints.vue';
 import Functions from './Functions.vue';
 import Packages from './Packages.vue';
+import DynamoDB from "./DynamoDB.vue";
 
 export default {
   components: {
+    DynamoDB,
     Popper,
     Endpoints,
     Functions,

@@ -7,3 +7,4 @@ exports.Project = require('./models/Project');
 exports.Endpoint = require('./models/Endpoint');
 exports.User = require('./models/User');
 exports.Package = require('./models/Package');
+exports.Dynamodb = require('./models/Dynamodb');

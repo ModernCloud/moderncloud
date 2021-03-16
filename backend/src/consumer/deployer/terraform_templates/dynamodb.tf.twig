@@ -1,0 +1,15 @@
+resource "aws_dynamodb_table" "{{project.name}}_{{environment.name}}_{{table.name}}" {
+  name           = "{{table.name}}"
+  read_capacity  = {{table.read_capacity}}
+  write_capacity = {{table.write_capacity}}
+  hash_key       = "{{table.hash_key}}"
+  range_key      = "{{table.range_key}}"
+
+  {% for attribute in table.attributes %}
+    attribute {
+      name = "{{attribute.name}}"
+      type = "{{attribute.type}}"
+    }
+
+  {% endfor %}
+}

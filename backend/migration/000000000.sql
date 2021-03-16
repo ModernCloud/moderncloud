@@ -58,6 +58,21 @@ CREATE TABLE IF NOT EXISTS `endpoint` (
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `dynamodb` (
+    id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    read_capacity INT DEFAULT 1,
+    write_capacity INT DEFAULT 1,
+    hash_key VARCHAR(30) NOT NULL,
+    range_key VARCHAR(30) DEFAULT NULL,
+    attributes JSON DEFAULT NULL,
+    INDEX project_idx (project_id),
+    UNIQUE path_uniq (project_id, name),
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `environment` (
     id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     user_id BIGINT UNSIGNED NOT NULL,
