@@ -11,4 +11,10 @@ module.exports = app => {
     app.get('/environments/:id', async (req, res) => {
         await require('./action_get').execute(req, res);
     });
+    app.get('/environments/:id/variables', async (req, res) => {
+        await require('./action_variables').execute(req, res);
+    });
+    app.put('/environments/:id/variables', async (req, res) => {
+        await require('./action_variables_update').execute(req, res);
+    });
 };

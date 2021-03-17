@@ -86,6 +86,18 @@ CREATE TABLE IF NOT EXISTS `environment` (
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `environment_variable` (
+    id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
+    user_id BIGINT UNSIGNED NOT NULL,
+    project_id BIGINT UNSIGNED NOT NULL,
+    environment_id BIGINT UNSIGNED NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    value VARCHAR(50) DEFAULT NULL,
+    UNIQUE name_uniq (environment_id, name),
+    INDEX project_idx (project_id),
+    PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
+
 CREATE TABLE IF NOT EXISTS `deployment` (
     id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     user_id BIGINT UNSIGNED NOT NULL,

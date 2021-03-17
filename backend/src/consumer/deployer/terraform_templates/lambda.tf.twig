@@ -13,6 +13,14 @@ resource "aws_lambda_function" "{{ function.name }}_function" {
   runtime = "{{ function.runtime }}"
   role = aws_iam_role.lambda_iam_role.arn
   layers = [aws_lambda_layer_version.{{project.name}}_{{environment.name}}_packages.arn]
+
+  environment {
+    variables = {
+    {% for variable in environment.variables %}
+      {{ variable.name }} = "{{ variable.value }}"
+    {% endfor %}
+    }
+  }
 }
 
 output "{{function.name}}_invoke_arn" {

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const rimraf = require('rimraf');
-const { Function, Endpoint, Dynamodb } = require('../../../common/db');
+const { Function, Endpoint, EnvironmentVariable, Dynamodb } = require('../../../common/db');
 const render = require('../../../common/template/render');
 
 async function updateTerraformFiles(job) {
@@ -45,13 +45,19 @@ async function removeFiles(job) {
 
 async function createFunctionFiles(job) {
     let functions = await Function.query().where('project_id', job.project.id);
+    let envVariables = await EnvironmentVariable.query()
+        .where('project_id', job.project.id)
+        .where('environment_id', job.environment.id);
     for (const row of functions) {
         render(
             path.join(job.getTerraformTemplates(), 'lambda.tf.twig'),
             path.join(job.getTerraformRoot(), `lambda_${row.name}.tf`),
             {
                 project: job.project,
-                environment: job.environment,
+                environment: {
+                    ...job.environment,
+                    variables: envVariables
+                },
                 function: {
                     name: row.name,
                     handler: row.handler,
@@ -79,13 +85,19 @@ async function createApiGatewayFiles(job) {
 
 async function createEndpointFiles(job) {
     let endpoints = await Endpoint.query().where('project_id', job.project.id);
+    let envVariables = await EnvironmentVariable.query()
+        .where('project_id', job.project.id)
+        .where('environment_id', job.environment.id);
     for (const row of endpoints) {
         render(
             path.join(job.getTerraformTemplates(), 'endpoint.tf.twig'),
             path.join(job.getTerraformRoot(), `${row.name}.tf`),
             {
                 project: job.project,
-                environment: job.environment,
+                environment: {
+                    ...job.environment,
+                    variables: envVariables
+                },
                 endpoint: {
                     ...row,
                     root: path.join(job.getEndpointsRoot(), row.name),

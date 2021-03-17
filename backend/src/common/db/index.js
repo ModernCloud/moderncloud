@@ -2,6 +2,7 @@ exports.knex = require('./knex');
 exports.Deployment = require('./models/Deployment');
 exports.DeploymentLog = require('./models/DeploymentLog');
 exports.Environment = require('./models/Environment');
+exports.EnvironmentVariable = require('./models/EnvironmentVariable');
 exports.Function = require('./models/Function');
 exports.Project = require('./models/Project');
 exports.Endpoint = require('./models/Endpoint');

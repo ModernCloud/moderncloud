@@ -1,6 +1,7 @@
 <template>
   <div role="main">
     <EnvironmentModal ref="modal" @updated="loadEnvironments" @added="loadEnvironments" />
+    <EnvironmentVariablesModal ref="variables" />
     <div class="page">
       <div class="content">
         <div class="header">
@@ -19,7 +20,7 @@
         <table v-if="initialized" class="table table-hover" style="margin-top: 10px;">
           <thead>
             <tr>
-              <th style="width: 50px;"></th>
+              <th style="width: 120px;"></th>
               <th>Name</th>
               <th style="width: 150px; text-align: right">Region</th>
             </tr>
@@ -27,7 +28,8 @@
           <tbody>
             <tr v-for="environment in environments" :key="environment.id">
               <td>
-                <a href="javascript:;" @click="$refs.modal.showEdit(environment.id)">Edit</a>
+                <a href="javascript:;" @click="$refs.modal.showEdit(environment.id)">Edit</a> -
+                <a href="javascript:;" @click="$refs.variables.show(environment.id)">Variables</a>
               </td>
               <td>{{environment.name}}</td>
               <td style="text-align: right">{{regions[environment.region].name}}</td>
@@ -42,11 +44,13 @@
 <script>
 import regions from '../../../constants/regions';
 import EnvironmentModal from './EnvironmentModal.vue';
+import EnvironmentVariablesModal from './EnvironmentVariablesModal.vue';
 import axios from "axios";
 
 export default {
   components: {
-    EnvironmentModal
+    EnvironmentModal,
+    EnvironmentVariablesModal
   },
   data() {
     return {
