@@ -3,6 +3,7 @@
     "test": "jest",
     "serve_api": "node src/api",
     "serve_deployer": "node src/consumer deployer",
+    "serve_destroyer": "node src/consumer destroyer",
     "dev_api": "nodemon --watch ./src/api --watch ./src/common src/api"
   },
   "dependencies": {

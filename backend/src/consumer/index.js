@@ -6,8 +6,6 @@ if (argv.length === 0) {
     process.exit();
 }
 
-const { Deployment, DeploymentLog } = require('../common/db');
-
 async function start(queueName) {
     const conn = await amqp.connect(process.env.RABBITMQ_HOST);
     const channel = await conn.createChannel();

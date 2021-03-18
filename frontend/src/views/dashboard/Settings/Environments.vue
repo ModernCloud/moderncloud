@@ -2,6 +2,8 @@
   <div role="main">
     <EnvironmentModal ref="modal" @updated="loadEnvironments" @added="loadEnvironments" />
     <EnvironmentVariablesModal ref="variables" />
+    <notifications position="top center" />
+    <Confirm ref="confirmModal" message="Selected environment will be destroyed. Do you want to continue?" @yes="destroy" />
     <div class="page">
       <div class="content">
         <div class="header">
@@ -20,7 +22,7 @@
         <table v-if="initialized" class="table table-hover" style="margin-top: 10px;">
           <thead>
             <tr>
-              <th style="width: 120px;"></th>
+              <th style="width: 180px;"></th>
               <th>Name</th>
               <th style="width: 150px; text-align: right">Region</th>
             </tr>
@@ -29,7 +31,8 @@
             <tr v-for="environment in environments" :key="environment.id">
               <td>
                 <a href="javascript:;" @click="$refs.modal.showEdit(environment.id)">Edit</a> -
-                <a href="javascript:;" @click="$refs.variables.show(environment.id)">Variables</a>
+                <a href="javascript:;" @click="$refs.variables.show(environment.id)">Variables</a> -
+                <a href="javascript:;" @click="$refs.confirmModal.show({environment_id: environment.id})">Destroy</a>
               </td>
               <td>{{environment.name}}</td>
               <td style="text-align: right">{{regions[environment.region].name}}</td>
@@ -45,12 +48,14 @@
 import regions from '../../../constants/regions';
 import EnvironmentModal from './EnvironmentModal.vue';
 import EnvironmentVariablesModal from './EnvironmentVariablesModal.vue';
+import Confirm from "../../../components/Confirm.vue";
 import axios from "axios";
 
 export default {
   components: {
     EnvironmentModal,
-    EnvironmentVariablesModal
+    EnvironmentVariablesModal,
+    Confirm
   },
   data() {
     return {
@@ -87,6 +92,21 @@ export default {
           }
         });
         this.environments = response.data.environments;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async destroy(params) {
+      this.loading = true;
+      try {
+        await axios.post('/api/environments/' + params.environment_id + '/destroy');
+        this.$notify({
+          title: 'Success',
+          type: 'success',
+          text: 'Related resources will be destroyed.'
+        });
       } catch (e) {
         console.log(e);
       } finally {
