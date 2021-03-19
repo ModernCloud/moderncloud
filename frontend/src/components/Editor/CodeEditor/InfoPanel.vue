@@ -7,7 +7,7 @@
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
-    <perfect-scrollbar class="body" v-if="loading === false" :options="{suppressScrollX: true}">
+    <perfect-scrollbar class="body" style="position: unset;" v-if="loading === false" :options="{suppressScrollX: true}">
       <p>Please <router-link :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">click here</router-link> to manage environments.</p>
       <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show"></EnvironmentRow>
     </perfect-scrollbar>
