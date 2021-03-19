@@ -2,6 +2,10 @@ import Vue from 'vue'
 import Notifications from 'vue-notification'
 Vue.use(Notifications);
 
+import PerfectScrollbar from 'vue2-perfect-scrollbar';
+import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
+Vue.use(PerfectScrollbar);
+
 
 import App from './App.vue'
 import router from './router'

@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 html, body {
   height: 100%;
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-weight: normal;
+  font-family: -apple-system,BlinkMacSystemFont,Roboto,"Inter",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  font-weight: 400;
   overflow: hidden;
 }
 
@@ -29,11 +30,10 @@ aside {
   background-color: rgb(21, 27, 38);
   color: rgb(203, 212, 219);
   box-shadow: 0 2px 10px rgba(0, 0, 0, .16);
-  border-right: 1px solid rgba(0, 0, 0, .2);
   grid-row: 2;
   grid-column: 1;
   width: 250px;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 @media (max-width: 992px) {

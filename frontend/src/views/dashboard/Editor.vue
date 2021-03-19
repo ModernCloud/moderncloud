@@ -1,13 +1,13 @@
 <template>
   <div class="app">
-    <editor-aside ref="aside"></editor-aside>
-    <code-editor ref="codeEditor" @changed="codeChanged"></code-editor>
+    <EditorAside ref="aside"></EditorAside>
+    <CodeEditor ref="codeEditor" @changed="codeChanged"></CodeEditor>
   </div>
 </template>
 
 <script>
-import EditorAside from '../../components/Editor/EditorAside.vue';
-import CodeEditor from '../../components/Editor/CodeEditor.vue';
+import EditorAside from '@/components/Editor/Aside/EditorAside.vue';
+import CodeEditor from '@/components/Editor/CodeEditor/CodeEditor.vue';
 
 export default {
   components: {

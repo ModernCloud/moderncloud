@@ -45,10 +45,10 @@
 </template>
 
 <script>
-import regions from '../../../constants/regions';
-import EnvironmentModal from './EnvironmentModal.vue';
-import EnvironmentVariablesModal from './EnvironmentVariablesModal.vue';
-import Confirm from "../../../components/Confirm.vue";
+import regions from '@/constants/regions';
+import EnvironmentModal from '@/components/Settings/Projects/Environments/EnvironmentModal.vue';
+import EnvironmentVariablesModal from '@/components/Settings/Projects/Environments/EnvironmentVariablesModal.vue';
+import Confirm from "@/components/Confirm.vue";
 import axios from "axios";
 
 export default {

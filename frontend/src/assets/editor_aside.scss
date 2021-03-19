@@ -1,4 +1,36 @@
 aside#editor-aside {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 50px auto 50px;
+
+  .footer {
+    display: flex;
+    border-top: 1px solid rgb(39, 50, 64);
+    align-items: center;
+
+    a {
+      height: 50px;
+      padding: 10px;
+      color: #fff;
+    }
+
+    a:nth-child(1) {
+      flex-grow: 1;
+      border-right: 1px solid rgb(39, 50, 64);
+      padding-left: 24px;
+    }
+
+    a:nth-child(2) {
+      margin-left: auto;
+      width: 50px;
+      text-align: center;
+    }
+  }
+
+  .modules {
+    position: unset;
+  }
+
   section {
     &.brand {
       display: flex;
@@ -6,63 +38,14 @@ aside#editor-aside {
       cursor: pointer;
       height: 50px;
       border-bottom: 1px solid rgb(39, 50, 64);
-      padding: 0 8px;
+      padding: 0 24px;
 
       .name {
-        font-size: 18px;
-        line-height: 18px;
+        font-size: 16px;
+        line-height: 16px;
         text-decoration: none;
         color: #fff;
         font-family: Edition, serif;
-      }
-
-      .menu {
-        display: flex;
-        margin-left: auto;
-        font-size: 12px;
-        font-weight: 600;
-        align-items: center;
-        padding: 5px;
-        color: #fff;
-        border-radius: 4px;
-        border: 1px solid rgba(255, 255, 255, .2);
-        background: rgb(29, 53, 87);
-      }
-
-      &:hover {
-        .menu {
-          background: rgb(29, 53, 87, .8);
-        }
-      }
-    }
-
-    &.projects {
-      cursor: pointer;
-      border-bottom: 1px solid rgb(39, 50, 64);
-      padding: 10px;
-      display: flex;
-      align-items: center;
-
-      .current-project {
-        .name {
-          color: rgb(203, 212, 219);
-          font-size: 16px;
-          font-weight: 600;
-        }
-
-        .description {
-          color: rgb(203, 212, 219, .7);
-          font-size: 12px;
-          font-weight: 400;
-        }
-      }
-
-      .menu {
-        margin-left: auto;
-      }
-
-      &:hover {
-        background: rgb(29, 53, 87, .4);
       }
     }
 
@@ -70,20 +53,18 @@ aside#editor-aside {
       border-bottom: 1px solid rgb(39, 50, 64);
 
       .section-title {
-        padding: 20px 8px;
-        font-size: 14px;
+        padding: 10px 24px;
+        font-size: 15px;
         font-weight: 400;
         font-style: normal;
         text-overflow: ellipsis;
-        color: #cbd4db;
+        color: #e2e3e5;
         overflow: hidden;
         white-space: nowrap;
-        height: 28px;
-        line-height: 28px;
         display: flex;
         align-items: center;
         cursor: pointer;
-        border: 1px solid transparent;
+        border: none;
 
         svg:first-child {
           margin-right: 5px;
@@ -94,14 +75,63 @@ aside#editor-aside {
           margin-right: 4px;
         }
 
-        &:hover {
-          background: rgb(29, 53, 87, .4);
+        &:hover, &.active {
+          background: rgba(255, 255, 255, 0.16);
           color: #fff;
         }
       }
 
       .content {
-        padding-top: 10px;
+        .item {
+          text-decoration: none;
+          font-weight: 400;
+          display: flex;
+          align-items: center;
+          padding: 0 24px;
+          font-size: 13px;
+
+          a {
+            text-decoration: none;
+            color: #cbd4db;
+            padding: 8px 0;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+          }
+
+          .item-name {
+            font-weight: 400;
+            color: rgb(203, 212, 219);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 145px;
+          }
+
+          .action-menu {
+            display: none;
+          }
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.16);
+            .action-menu {
+              display: flex;
+              justify-content: space-between;
+
+              a {
+                margin-right: 4px;
+
+                &:hover {
+                  color: #fff;
+                }
+              }
+
+              a:last-child {
+                margin-right: 0px;
+              }
+            }
+          }
+        }
       }
 
       .slide-enter-active {

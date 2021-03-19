@@ -43,23 +43,6 @@ export default {
     async addExtraLib(name, version) {
       let url = 'https://unpkg.com/' + name + '@' + version;
       console.log(url);
-      /*
-      let response = await fetch(url);
-      let body = await response.text();
-      let pkgUrl = response.url;
-      let urlParts = pkgUrl.split('/');
-      if (urlParts.indexOf('.d.ts') > -1) {
-        monaco.languages.typescript.typescriptDefaults.addExtraLib(
-            body,
-            `js:${name}`
-        );
-      } else {
-        monaco.languages.typescript.javascriptDefaults.addExtraLib(
-            body,
-            `js:${name}`
-        );
-      }
-      */
     }
   }
 }

@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import ProjectModal from './ProjectModal.vue';
+import ProjectModal from '@/components/Settings/Projects/ProjectModal.vue';
 
 export default {
   components: {

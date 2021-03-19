@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import Confirm from "../Confirm";
+import Confirm from "@/components/Confirm";
 import moment from "moment";
 import axios from "axios";
 
@@ -91,7 +91,6 @@ export default {
     },
     calculateDiff() {
       let lastDate = this.isRunning ? moment.utc() : moment.utc(this.environment.last_deployment.updated_at);
-      console.log(lastDate);
       let seconds = lastDate.diff(moment.utc(this.environment.last_deployment.created_at), 'seconds');
       if (seconds > 59) {
         return `${parseInt(seconds/60)} minutes ${seconds % 60} seconds`;

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {CodeEditorEvents} from './code_editor_events';
+import {CodeEditorEvents} from '@/lib/code_editor_events';
 import axios from "axios";
 
 export default {

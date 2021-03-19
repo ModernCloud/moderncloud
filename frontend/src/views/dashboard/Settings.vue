@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import SettingsAside from '../../components/Settings/SettingsAside.vue';
+import SettingsAside from '@/components/Settings/SettingsAside.vue';
 
 export default {
   components: {

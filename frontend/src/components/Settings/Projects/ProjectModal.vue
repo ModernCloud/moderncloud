@@ -2,7 +2,7 @@
   <div class="modal" v-if="visible">
     <div class="modal-wrapper">
       <div class="header">
-        <div class="title">{{actionName}} Environment</div>
+        <div class="title">{{actionName}} Project</div>
         <a href="javascript:;" class="close" @click="closeModal">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M10 10l4 4m0 -4l-4 4" /></svg>
         </a>
@@ -10,23 +10,9 @@
       <div class="body">
         <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
         <form @submit.prevent="submit">
-          <div class="mb-2">
+          <div>
             <label class="form-label">Name</label>
             <input type="text" class="form-control" v-model="form.name" />
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Region</label>
-            <select class="form-select" v-model="form.region">
-              <option v-for="region in regions" :key="region.region" :value="region.region">{{region.name}}</option>
-            </select>
-          </div>
-          <div class="mb-2">
-            <label class="form-label">AWS Access Key</label>
-            <input type="text" class="form-control" v-model="form.access_key" />
-          </div>
-          <div class="mb-2">
-            <label class="form-label">AWS Secret Key</label>
-            <input type="text" class="form-control" v-model="form.secret_key" />
           </div>
         </form>
       </div>
@@ -42,7 +28,7 @@
 </template>
 
 <script>
-import regions from '../../../constants/regions';
+import slugify from '@/lib/slugify';
 import axios from "axios";
 
 export default {
@@ -52,23 +38,25 @@ export default {
       hasError: false,
       loading: false,
       current_id: 0,
-      regions: regions,
       form: {
-        name: '',
-        region: '',
-        access_key: '',
-        secret_key: ''
+        name: ''
       }
     }
   },
   computed: {
     actionName() {
-      return this.current_id > 0 ? 'Edit' : 'Add';
+      return this.current_id > 0 ? 'Edit' : 'Create';
+    }
+  },
+  watch: {
+    'form.name'() {
+      this.form.name = slugify(this.form.name);
     }
   },
   methods: {
     async showAdd() {
       this.current_id = 0;
+      this.hasError = false;
       this.visible = !this.visible;
     },
     async showEdit(id) {
@@ -79,20 +67,15 @@ export default {
     },
     closeModal() {
       this.visible = !this.visible;
+      this.hasError = false;
       this.form.name = '';
-      this.form.region = 'us-east-1';
-      this.form.access_key = '';
-      this.form.secret_key = '';
       this.current_id = 0;
     },
     async loadItem(id) {
       this.loading = true;
       try {
-        let response = await axios.get(`/api/environments/${id}`);
-        this.form.name = response.data.environment.name;
-        this.form.region = response.data.environment.region;
-        this.form.access_key = response.data.environment.access_key;
-        this.form.secret_key = response.data.environment.secret_key;
+        let response = await axios.get(`/api/projects/${id}`);
+        this.form.name = response.data.project.name;
       } catch (e) {
         console.log(e);
       } finally {
@@ -109,18 +92,19 @@ export default {
         }
       } catch (e) {
         console.log(e);
+        this.hasError = true;
       } finally {
         this.loading = false;
       }
     },
     async update() {
-      await axios.put(`/api/environments/${this.current_id}`, {...this.form, project_id: this.$route.params.project_id});
-      this.$emit('updated', this.current_id);
+      await axios.put(`/api/projects/${this.current_id}`, {...this.form});
+      await this.$store.commit('loadProjects');
       this.closeModal();
     },
     async create() {
-      let response = await axios.post('/api/environments', {...this.form, project_id: this.$route.params.project_id});
-      this.$emit('added', response.data.id);
+      await axios.post('/api/projects', {...this.form});
+      await this.$store.commit('loadProjects');
       this.closeModal();
     }
   }
