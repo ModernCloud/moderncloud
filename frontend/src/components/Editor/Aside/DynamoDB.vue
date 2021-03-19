@@ -15,7 +15,7 @@
       <div v-if="showContent" class="content">
         <div v-if="loading === false">
           <div class="item">
-            <a href="javascript:;" @click="openNewModal">
+            <a href="javascript:;" class="new-link" @click="openNewModal">
               <IconSquarePlus :width="18" :height="18" />
               New Table
             </a>

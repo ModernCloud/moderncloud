@@ -97,6 +97,12 @@ aside#editor-aside {
             flex-grow: 1;
             display: flex;
             align-items: center;
+
+            &.new-link {
+              svg {
+                margin-right: 5px;
+              }
+            }
           }
 
           .item-name {

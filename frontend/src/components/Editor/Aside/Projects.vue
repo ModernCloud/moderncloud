@@ -17,7 +17,7 @@
       <div v-if="showContent" class="content">
         <div v-if="loading === false">
           <div class="item">
-            <a href="javascript:;" @click="$refs.modal.showAdd">
+            <a href="javascript:;" class="new-link" @click="$refs.modal.showAdd">
               <IconSquarePlus :width="18" :height="18" /> New Project
             </a>
           </div>
