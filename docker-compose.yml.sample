@@ -16,7 +16,9 @@ services:
     command: npm run dev_api
   deployer:
     container_name: moderncloud_deployer
-    image: node:14.16.0-alpine3.10
+    build:
+      context: ./
+      dockerfile: Dockerfile.consumer
     depends_on:
       - mysql
       - rabbitmq
@@ -28,7 +30,9 @@ services:
     command: npm run dev_deployer
   destroyer:
     container_name: moderncloud_destroyer
-    image: node:14.16.0-alpine3.10
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.consumer
     depends_on:
       - mysql
       - rabbitmq
