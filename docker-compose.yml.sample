@@ -1,5 +1,43 @@
 version: '3.8'
 services:
+  api:
+    container_name: moderncloud_api
+    image: node:14.16.0-alpine3.10
+    ports:
+      - 8888:8888
+    depends_on:
+      - mysql
+      - rabbitmq
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend:/data
+    working_dir: /data
+    command: npm run dev_api
+  deployer:
+    container_name: moderncloud_deployer
+    image: node:14.16.0-alpine3.10
+    depends_on:
+      - mysql
+      - rabbitmq
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend:/data
+    working_dir: /data
+    command: npm run dev_deployer
+  destroyer:
+    container_name: moderncloud_destroyer
+    image: node:14.16.0-alpine3.10
+    depends_on:
+      - mysql
+      - rabbitmq
+    env_file:
+      - backend/.env
+    volumes:
+      - ./backend:/data
+    working_dir: /data
+    command: npm run dev_destroyer
   postgres:
     container_name: moderncloud_postgres
     image: postgres:13.2

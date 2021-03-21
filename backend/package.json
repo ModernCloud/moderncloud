@@ -4,7 +4,9 @@
     "serve_api": "node src/api",
     "serve_deployer": "node src/consumer deployer",
     "serve_destroyer": "node src/consumer destroyer",
-    "dev_api": "nodemon --watch ./src/api --watch ./src/common src/api"
+    "dev_api": "nodemon --watch ./src/api --watch ./src/common src/api",
+    "dev_deployer": "nodemon --watch ./src/common --watch ./src/consumer src/consumer deployer",
+    "dev_destroyer": "nodemon --watch ./src/common --watch ./src/consumer src/consumer destroyer"
   },
   "dependencies": {
     "amqplib": "^0.7.0",
