@@ -139,18 +139,68 @@
     grid-template-rows: 50px 1fr;
     overflow: hidden;
 
-    .header {
-      padding: 8px;
-      display: flex;
-      align-items: center;
+    .header-menu {
+      position: relative;
+      background: rgba(163,163,163, .2);
+      background: linear-gradient(0deg, rgba(163,163,163, .1) 0%, rgba(203,203,203, .1) 47%, rgba(228,228,228, .1) 100%);
 
-      h3 {
-        font-size: 14px;
-        font-weight: 500;
+      .button {
+        height: 50px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        cursor: pointer;
+
+        .icon {
+          width: 30px;
+          color: rgba(0, 0, 0, .2);
+        }
+
+        .title {
+          flex-grow: 1;
+
+          h3 {
+            font-size: 20px;
+            font-weight: 400;
+            text-align: center;
+            color: #343a40;
+            margin: 0;
+            padding: 0;
+          }
+        }
       }
 
-      .spinner-border{
-        margin-left: auto;
+      &:hover {
+        background: rgba(163,163,163, .3);
+        background: linear-gradient(0deg, rgba(163,163,163, .2) 0%, rgba(203,203,203, .2) 47%, rgba(228,228,228, .2) 100%);
+
+        .button {
+          .icon {
+            color: rgba(0, 0, 0, .4);
+          }
+        }
+      }
+
+      .options {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 50px;
+        border: 1px solid rgba(0, 0, 0, .06);
+        background: #faf9f9;
+        z-index: 10000;
+
+        a {
+          display: block;
+          padding: 10px;
+          background: rgba(0, 0, 0, .06);
+          border-bottom: 1px solid rgba(0, 0, 0, .06);
+
+          &:hover {
+            color: #1c1f23;
+            background: rgba(0, 0, 0, .06);
+          }
+        }
       }
     }
 
@@ -184,6 +234,37 @@
       td {
         font-size: 13px;
         font-weight: 400;
+      }
+    }
+
+    .overview {
+      .menu {
+        margin: 10px 0;
+        display: flex;
+
+        .time {
+          margin-left: auto;
+        }
+
+        a {
+          display: inline-block;
+          margin-right: 4px;
+        }
+
+        .time, .environments {
+          a:last-child {
+            margin-right: 0px;
+          }
+        }
+      }
+
+      section {
+        margin-bottom: 20px;
+
+        h3 {
+          font-size: 14px;
+          font-weight: 600;
+        }
       }
     }
   }

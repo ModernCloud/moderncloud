@@ -1,28 +1,48 @@
 <template>
   <div class="info-panel">
-    <LogsModal ref="logs" />
-    <div class="header">
-      <h3>Overview</h3>
-      <div class="spinner-border" role="status" v-if="loading">
-        <span class="visually-hidden">Loading...</span>
+    <div class="header-menu" @mouseover="menu_visible = true" @mouseleave="menu_visible = false">
+      <div class="button">
+        <div class="icon">
+          <IconChevronVertical :width="30" :height="30" :stroke-width="1.3" />
+        </div>
+        <div class="title">
+          <h3 v-if="isOverview"><IconOverview :stroke-width="1.5" /> Overview</h3>
+          <h3 v-if="isDeployment"><IconDeployment :stroke-width="1.5" /> Deployment</h3>
+          <h3 v-if="isLogs"><IconLogs :stroke-width="1.5" /> Logs</h3>
+        </div>
+      </div>
+      <div class="options" v-if="menu_visible">
+        <a href="javascript:;" @click="showMode('overview')">Overview</a>
+        <a href="javascript:;" @click="showMode('deployment')">Deployment</a>
+        <a href="javascript:;" @click="showMode('logs')">Logs</a>
       </div>
     </div>
-    <perfect-scrollbar class="body" style="position: unset;" v-if="loading === false" :options="{suppressScrollX: true}">
-      <p>Please <router-link :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">click here</router-link> to manage environments.</p>
-      <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show"></EnvironmentRow>
+    <perfect-scrollbar class="body" style="position: unset;" :options="{suppressScrollX: true}">
+      <Overview v-if="isOverview" :file="file" />
+      <Deployment v-if="isDeployment" :file="file" />
+      <Logs v-if="isLogs" :file="file" />
     </perfect-scrollbar>
   </div>
 </template>
 
 <script>
-import LogsModal from '@/components/Environments/LogsModal.vue';
-import axios from 'axios';
-import EnvironmentRow from "./EnvironmentRow";
+import Overview from "@/components/Editor/CodeEditor/InfoPanel/Overview";
+import Deployment from "@/components/Editor/CodeEditor/InfoPanel/Deployment";
+import Logs from "@/components/Editor/CodeEditor/InfoPanel/Logs";
+import IconChevronVertical from "@/components/Icons/IconChevronVertical";
+import IconDeployment from "@/components/Icons/IconDeployment";
+import IconLogs from "@/components/Icons/IconLogs";
+import IconOverview from "@/components/Icons/IconOverview";
 
 export default {
   components: {
-    EnvironmentRow,
-    LogsModal
+    IconOverview,
+    IconLogs,
+    IconDeployment,
+    IconChevronVertical,
+    Deployment,
+    Overview,
+    Logs
   },
   props: {
     file: {
@@ -31,44 +51,30 @@ export default {
   },
   data() {
     return {
-      loading: false,
-      environments: []
+      menu_visible: false,
+      mode: 'overview'
     }
   },
   watch: {
-    async file() {
-      await this.loadEnvironments();
+    file() {
+      this.mode = 'overview';
     }
   },
-  async mounted() {
-    await this.loadEnvironments();
+  computed: {
+    isOverview() {
+      return this.mode === 'overview';
+    },
+    isDeployment() {
+      return this.mode === 'deployment';
+    },
+    isLogs() {
+      return this.mode === 'logs';
+    }
   },
   methods: {
-    async loadEnvironments() {
-      this.loading = true;
-      try {
-        let response = await axios.get('/api/environments?with_last_deployment=true&with_last_success_deployment=true',{
-          params: {
-            project_id: this.$store.state.project.selected.id
-          }
-        });
-        this.environments = response.data.environments;
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    methodLabelColor(method) {
-      if (method === 'POST') {
-        return '#f77f00';
-      } else if (method === 'DELETE') {
-        return '#d62828';
-      } else if (method === 'PUT') {
-        return '#0077b6';
-      } else {
-        return '#55a630';
-      }
+    showMode(mode) {
+      this.menu_visible = false;
+      this.mode = mode;
     }
   }
 }

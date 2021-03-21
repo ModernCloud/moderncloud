@@ -6,6 +6,9 @@ import PerfectScrollbar from 'vue2-perfect-scrollbar';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
 Vue.use(PerfectScrollbar);
 
+import TrendChart from "vue-trend-chart";
+Vue.use(TrendChart);
+
 
 import App from './App.vue'
 import router from './router'
