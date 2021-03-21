@@ -80,6 +80,7 @@ class SignupAction extends ApiAction
         await Endpoint.query().insert({
             user_id: this.user.id,
             project_id: this.project.id,
+            user_name: 'Hello World',
             name: 'endpoint_function_' + Date.now(),
             main_file: 'index.js',
             handler: 'index.handler',
@@ -87,7 +88,7 @@ class SignupAction extends ApiAction
             code: `exports.handler = async (event, context) => {
   return {
     statusCode: 200,
-    body: JSON.stringify({time: Date.now(), message: "my endpoint"}),
+    body: JSON.stringify({time: Date.now(), message: "Hello World"}),
   }
 }`,
             method: 'GET',
