@@ -3,4 +3,5 @@ MAINTAINER ModernCloud <hi@moderncloud.io>
 RUN wget https://releases.hashicorp.com/terraform/0.14.8/terraform_0.14.8_linux_amd64.zip && \
     unzip terraform_0.14.8_linux_amd64.zip && \
     rm -f terraform_0.14.8_linux_amd64.zip && \
-    mv terraform /usr/bin/terraform
+    mv terraform /usr/bin/terraform && \
+    npm install
