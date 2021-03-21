@@ -6,7 +6,7 @@
     <div class="code-state" v-if="hasSourceCode">
       <div class="code-area">
         <div class="tools">
-          <a href="javascript:;" @click="scrollLeft()" class="button-scroll-left" :class="{disabled: disableScrollButtons}">
+          <a href="javascript:;" @click="scrollLeft()" class="button-scroll-left" :class="{disabled: disableLeftScrollButton}">
             <IconChevronLeft :stroke-width="1.7" />
           </a>
           <div class="files">
@@ -22,10 +22,14 @@
                 <svg v-if="item.type === 'function'" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
                 {{item.name}}
               </div>
-              <div class="action" @click="removeFile(item)"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></div>
+              <div class="action" @click="removeFile(item)">
+                <div class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </div>
+              </div>
             </div>
           </div>
-          <a href="javascript:;" @click="scrollRight()" class="button-scroll-right" :class="{disabled: disableScrollButtons}">
+          <a href="javascript:;" @click="scrollRight()" class="button-scroll-right" :class="{disabled: disableRightScrollButton}">
             <IconChevronRight :stroke-width="1.7" />
           </a>
         </div>
@@ -64,7 +68,8 @@ export default {
     return {
       collapsed: false,
       files: [],
-      disableScrollButtons: true,
+      disableLeftScrollButton: true,
+      disableRightScrollButton: true,
       file: {
         id: null,
         type: null,
@@ -145,24 +150,39 @@ export default {
     scrollLeft() {
       let content = document.querySelector(".files");
       content.scrollLeft -= 150;
+      this.updateScrollButtons();
     },
     scrollRight() {
       let content = document.querySelector(".files");
       content.scrollLeft += 150;
+      this.updateScrollButtons();
     },
     updateScroll(file) {
+      this.updateScrollButtons();
       if (this.files.length === 0) {
         return;
       }
       setTimeout(() => {
         let newIndex = findIndex(this.files, {id: file.id, type: file.type})
         document.querySelector(".files").scrollLeft = newIndex * 150;
-        if (document.querySelector('.files').scrollWidth > document.querySelector('.files').clientWidth) {
-          this.disableScrollButtons = false;
-        } else {
-          this.disableScrollButtons = true;
-        }
+        this.updateScrollButtons();
       }, 200);
+    },
+    updateScrollButtons() {
+      this.disableLeftScrollButton = true;
+      this.disableRightScrollButton = true;
+      let scrollWidth = document.querySelector('.files').scrollWidth;
+      let scrollLeft = document.querySelector('.files').scrollLeft;
+      let clientWidth = document.querySelector('.files').clientWidth;
+      console.log((scrollWidth - clientWidth), scrollLeft);
+      if (scrollWidth > clientWidth) {
+        if (scrollLeft > 0) {
+          this.disableLeftScrollButton = false;
+        }
+        if ((scrollWidth - clientWidth) !== scrollLeft) {
+          this.disableRightScrollButton = false;
+        }
+      }
     }
   }
 }
