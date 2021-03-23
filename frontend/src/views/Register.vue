@@ -75,7 +75,7 @@ export default {
   height: 100%;
   display: grid;
   background: rgb(239, 239, 239);
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 600px;
   grid-template-rows: auto;
 
   .segment {

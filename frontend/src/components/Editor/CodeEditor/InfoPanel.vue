@@ -11,11 +11,13 @@
           <h3 v-if="isLogs"><IconLogs :stroke-width="1.5" /> Logs</h3>
         </div>
       </div>
-      <div class="options" v-if="menu_visible">
-        <a href="javascript:;" @click="showMode('overview')">Overview</a>
-        <a href="javascript:;" @click="showMode('deployment')">Deployment</a>
-        <a href="javascript:;" @click="showMode('logs')">Logs</a>
-      </div>
+      <transition name="slide">
+        <div class="options" v-if="menu_visible">
+          <a href="javascript:;" @click="showMode('overview')">Overview</a>
+          <a href="javascript:;" @click="showMode('deployment')">Deployment</a>
+          <a href="javascript:;" @click="showMode('logs')">Logs</a>
+        </div>
+      </transition>
     </div>
     <perfect-scrollbar class="body" style="position: unset;" :options="{suppressScrollX: true}">
       <Overview v-if="isOverview" :file="file" />
