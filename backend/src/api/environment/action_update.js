@@ -18,8 +18,9 @@ class UpdateAction extends ApiAction
             project_id: Joi.number().required(),
             name: Joi.string().alphanum().optional(),
             region: Joi.string().optional(),
-            access_key: Joi.string().optional(),
-            secret_key: Joi.string().optional()
+            access_key: Joi.string().allow(null, '').optional().default(null),
+            secret_key: Joi.string().allow(null, '').optional().default(null),
+            domain_name: Joi.string().allow(null, '').domain().optional().default(null)
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -37,17 +38,20 @@ class UpdateAction extends ApiAction
 
     async updateEnvironment() {
         let updateParams = {};
-        if (this.validRequest.name) {
+        if (this.validRequest.hasOwnProperty('name')) {
             updateParams.name = this.validRequest.name;
         }
-        if (this.validRequest.region) {
+        if (this.validRequest.hasOwnProperty('region')) {
             updateParams.region = this.validRequest.region;
         }
-        if (this.validRequest.access_key) {
+        if (this.validRequest.hasOwnProperty('access_key')) {
             updateParams.access_key = this.validRequest.access_key;
         }
-        if (this.validRequest.secret_key) {
+        if (this.validRequest.hasOwnProperty('secret_key')) {
             updateParams.secret_key = this.validRequest.secret_key;
+        }
+        if (this.validRequest.hasOwnProperty('domain_name')) {
+            updateParams.domain_name = this.validRequest.domain_name;
         }
         if (Object.keys(updateParams).length > 0) {
             await Environment.query().where('id', this.environment.id).update(updateParams);

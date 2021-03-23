@@ -14,7 +14,7 @@
         <table class="table table-hover" style="margin-top: 10px;">
           <thead>
             <tr>
-              <th style="width: 80px;"></th>
+              <th style="width: 30px;"></th>
               <th>Name</th>
               <th>Value</th>
             </tr>
@@ -22,7 +22,7 @@
           <tbody>
             <tr v-for="(variable, index) in variables" :key="variable.id">
               <td valign="middle">
-                <a href="javascript:;" @click="variables.splice(index, 1)">Remove</a>
+                <a href="javascript:;" @click="variables.splice(index, 1)"><IconDelete :width="16" :height="16" /></a>
               </td>
               <td>
                 <input type="text" class="form-control" v-model="variable.name" tabindex="1" :disabled="loading" />
@@ -51,8 +51,10 @@
 
 <script>
 import axios from "axios";
+import IconDelete from "@/components/Icons/IconDelete";
 
 export default {
+  components: {IconDelete},
   data() {
     return {
       visible: false,

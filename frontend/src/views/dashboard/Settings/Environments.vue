@@ -3,12 +3,12 @@
     <EnvironmentModal ref="modal" @updated="loadEnvironments" @added="loadEnvironments" />
     <EnvironmentVariablesModal ref="variables" />
     <notifications position="top center" />
-    <Confirm ref="confirmModal" message="Selected environment will be destroyed. Do you want to continue?" @yes="destroy" />
+    <Confirm ref="confirmModal" message="All resources will be destroyed. Do you want to continue?" @yes="destroy" />
     <div class="page">
       <div class="content">
         <div class="header">
           <div>
-            <div class="title">{{project.name}}: Environments</div>
+            <div class="title">{{project.name || null}}: Environments</div>
             <div class="subtitle">Manage your environments</div>
           </div>
           <div class="actions">
@@ -22,19 +22,21 @@
         <table v-if="initialized" class="table table-hover" style="margin-top: 10px;">
           <thead>
             <tr>
-              <th style="width: 180px;"></th>
-              <th>Name</th>
+              <th style="width: 70px;"></th>
+              <th style="width: 150px;">Name</th>
+              <th>Domain Name</th>
               <th style="width: 150px; text-align: right">Region</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="environment in environments" :key="environment.id">
               <td>
-                <a href="javascript:;" @click="$refs.modal.showEdit(environment.id)">Edit</a> -
-                <a href="javascript:;" @click="$refs.variables.show(environment.id)">Variables</a> -
-                <a href="javascript:;" @click="$refs.confirmModal.show({environment_id: environment.id})">Destroy</a>
+                <a href="javascript:;" @click="$refs.modal.showEdit(environment.id)" title="Edit"><IconEdit :width="16" :height="16" /></a>
+                <a href="javascript:;" @click="$refs.variables.show(environment.id)" title="Variables"><IconVariables :width="16" :height="16" :stroke-width="2" /></a>
+                <a href="javascript:;" @click="$refs.confirmModal.show({environment_id: environment.id})" title="Destroy"><IconDestroyEnvironment :width="16" :height="16" /></a>
               </td>
               <td>{{environment.name}}</td>
+              <td>{{environment.domain_name}}</td>
               <td style="text-align: right">{{regions[environment.region].name}}</td>
             </tr>
           </tbody>
@@ -50,9 +52,15 @@ import EnvironmentModal from '@/components/Settings/Projects/Environments/Enviro
 import EnvironmentVariablesModal from '@/components/Settings/Projects/Environments/EnvironmentVariablesModal.vue';
 import Confirm from "@/components/Confirm.vue";
 import axios from "axios";
+import IconEdit from "@/components/Icons/IconEdit";
+import IconDestroyEnvironment from "@/components/Icons/IconDestroyEnvironment";
+import IconVariables from "@/components/Icons/IconVariables";
 
 export default {
   components: {
+    IconVariables,
+    IconDestroyEnvironment,
+    IconEdit,
     EnvironmentModal,
     EnvironmentVariablesModal,
     Confirm
