@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `environment` (
     region VARCHAR(50) DEFAULT NULL,
     access_key VARCHAR(255) DEFAULT NULL,
     secret_key VARCHAR(255) DEFAULT NULL,
+    domain_name VARCHAR(255) DEFAULT NULL,
     UNIQUE name_uniq (project_id, name),
     INDEX project_idx (project_id),
     PRIMARY KEY(id)
