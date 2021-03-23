@@ -32,7 +32,7 @@ class UpdateAction extends ApiAction
 
     async updateProject() {
         let updateParams = {};
-        if (this.validRequest.name) {
+        if (this.validRequest.hasOwnProperty('name')) {
             updateParams.name = this.validRequest.name;
         }
         if (Object.keys(updateParams).length > 0) {

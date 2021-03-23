@@ -38,19 +38,19 @@ class UpdateAction extends ApiAction
 
     async updateEnvironment() {
         let updateParams = {};
-        if (this.validRequest.name) {
+        if (this.validRequest.hasOwnProperty('name')) {
             updateParams.name = this.validRequest.name;
         }
-        if (this.validRequest.region) {
+        if (this.validRequest.hasOwnProperty('region')) {
             updateParams.region = this.validRequest.region;
         }
-        if (this.validRequest.access_key) {
+        if (this.validRequest.hasOwnProperty('access_key')) {
             updateParams.access_key = this.validRequest.access_key;
         }
-        if (this.validRequest.secret_key) {
+        if (this.validRequest.hasOwnProperty('secret_key')) {
             updateParams.secret_key = this.validRequest.secret_key;
         }
-        if (this.validRequest.domain_name) {
+        if (this.validRequest.hasOwnProperty('domain_name')) {
             updateParams.domain_name = this.validRequest.domain_name;
         }
         if (Object.keys(updateParams).length > 0) {

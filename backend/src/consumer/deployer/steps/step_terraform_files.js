@@ -70,6 +70,17 @@ async function createFunctionFiles(job) {
     }
 }
 
+async function createCertificate(job) {
+    render(
+        path.join(job.getTerraformTemplates(), 'certificate.tf.twig'),
+        path.join(job.getTerraformRoot(), `certificate_${job.project.name}.tf`),
+        {
+            project: job.project,
+            environment: job.environment
+        }
+    );
+}
+
 async function createApiGatewayFiles(job) {
     let endpoints = await Endpoint.query().where('project_id', job.project.id);
     render(
@@ -144,6 +155,7 @@ module.exports = {
         await removeFiles(job);
         await updateTerraformFiles(job);
         await createFunctionFiles(job);
+        await createCertificate(job);
         await createApiGatewayFiles(job);
         await createEndpointFiles(job);
         await createPackages(job);
