@@ -9,12 +9,12 @@
     <td>
       {{environment.domain_name}}
       <div style="font-size: 10px;" v-if="domainStatus">(<a href="javascript:;" @click="show_details = !show_details"><span v-if="show_details === false">Show Details</span><span v-if="show_details">Hide Details</span></a>)</div>
-      <div v-if="show_details" style="margin-top: 10px; font-size: 11px;">
-        <p>Add the following CNAME record to the DNS configuration for your domain. The procedure for adding CNAME records depends on your DNS service Provider.</p>
+      <div v-if="show_details" style="margin-top: 10px; font-size: 11px; width: 250px; word-wrap: break-word">
+        <p>Add the following CNAME record to the DNS configuration for your domain. The procedure for adding CNAME records depends on your DNS service Provider. <a href="https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html" target="_blank">DNS Validation</a></p>
         <div v-for="option of domainValidationOptions" :key="option.domain_name">
           <div class="mb-3">
             <strong><a href="javascript:;" @click="copy(option.resource_record_name.slice(0, option.resource_record_name.indexOf('.')))"><IconClipboard :width="14" :height="14" /></a> Record Name</strong>
-            <div>{{option.resource_record_name.slice(0, option.resource_record_name.indexOf('.'))}}</div>
+            <div>{{option.resource_record_name}}</div>
           </div>
           <div class="mb-3">
             <strong><a href="javascript:;" @click="copy(option.resource_record_type)"><IconClipboard :width="14" :height="14" /></a> Type</strong>

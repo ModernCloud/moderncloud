@@ -24,15 +24,15 @@
             <tr>
               <th style="width: 70px;"></th>
               <th style="width: 150px;">Name</th>
-              <th>Domain Name</th>
+              <th>Custom Domain</th>
               <th style="width: 150px; text-align: right">Region</th>
             </tr>
           </thead>
           <tbody>
             <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment"
-                            @showEdit="$refs.modal.show(environment.id)"
+                            @showEdit="$refs.modal.showEdit(environment.id)"
                             @showVariables="$refs.variables.show(environment.id)"
-                            @confirm="$refs.confirm.show({environment_id: environment.id})"
+                            @confirm="$refs.confirmModal.show({environment_id: environment.id})"
             />
           </tbody>
         </table>
