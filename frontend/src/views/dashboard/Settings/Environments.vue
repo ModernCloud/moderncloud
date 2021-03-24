@@ -1,9 +1,11 @@
 <template>
   <div role="main">
+    <DomainModal ref="domainModal" @added="loadEnvironments" />
     <EnvironmentModal ref="modal" @updated="loadEnvironments" @added="loadEnvironments" />
     <EnvironmentVariablesModal ref="variables" />
     <notifications position="top center" />
     <Confirm ref="confirmModal" message="All resources will be destroyed. Do you want to continue?" @yes="destroy" />
+    <Confirm ref="confirmDeleteDomainModal" message="This domain will be delete. Do you want to continue?" @yes="deleteDomain" />
     <div class="page">
       <div class="content">
         <div class="header">
@@ -30,9 +32,11 @@
           </thead>
           <tbody>
             <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment"
-                            @showEdit="$refs.modal.showEdit(environment.id)"
-                            @showVariables="$refs.variables.show(environment.id)"
-                            @confirm="$refs.confirmModal.show({environment_id: environment.id})"
+                            @addDomain="$refs.domainModal.showAdd"
+                            @showEdit="$refs.modal.showEdit"
+                            @showVariables="$refs.variables.show"
+                            @confirm="$refs.confirmModal.show"
+                            @confirmDeleteDomain="$refs.confirmDeleteDomainModal.show"
             />
           </tbody>
         </table>
@@ -42,6 +46,7 @@
 </template>
 
 <script>
+import DomainModal from '@/components/Settings/Projects/Environments/DomainModal.vue';
 import EnvironmentRow from '@/components/Settings/Projects/Environments/EnvironmentRow.vue';
 import EnvironmentModal from '@/components/Settings/Projects/Environments/EnvironmentModal.vue';
 import EnvironmentVariablesModal from '@/components/Settings/Projects/Environments/EnvironmentVariablesModal.vue';
@@ -51,6 +56,7 @@ import Confirm from "@/components/Confirm";
 export default {
   components: {
     Confirm,
+    DomainModal,
     EnvironmentRow,
     EnvironmentModal,
     EnvironmentVariablesModal
@@ -103,6 +109,21 @@ export default {
           title: 'Success',
           type: 'success',
           text: 'Related resources will be destroyed.'
+        });
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
+      }
+    },
+    async deleteDomain(params) {
+      this.loading = true;
+      try {
+        await axios.post('/api/environments/' + params.environment_id + '/delete-domain');
+        this.$notify({
+          title: 'Success',
+          type: 'success',
+          text: 'Domain deleted!'
         });
       } catch (e) {
         console.log(e);

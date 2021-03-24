@@ -20,4 +20,10 @@ module.exports = app => {
     app.post('/environments/:id/destroy', async (req, res) => {
         await require('./action_destroy').execute(req, res);
     });
+    app.post('/environments/:id/add-domain', async (req, res) => {
+        await require('./action_domain_add').execute(req, res);
+    });
+    app.post('/environments/:id/delete-domain', async (req, res) => {
+        await require('./action_domain_delete').execute(req, res);
+    });
 };

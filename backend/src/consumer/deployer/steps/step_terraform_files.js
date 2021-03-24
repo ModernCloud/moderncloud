@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const get = require('lodash/get');
 const rimraf = require('rimraf');
 const { Function, Endpoint, EnvironmentVariable, Dynamodb } = require('../../../common/db');
 const render = require('../../../common/template/render');
@@ -76,7 +77,8 @@ async function createCertificate(job) {
         path.join(job.getTerraformRoot(), `certificate_${job.project.name}.tf`),
         {
             project: job.project,
-            environment: job.environment
+            environment: job.environment,
+            hasValidCertificate: get(job.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'ISSUED'
         }
     );
 }
@@ -89,7 +91,8 @@ async function createApiGatewayFiles(job) {
         {
             project: job.project,
             endpoints: endpoints,
-            environment: job.environment
+            environment: job.environment,
+            hasValidCertificate: get(job.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'ISSUED'
         }
     );
 }

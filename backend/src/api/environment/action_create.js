@@ -17,8 +17,7 @@ class CreateAction extends ApiAction
             name: Joi.string().alphanum().required(),
             region: Joi.string().required(),
             access_key: Joi.string().allow(null, '').optional().default(null),
-            secret_key: Joi.string().allow(null, '').optional().default(null),
-            domain_name: Joi.string().allow(null, '').domain().optional().default(null)
+            secret_key: Joi.string().allow(null, '').optional().default(null)
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -30,8 +29,7 @@ class CreateAction extends ApiAction
             name: this.validRequest.name,
             region: this.validRequest.region,
             access_key: this.validRequest.access_key,
-            secret_key: this.validRequest.secret_key,
-            domain_name: this.validRequest.domain_name
+            secret_key: this.validRequest.secret_key
         });
     }
 }

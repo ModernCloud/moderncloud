@@ -28,10 +28,6 @@
             <label class="form-label">AWS Secret Key</label>
             <input type="text" class="form-control" v-model="form.secret_key" />
           </div>
-          <div class="mb-2">
-            <label class="form-label">Domain Name</label>
-            <input type="text" class="form-control" v-model="form.domain_name" />
-          </div>
         </form>
       </div>
       <div class="actions">
@@ -61,8 +57,7 @@ export default {
         name: '',
         region: '',
         access_key: '',
-        secret_key: '',
-        domain_name: ''
+        secret_key: ''
       }
     }
   },
@@ -88,7 +83,6 @@ export default {
       this.form.region = 'us-east-1';
       this.form.access_key = '';
       this.form.secret_key = '';
-      this.form.domain_name = '';
       this.current_id = 0;
     },
     async loadItem(id) {
@@ -99,7 +93,6 @@ export default {
         this.form.region = response.data.environment.region;
         this.form.access_key = response.data.environment.access_key;
         this.form.secret_key = response.data.environment.secret_key;
-        this.form.domain_name = response.data.environment.domain_name;
       } catch (e) {
         console.log(e);
       } finally {

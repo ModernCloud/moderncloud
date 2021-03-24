@@ -3,16 +3,13 @@ const ApiError = require('../error');
 const { Environment } = require('../../common/db');
 const Certificate = require('../../common/aws/certificate');
 
-class GetAction extends ApiAction
+class DeleteDomainAction extends ApiAction
 {
     async tryExecute() {
         await this.checkUser();
         await this.loadEnvironment();
-        if (this.req.query.hasOwnProperty('refresh_certificate_validation_options')
-            && this.req.query.refresh_certificate_validation_options) {
-            await (new Certificate(this.environment)).updateDetails();
-        }
-        return this.response.success({environment: this.environment}, 200);
+        await this.deleteCertificate();
+        return this.response.success({}, 200);
     }
 
     async loadEnvironment() {
@@ -24,6 +21,16 @@ class GetAction extends ApiAction
             throw new ApiError('Environment not found!', 10504, 404);
         }
     }
+
+    async deleteCertificate() {
+        if (this.environment.domain_name == null || this.environment.certificate_arn == null) {
+            throw new ApiError('Domain not found!', 10513, 404);
+        }
+        if (this.environment.access_key == null || this.environment.secret_key == null) {
+            throw new ApiError('Please set AWS credentials!', 10512, 400);
+        }
+        await (new Certificate(this.environment)).deleteCertificate();
+    }
 }
 
-module.exports = GetAction;
+module.exports = DeleteDomainAction;
