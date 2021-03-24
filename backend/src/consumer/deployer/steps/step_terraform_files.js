@@ -78,7 +78,7 @@ async function createCertificate(job) {
         {
             project: job.project,
             environment: job.environment,
-            hasValidCertificate: get(job.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'ISSUED'
+            hasValidCertificate: get(job.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'SUCCESS'
         }
     );
 }
@@ -92,7 +92,7 @@ async function createApiGatewayFiles(job) {
             project: job.project,
             endpoints: endpoints,
             environment: job.environment,
-            hasValidCertificate: get(job.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'ISSUED'
+            hasValidCertificate: get(job.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'SUCCESS'
         }
     );
 }
