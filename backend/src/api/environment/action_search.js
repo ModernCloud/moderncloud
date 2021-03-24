@@ -63,6 +63,7 @@ class SearchAction extends ApiAction
                 deployment.logs = await DeploymentLog.query()
                     .where('deployment_id', deployment.id)
                     .orderBy('created_at');
+                deployment.output = JSON.parse(deployment.output) ?? {};
             } else {
                 deployment = null;
             }

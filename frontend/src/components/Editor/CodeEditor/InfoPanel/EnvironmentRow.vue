@@ -66,6 +66,8 @@
 import Confirm from "@/components/Confirm";
 import moment from "moment";
 import axios from "axios";
+import get from 'lodash/get';
+import has from 'lodash/has';
 
 export default {
   components: {
@@ -150,20 +152,10 @@ export default {
       return moment(date).format('DD MMM YYYY HH:mm:ss');
     },
     apiUrl() {
-      let json = JSON.parse(this.environment.last_success_deployment.output);
-      return json.api_url.value;
+      return get(this.environment, 'last_success_deployment.output.api_url.value', null);
     },
     hasSuccessDeployment() {
-      if (this.environment.last_success_deployment === null || this.environment.last_success_deployment.output === null) {
-        return false;
-      }
-      let json = JSON.parse(this.environment.last_success_deployment.output);
-      for (const key of Object.keys(json)) {
-        if (key.indexOf(this.file.function_name) > -1) {
-          return true;
-        }
-      }
-      return false;
+      return has(this.environment, ['last_success_deployment', 'output', this.file.function_name + '_invoke_arn']);
     },
   }
 }

@@ -8,7 +8,7 @@
       <div class="content">
         <div class="header">
           <div>
-            <div class="title">{{project.name || null}}: Environments</div>
+            <div class="title">{{project && project.name ? project.name : null}}: Environments</div>
             <div class="subtitle">Manage your environments</div>
           </div>
           <div class="actions">
@@ -29,16 +29,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="environment in environments" :key="environment.id">
-              <td>
-                <a href="javascript:;" @click="$refs.modal.showEdit(environment.id)" title="Edit"><IconEdit :width="16" :height="16" /></a>
-                <a href="javascript:;" @click="$refs.variables.show(environment.id)" title="Variables"><IconVariables :width="16" :height="16" :stroke-width="2" /></a>
-                <a href="javascript:;" @click="$refs.confirmModal.show({environment_id: environment.id})" title="Destroy"><IconDestroyEnvironment :width="16" :height="16" /></a>
-              </td>
-              <td>{{environment.name}}</td>
-              <td>{{environment.domain_name}}</td>
-              <td style="text-align: right">{{regions[environment.region].name}}</td>
-            </tr>
+            <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment"
+                            @showEdit="$refs.modal.show(environment.id)"
+                            @showVariables="$refs.variables.show(environment.id)"
+                            @confirm="$refs.confirm.show({environment_id: environment.id})"
+            />
           </tbody>
         </table>
       </div>
@@ -47,31 +42,25 @@
 </template>
 
 <script>
-import regions from '@/constants/regions';
+import EnvironmentRow from '@/components/Settings/Projects/Environments/EnvironmentRow.vue';
 import EnvironmentModal from '@/components/Settings/Projects/Environments/EnvironmentModal.vue';
 import EnvironmentVariablesModal from '@/components/Settings/Projects/Environments/EnvironmentVariablesModal.vue';
-import Confirm from "@/components/Confirm.vue";
 import axios from "axios";
-import IconEdit from "@/components/Icons/IconEdit";
-import IconDestroyEnvironment from "@/components/Icons/IconDestroyEnvironment";
-import IconVariables from "@/components/Icons/IconVariables";
+import Confirm from "@/components/Confirm";
 
 export default {
   components: {
-    IconVariables,
-    IconDestroyEnvironment,
-    IconEdit,
+    Confirm,
+    EnvironmentRow,
     EnvironmentModal,
-    EnvironmentVariablesModal,
-    Confirm
+    EnvironmentVariablesModal
   },
   data() {
     return {
       initialized: false,
       loading: false,
       project: null,
-      environments: [],
-      regions: regions
+      environments: []
     }
   },
   async mounted() {
@@ -94,7 +83,7 @@ export default {
     async loadEnvironments() {
       this.loading = true;
       try {
-        let response = await axios.get('/api/environments?with_last_deployment=true',{
+        let response = await axios.get('/api/environments?with_last_deployment=true&with_last_success_deployment=true',{
           params: {
             project_id: this.$route.params.project_id
           }
