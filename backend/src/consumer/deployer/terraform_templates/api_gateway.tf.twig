@@ -29,6 +29,7 @@ resource "aws_api_gateway_rest_api" "{{project.name}}_{{environment.name}}_api_g
 
 {% if environment.domain_name|trim|length > 0 %}
   resource "aws_api_gateway_domain_name" "{{ project.name }}_{{ environment.name }}_domain" {
+    count = aws_acm_certificate.{{ project.name }}_{{ environment.name }}_certificate.status == "ISSUED" ? 1 : 0
     domain_name = "{{ environment.domain_name }}"
     certificate_arn = aws_acm_certificate.{{ project.name }}_{{ environment.name }}_certificate.arn
   }
