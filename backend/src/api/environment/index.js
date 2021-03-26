@@ -26,4 +26,13 @@ module.exports = app => {
     app.post('/environments/:id/delete-domain', async (req, res) => {
         await require('./action_domain_delete').execute(req, res);
     });
+    app.get('/environments/:id/metrics/:function_name', async (req, res) => {
+        await require('./action_get_function_metrics').execute(req, res);
+    });
+    app.get('/environments/:id/log-streams/:function_name', async (req, res) => {
+        await require('./action_get_function_log_streams').execute(req, res);
+    });
+    app.get('/environments/:id/stream-events/:function_name/:stream_name', async (req, res) => {
+        await require('./action_get_function_stream_events').execute(req, res);
+    });
 };

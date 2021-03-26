@@ -25,6 +25,11 @@ resource "aws_lambda_function" "{{ function.name }}_function" {
   {% endif %}
 }
 
+resource "aws_cloudwatch_log_group" "{{ function.name }}_log_group" {
+  name              = "/aws/lambda/{{ function.name }}"
+  retention_in_days = 7
+}
+
 output "{{function.name}}_invoke_arn" {
   value = aws_lambda_function.{{function.name}}_function.invoke_arn
 }

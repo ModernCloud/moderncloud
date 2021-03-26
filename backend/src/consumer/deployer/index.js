@@ -44,7 +44,11 @@ class Deployer {
         if (!(this.environment instanceof Environment)) {
             throw new Error(`Environment not found!`);
         }
-        this.environment.certificate_validation_options = JSON.parse(this.environment.certificate_validation_options || {});
+        if (this.environment.certificate_validation_options != null) {
+            this.environment.certificate_validation_options = JSON.parse(this.environment.certificate_validation_options);
+        } else {
+            this.environment.certificate_validation_options = {};
+        }
     }
 
     async updateTaskStatus(status) {

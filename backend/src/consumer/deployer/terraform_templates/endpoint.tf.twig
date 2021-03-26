@@ -32,6 +32,11 @@ resource "aws_lambda_permission" "{{ endpoint.name }}_permission" {
   source_arn = "${aws_api_gateway_deployment.{{project.name}}_{{environment.name}}_api_deployment.execution_arn}/*/*"
 }
 
+resource "aws_cloudwatch_log_group" "{{ endpoint.name }}_log_group" {
+  name              = "/aws/lambda/{{ endpoint.name }}"
+  retention_in_days = 7
+}
+
 output "{{endpoint.name}}_invoke_arn" {
   value = aws_lambda_function.{{endpoint.name}}_function.invoke_arn
 }
