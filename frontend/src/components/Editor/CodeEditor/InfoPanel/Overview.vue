@@ -16,6 +16,7 @@
             <td>{{ file.name }}</td>
           </tr>
         </table>
+        <p v-if="file.description">{{file.description}}</p>
       </div>
     </section>
     <div class="menu">

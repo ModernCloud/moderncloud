@@ -19,7 +19,7 @@
         </div>
       </transition>
     </div>
-    <perfect-scrollbar class="body" style="position: unset;" :options="{suppressScrollX: true}">
+    <perfect-scrollbar class="body" :options="{suppressScrollX: true}">
       <Overview v-if="isOverview" :file="file" />
       <Deployment v-if="isDeployment" :file="file" />
       <Logs v-if="isLogs" :file="file" />

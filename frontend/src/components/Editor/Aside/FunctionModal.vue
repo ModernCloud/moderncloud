@@ -10,9 +10,13 @@
       <div class="body">
         <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
         <form @submit.prevent="submit">
-          <div>
+          <div class="mb-2">
             <label class="form-label">Name</label>
             <input type="text" class="form-control" v-model="form.name" />
+          </div>
+          <div>
+            <label class="form-label">Description</label>
+            <textarea v-model="form.description" class="form-control"></textarea>
           </div>
         </form>
       </div>
@@ -40,7 +44,8 @@ export default {
       loading: false,
       current_id: 0,
       form: {
-        name: ''
+        name: '',
+        description: null
       }
     }
   },
@@ -64,6 +69,7 @@ export default {
       this.visible = !this.visible;
       this.hasError = false;
       this.form.name = '';
+      this.form.description = null;
       this.current_id = 0;
     },
     async loadItem(id) {
@@ -71,6 +77,7 @@ export default {
       try {
         let response = await axios.get(`/api/functions/${id}`);
         this.form.name = response.data.function.name;
+        this.form.description = response.data.function.description;
       } catch (e) {
         console.log(e);
       } finally {

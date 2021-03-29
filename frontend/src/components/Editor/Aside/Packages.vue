@@ -72,12 +72,12 @@ export default {
     }
   },
   watch: {
-    '$store.state.project.selected'() {
-      this.loadItems();
+    async '$store.state.project.selected'() {
+      await this.loadItems();
     }
   },
-  mounted() {
-    this.loadItems();
+  async mounted() {
+    await this.loadItems();
   },
   methods: {
     async loadItems() {
@@ -101,11 +101,11 @@ export default {
     openEditModal(id) {
       this.$refs.modal.showEdit(id);
     },
-    added() {
-      this.loadItems();
+    async added() {
+      await this.loadItems();
     },
-    updated() {
-      this.loadItems();
+    async updated() {
+      await this.loadItems();
     },
     async deleteItem(selectedItem) {
       this.loading = true;

@@ -85,12 +85,12 @@ export default {
     }
   },
   watch: {
-    '$store.state.project.selected'() {
-      this.loadItems();
+    async '$store.state.project.selected'() {
+      await this.loadItems();
     }
   },
-  mounted() {
-    this.loadItems();
+  async mounted() {
+    await this.loadItems();
     CodeEditorEvents.$on('fileChanged', this.fileChanged);
     CodeEditorEvents.$on('openFile', file => {
       this.currentFile = file;
@@ -122,12 +122,12 @@ export default {
     openEditModal(id) {
       this.$refs.modal.showEdit(id);
     },
-    added(id) {
-      this.loadItems();
-      this.openFile(id);
+    async added(id) {
+      await this.loadItems();
+      await this.openFile(id);
     },
-    updated() {
-      this.loadItems();
+    async updated() {
+      await this.loadItems();
     },
     async openFile(id) {
       this.fileIsOpening = id;
@@ -140,7 +140,8 @@ export default {
           method: response.data.endpoint.method,
           sourceCode: response.data.endpoint.code,
           function_name: response.data.endpoint.name,
-          path: response.data.endpoint.path
+          path: response.data.endpoint.path,
+          description: response.data.endpoint.description
         }
         CodeEditorEvents.$emit('openFile', file);
       } catch (e) {

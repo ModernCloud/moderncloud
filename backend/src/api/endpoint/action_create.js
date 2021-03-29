@@ -16,7 +16,8 @@ class CreateAction extends ApiAction
             project_id: Joi.number().required(),
             user_name: Joi.string().required(),
             method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').required(),
-            path: Joi.string().required()
+            path: Joi.string().required(),
+            description: Joi.string().required()
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -37,7 +38,8 @@ class CreateAction extends ApiAction
   }
 }`,
             method: this.validRequest.method,
-            path: this.validRequest.path
+            path: this.validRequest.path,
+            description: this.validRequest.description
         });
     }
 }

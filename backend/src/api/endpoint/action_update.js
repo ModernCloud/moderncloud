@@ -19,7 +19,8 @@ class UpdateAction extends ApiAction
             user_name: Joi.string().optional(),
             method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').optional(),
             path: Joi.string().optional(),
-            code: Joi.string().optional()
+            code: Joi.string().optional(),
+            description: Joi.string().optional()
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -37,17 +38,20 @@ class UpdateAction extends ApiAction
 
     async updateEndpoint() {
         let updateParams = {};
-        if (this.validRequest.user_name) {
+        if (this.validRequest.hasOwnProperty('user_name')) {
             updateParams.user_name = this.validRequest.user_name;
         }
-        if (this.validRequest.method) {
+        if (this.validRequest.hasOwnProperty('method')) {
             updateParams.method = this.validRequest.method;
         }
-        if (this.validRequest.path) {
+        if (this.validRequest.hasOwnProperty('path')) {
             updateParams.path = this.validRequest.path;
         }
-        if (this.validRequest.code) {
+        if (this.validRequest.hasOwnProperty('code')) {
             updateParams.code = this.validRequest.code;
+        }
+        if (this.validRequest.hasOwnProperty('description')) {
+            updateParams.description = this.validRequest.description;
         }
         if (Object.keys(updateParams).length > 0) {
             await Endpoint.query().where('id', this.endpoint.id).update(updateParams);

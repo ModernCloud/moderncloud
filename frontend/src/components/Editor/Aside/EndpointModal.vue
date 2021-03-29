@@ -23,9 +23,13 @@
               <option value="PUT" :selected="form.method === 'PUT'">PUT</option>
             </select>
           </div>
-          <div>
+          <div class="mb-2">
             <label class="form-label">Path</label>
             <input type="text" class="form-control" v-model="form.path" placeholder="/my-endpoint" />
+          </div>
+          <div>
+            <label class="form-label">Description</label>
+            <textarea v-model="form.description" class="form-control"></textarea>
           </div>
         </form>
       </div>
@@ -53,9 +57,10 @@ export default {
       loading: false,
       current_id: 0,
       form: {
-        user_name: null,
+        user_name: '',
         method: 'POST',
-        path: '/'
+        path: '/',
+        description: ''
       }
     }
   },
@@ -78,9 +83,10 @@ export default {
     closeModal() {
       this.visible = !this.visible;
       this.hasError = false;
-      this.form.user_name = null;
+      this.form.user_name = '';
       this.form.method = 'POST';
       this.form.path = '/';
+      this.form.description = '';
       this.current_id = 0;
     },
     async loadItem(id) {
@@ -90,6 +96,7 @@ export default {
         this.form.user_name = response.data.endpoint.user_name;
         this.form.method = response.data.endpoint.method;
         this.form.path = response.data.endpoint.path;
+        this.form.description = response.data.endpoint.description;
       } catch (e) {
         console.log(e);
       } finally {

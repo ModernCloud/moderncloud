@@ -174,7 +174,6 @@ export default {
       let scrollWidth = document.querySelector('.files').scrollWidth;
       let scrollLeft = document.querySelector('.files').scrollLeft;
       let clientWidth = document.querySelector('.files').clientWidth;
-      console.log((scrollWidth - clientWidth), scrollLeft);
       if (scrollWidth > clientWidth) {
         if (scrollLeft > 0) {
           this.disableLeftScrollButton = false;

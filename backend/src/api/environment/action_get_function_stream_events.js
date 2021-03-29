@@ -24,7 +24,7 @@ class GetAction extends ApiAction
 
     async loadLogEvents() {
         let cloudwatchLogs = new CloudwatchLogs(this.environment);
-        this.logEvents = await cloudwatchLogs.getStreamEvents(this.req.params.function_name, this.req.params.stream_name);
+        this.logEvents = await cloudwatchLogs.getStreamEvents(this.req.params.function_name, Buffer.from(this.req.params.stream_name, 'base64').toString());
     }
 }
 

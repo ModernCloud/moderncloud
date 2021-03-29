@@ -3,7 +3,7 @@
     <section class="brand">
       <router-link to="/" class="name">Modern Cloud</router-link>
     </section>
-    <perfect-scrollbar class="modules" style="position: unset" :options="{suppressScrollX: true}">
+    <perfect-scrollbar class="modules" :options="{suppressScrollX: true}">
         <Endpoints />
         <Functions />
         <Packages />

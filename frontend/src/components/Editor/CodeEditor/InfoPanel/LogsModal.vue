@@ -59,7 +59,7 @@ export default {
     async loadStreamEvents() {
       this.loading = true;
       try {
-        let response = await axios.get(`/api/environments/${this.selectedEnvironmentId}/stream-events/${this.functionName}/${encodeURIComponent(this.logStreamName)}`);
+        let response = await axios.get(`/api/environments/${this.selectedEnvironmentId}/stream-events/${this.functionName}/${btoa(this.logStreamName)}`);
         this.logEvents = response.data.log_events.events;
       } catch (e) {
         console.log(e);
@@ -82,7 +82,7 @@ export default {
 
 <style lang="scss" scoped>
 .fullscreen {
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -100,9 +100,8 @@ export default {
 }
 
 .line {
-  display: flex;
-  justify-content: flex-start;
-  align-items: baseline;
+  display: grid;
+  grid-template-columns: 200px 1fr;
   border-bottom: 1px solid #ddd;
   padding: 10px 0;
 
