@@ -1,23 +1,32 @@
 <template>
   <div class="info-panel">
-    <div class="header-menu" @mouseover="menu_visible = true" @mouseleave="menu_visible = false">
-      <div class="button">
-        <div class="icon">
-          <IconChevronVertical :width="30" :height="30" :stroke-width="1.3" />
+    <div class="header-menu">
+      <div style="flex-grow: 1">
+        <div class="button" @click="menu_visible = !menu_visible">
+          <div class="title">
+            <h3 v-if="isOverview"><IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview</h3>
+            <h3 v-if="isDeployment"><IconDeployment :stroke-width="1.5" :width="18" :height="18" /> Deployment</h3>
+            <h3 v-if="isLogs"><IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs</h3>
+          </div>
+          <div class="icon">
+            <IconChevronDown :width="20" :height="20" :stroke-width="1.5" />
+          </div>
         </div>
-        <div class="title">
-          <h3 v-if="isOverview"><IconOverview :stroke-width="1.5" /> Overview</h3>
-          <h3 v-if="isDeployment"><IconDeployment :stroke-width="1.5" /> Deployment</h3>
-          <h3 v-if="isLogs"><IconLogs :stroke-width="1.5" /> Logs</h3>
+        <div class="options" v-if="menu_visible">
+          <div class="option-item" @click="showMode('overview')">
+            <IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview
+            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isOverview" />
+          </div>
+          <div class="option-item" @click="showMode('deployment')">
+            <IconDeployment :stroke-width="1.5" :width="18" :height="18" /> Deployment
+            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isDeployment" />
+          </div>
+          <div class="option-item" @click="showMode('logs')">
+            <IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs
+            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isLogs" />
+          </div>
         </div>
       </div>
-      <transition name="slide">
-        <div class="options" v-if="menu_visible">
-          <a href="javascript:;" @click="showMode('overview')">Overview</a>
-          <a href="javascript:;" @click="showMode('deployment')">Deployment</a>
-          <a href="javascript:;" @click="showMode('logs')">Logs</a>
-        </div>
-      </transition>
     </div>
     <perfect-scrollbar class="body" :options="{suppressScrollX: true}">
       <Overview v-if="isOverview" :file="file" />
@@ -31,17 +40,19 @@
 import Overview from "@/components/Editor/CodeEditor/InfoPanel/Overview";
 import Deployment from "@/components/Editor/CodeEditor/InfoPanel/Deployment";
 import Logs from "@/components/Editor/CodeEditor/InfoPanel/Logs";
-import IconChevronVertical from "@/components/Icons/IconChevronVertical";
 import IconDeployment from "@/components/Icons/IconDeployment";
 import IconLogs from "@/components/Icons/IconLogs";
 import IconOverview from "@/components/Icons/IconOverview";
+import IconChevronDown from "@/components/Icons/IconChevronDown";
+import IconCheck from "@/components/Icons/IconCheck";
 
 export default {
   components: {
+    IconCheck,
+    IconChevronDown,
     IconOverview,
     IconLogs,
     IconDeployment,
-    IconChevronVertical,
     Deployment,
     Overview,
     Logs

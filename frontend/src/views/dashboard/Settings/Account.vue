@@ -1,42 +1,40 @@
 <template>
-  <div role="main">
-    <div class="page">
-      <div class="content">
-        <div class="header">
-          <div>
-            <div class="title">Account</div>
-            <div class="subtitle">Update your account information</div>
-          </div>
+  <div class="page">
+    <div class="content">
+      <div class="header">
+        <div>
+          <div class="title">Account</div>
+          <div class="subtitle">Update your account information</div>
         </div>
-        <p v-if="initialized === false">Loading...</p>
-        <form @submit.prevent="submit" v-if="initialized">
-          <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
-          <div class="mb-2">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" v-model="form.name" />
-          </div>
-          <div class="mb-2">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" v-model="form.email" />
-          </div>
-          <div class="mb-2">
-            <label class="form-check-label">
-              <input type="checkbox" v-model="showPasswordField" />
-              Change Password
-            </label>
-          </div>
-          <div class="mb-2" v-if="showPasswordField">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-control" v-model="form.password" />
-          </div>
-          <div>
-            <button type="submit" class="btn btn-primary" @click="submit" :disabled="loading">
-              <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-              Save
-            </button>
-          </div>
-        </form>
       </div>
+      <p v-if="initialized === false">Loading...</p>
+      <form @submit.prevent="submit" v-if="initialized">
+        <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
+        <div class="mb-2">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" v-model="form.name" />
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" v-model="form.email" />
+        </div>
+        <div class="mb-2">
+          <label class="form-check-label">
+            <input type="checkbox" v-model="showPasswordField" />
+            Change Password
+          </label>
+        </div>
+        <div class="mb-2" v-if="showPasswordField">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" v-model="form.password" />
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary" @click="submit" :disabled="loading">
+            <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Save
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </template>

@@ -3,9 +3,7 @@
     <div class="modal-wrapper">
       <div class="header">
         <div class="title">{{actionName}} Environment</div>
-        <a href="javascript:;" class="close" @click="closeModal">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M10 10l4 4m0 -4l-4 4" /></svg>
-        </a>
+        <a href="javascript:;" class="close" @click="closeModal"><IconX :width="18" :height="18" :stroke-width="1.5" /></a>
       </div>
       <div class="body">
         <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
@@ -44,8 +42,10 @@
 <script>
 import regions from '@/constants/regions';
 import axios from "axios";
+import IconX from "@/components/Icons/IconX";
 
 export default {
+  components: {IconX},
   data() {
     return {
       visible: false,

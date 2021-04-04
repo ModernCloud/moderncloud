@@ -2,42 +2,30 @@
   <section class="footer">
     <ProjectModal ref="modal" />
     <div class="buttons">
-      <div class="button-projects" @mouseover="menu_projects_visible = true" @mouseleave="menu_projects_visible = false">
-        <IconLayers :width="24" :height="24" />
+      <div class="button-settings" @click="$router.push('/settings/account');">
+        <IconSettings :width="18" :height="18" />
+        Settings
+      </div>
+      <div class="button-projects" @click="menu_projects_visible = !menu_projects_visible" :class="{active: menu_projects_visible}">
+        <IconLayers :width="18" :height="18" />
         <div class="name">
           <div>{{$store.state.project.selected ? $store.state.project.selected.name : null}}</div>
-          <small>Current project</small>
         </div>
-        <transition name="slide">
-          <div class="menu" v-if="menu_projects_visible">
-            <a href="javascript:;" class="new-link" @click="$refs.modal.showAdd">
-              <IconSquarePlus :width="16" :height="16" />
-              New Project
-            </a>
-            <a href="javascript:;" @click.self="$store.commit('selectProject', item.id);" v-for="item in $store.state.project.projects" :key="item.id">
-              <IconChevronRight :width="16" :height="16" />
-              {{item.name}}
-              <div class="action-menu">
-                <a href="javascript:;" @click="$refs.modal.showEdit(item.id)"><IconEdit :width="14" :height="14" :stroke-width="1" /></a>
-              </div>
-            </a>
-          </div>
-        </transition>
-      </div>
-      <div class="button-settings" @mouseover="menu_settings_visible = true" @mouseleave="menu_settings_visible = false">
-        <IconSettings :width="18" :height="18" />
-        <transition name="slide">
-          <div class="menu" v-if="menu_settings_visible">
-            <router-link to="/settings/account">
-              <IconSettings :width="16" :height="16" />
-              Settings
-            </router-link>
-            <a href="javascript:;" @click="logout">
-              <IconLogout :width="16" :height="16" />
-              Logout
-            </a>
-          </div>
-        </transition>
+        <IconChevronUp class="chevron" :width="18" :height="18" :stroke-width="2" v-if="menu_projects_visible === false" />
+        <IconChevronDown class="chevron" :width="18" :height="18" :stroke-width="2" v-if="menu_projects_visible" />
+        <div class="menu" v-if="menu_projects_visible" @mouseover="mouse_over_projects_menu = true" @mouseout="mouse_over_projects_menu = false">
+          <a href="javascript:;" @click.self="$store.commit('selectProject', item.id);" v-for="item in $store.state.project.projects" :key="item.id">
+            <IconChevronRight :width="16" :height="16" />
+            {{item.name}}
+            <div class="action-menu">
+              <a href="javascript:;" @click="$refs.modal.showEdit(item.id)"><IconEdit :width="14" :height="14" :stroke-width="1" /></a>
+            </div>
+          </a>
+          <a href="javascript:;" class="new-link" @click="$refs.modal.showAdd">
+            <IconSquarePlus :width="16" :height="16" />
+            New Project
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -48,15 +36,17 @@ import ProjectModal from "@/components/Settings/Projects/ProjectModal";
 import IconLayers from "@/components/Icons/IconLayers";
 import IconSettings from "@/components/Icons/IconSettings";
 import IconSquarePlus from "@/components/Icons/IconSquarePlus";
-import IconLogout from "@/components/Icons/IconLogout";
 import IconChevronRight from "@/components/Icons/IconChevronRight";
+import IconChevronUp from "@/components/Icons/IconChevronUp";
 import IconEdit from "@/components/Icons/IconEdit";
+import IconChevronDown from "@/components/Icons/IconChevronDown";
 
 export default {
   components: {
+    IconChevronDown,
     IconEdit,
     IconChevronRight,
-    IconLogout,
+    IconChevronUp,
     IconSquarePlus,
     IconSettings,
     IconLayers,
@@ -65,11 +55,24 @@ export default {
   data() {
     return {
       menu_projects_visible: false,
-      menu_settings_visible: false
+      menu_settings_visible: false,
+      mouse_over_projects_menu: false,
+    }
+  },
+  watch: {
+    menu_projects_visible() {
+      if (this.menu_projects_visible === true) {
+        document.addEventListener('mousedown', this.mouseDownEventListener);
+      } else {
+        document.removeEventListener('mousedown', this.mouseDownEventListener);
+      }
     }
   },
   async mounted() {
     await this.loadProjects();
+  },
+  destroyed() {
+    document.removeEventListener('mousedown', this.mouseDownEventListener);
   },
   methods: {
     async loadProjects() {
@@ -84,10 +87,11 @@ export default {
         this.loading = false;
       }
     },
-    logout() {
-      this.$store.commit('logout');
-      this.$store.commit('clearSelectedProject');
-      this.$router.push({path: '/login'});
+    mouseDownEventListener () {
+      console.log('OKOK');
+      if (this.mouse_over_projects_menu === false && this.menu_projects_visible === true) {
+        this.menu_projects_visible = false;
+      }
     }
   }
 }

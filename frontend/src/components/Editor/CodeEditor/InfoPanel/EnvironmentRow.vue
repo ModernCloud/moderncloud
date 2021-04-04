@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="environment-row">
     <Confirm style="z-index: 6000000" ref="confirmModal" :message="`We are going to deploy your project to the selected (<strong>${environment.name}</strong>) environment. Do you want to continue?`" @yes="deploy" />
     <notifications position="top center" />
-    <div style="border-radius: 4px; border: 1px solid #ddd; margin-bottom: 20px;">
+    <div>
       <div class="section-header" style="margin-top: 0px;">
-        <h3>Environment: {{environment.name}}</h3>
+        <h3>{{environment.name}}</h3>
         <button type="button" class="btn btn-primary" :disabled="isRunning || (this.environment.access_key == null || this.environment.secret_key == null)" @click="$refs.confirmModal.show({})">
           <span v-if="isRunning" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
           <span v-if="isRunning">Running</span>
@@ -21,42 +21,37 @@
         <div v-if="environment.last_deployment !== null && hasSuccessDeployment() === false" class="alert alert-warning">
           This is a new <strong>{{ resourceType }}</strong>. Please click to <strong>Deploy</strong> button to see related informations.
         </div>
-        <table v-if="environment.last_deployment !== null">
-          <tr>
-            <th valign="top" rowspan="2" style="width: 90px;">Last Status</th>
-            <td>:</td>
-            <td>
+        <div class="informations" v-if="environment.last_deployment !== null">
+          <div class="information">
+            <div class="name">Last Status :</div>
+            <div class="detail">
               <span class="text-primary" v-if="environment.last_deployment.current_status === 0">Running</span>
               <span class="text-success" v-if="environment.last_deployment.current_status === 1">Success</span>
               <span class="text-danger" v-if="environment.last_deployment.current_status === 2">Failed</span>
-              (<a href="javascript:;" @click="$emit('show-logs', environment.last_deployment.logs)">Logs</a>)
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td class="text-muted" v-if="isRunning">Started {{calculateDiff}} ago</td>
-            <td class="text-muted" v-if="isRunning === false">Completed in {{calculateDiff}}</td>
-          </tr>
-          <tr>
-            <th>Started</th>
-            <td>:</td>
-            <td>{{formatDate(environment.last_deployment.created_at)}}</td>
-          </tr>
-          <tr>
-            <th>Last Update</th>
-            <td>:</td>
-            <td>{{formatDate(environment.last_deployment.updated_at)}}</td>
-          </tr>
-          <tr v-if="file.type === 'endpoint' && hasSuccessDeployment()">
-            <th>URL</th>
-            <td>:</td>
-            <td>
-              <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 450px;">
-                <a href="javascript:;" @click="copyUrl()">{{ apiUrl() }}{{file.path}}</a>
-              </div>
-            </td>
-          </tr>
-        </table>
+              - (<a href="javascript:;" @click="$emit('show-logs', environment.last_deployment.logs)">Logs</a>)
+              <div v-if="isRunning">Started {{calculateDiff}} ago</div>
+              <div v-if="isRunning === false">Completed in {{calculateDiff}}</div>
+            </div>
+          </div>
+          <div class="information">
+            <div class="name">Started :</div>
+            <div class="detail">
+              {{formatDate(environment.last_deployment.created_at)}}
+            </div>
+          </div>
+          <div class="information">
+            <div class="name">Last Update :</div>
+            <div class="detail">
+              {{formatDate(environment.last_deployment.updated_at)}}
+            </div>
+          </div>
+          <div class="information" v-if="file.type === 'endpoint' && hasSuccessDeployment()">
+            <div class="name">URL :</div>
+            <div class="detail">
+              <a href="javascript:;" @click="copyUrl()">{{ apiUrl() }}{{file.path}}</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

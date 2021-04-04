@@ -1,11 +1,11 @@
 .divider {
   height: 1px;
-  background: transparent;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
+  background: #EFF1F4;
 }
 
 a {
   text-decoration: none;
+  color: #5269C9;
 }
 
 .select-none {
@@ -15,6 +15,18 @@ a {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.text-success {
+  color: $success;
+}
+
+.text-danger {
+  color: $danger;
+}
+
+.text-primary {
+  color: $primary;
 }
 
 .page {

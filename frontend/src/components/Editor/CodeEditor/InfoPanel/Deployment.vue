@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="deployment">
     <LogsModal ref="logs" />
-    <p>Please <router-link :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">click here</router-link> to manage environments.</p>
+    <router-link class="section-link" :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">Manage Environments <IconArrowNarrowRight /></router-link>
     <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show"></EnvironmentRow>
   </div>
 </template>
@@ -10,9 +10,11 @@
 import LogsModal from '@/components/Environments/LogsModal.vue';
 import EnvironmentRow from "./EnvironmentRow";
 import axios from 'axios';
+import IconArrowNarrowRight from "@/components/Icons/IconArrowNarrowRight";
 
 export default {
   components: {
+    IconArrowNarrowRight,
     EnvironmentRow,
     LogsModal
   },

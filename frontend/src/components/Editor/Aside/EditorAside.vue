@@ -1,7 +1,7 @@
 <template>
   <aside id="editor-aside">
     <section class="brand">
-      <router-link to="/" class="name">Modern Cloud</router-link>
+      <router-link to="/" class="name"><img src="../../../assets/img/logo.png" height="19" /></router-link>
     </section>
     <perfect-scrollbar class="modules" :options="{suppressScrollX: true}">
         <Endpoints />

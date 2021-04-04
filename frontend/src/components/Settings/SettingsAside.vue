@@ -1,18 +1,38 @@
 <template>
   <aside id="settings-aside">
-    <div>
-      <section class="title" @click="$router.push('/')">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="32" height="32" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="5" y1="12" x2="19" y2="12" /><line x1="5" y1="12" x2="9" y2="16" /><line x1="5" y1="12" x2="9" y2="8" /></svg>
-        <div class="name">Settings</div>
-      </section>
-      <section class="links">
-        <router-link to="/settings/account" active-class="active">Account</router-link>
-        <router-link to="/settings/billing" active-class="active">Billing</router-link>
-        <router-link to="/settings/projects" active-class="active">Projects</router-link>
-      </section>
-    </div>
+    <section class="brand">
+      <router-link to="/" class="name"><img src="../../assets/img/logo.png" height="19" /></router-link>
+    </section>
+    <section class="links">
+      <router-link to="/settings/account" active-class="active">
+        <IconUser :width="18" :height="18" :stroke-width="1.3" />
+        Account
+      </router-link>
+      <router-link to="/settings/billing" active-class="active">
+        <IconCreditCard :width="18" :height="18" :stroke-width="1.3" />
+        Billing
+      </router-link>
+      <router-link to="/settings/projects" active-class="active">
+        <IconLayers :width="18" :height="18" :stroke-width="1.3" />
+        Projects
+      </router-link>
+      <a href="javascript:;" @click="logout" class="logout">Logout</a>
+    </section>
   </aside>
 </template>
 
 <script>
+import IconLayers from "@/components/Icons/IconLayers";
+import IconCreditCard from "@/components/Icons/IconCreditCard";
+import IconUser from "@/components/Icons/IconUser";
+export default {
+  components: {IconUser, IconCreditCard, IconLayers},
+  methods: {
+    logout() {
+      this.$store.commit('logout');
+      this.$store.commit('clearSelectedProject');
+      this.$router.push({path: '/login'});
+    }
+  }
+}
 </script>

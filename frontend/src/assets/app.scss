@@ -1,14 +1,24 @@
-@import "~bootstrap/scss/bootstrap-reboot";
-@import "~bootstrap/scss/bootstrap-utilities";
-@import "~bootstrap/scss/grid.scss";
-@import "~bootstrap/scss/alert.scss";
-@import "~bootstrap/scss/buttons.scss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+$font-family-base: 'Inter', sans-serif;
+$font-weight-base: 400;
+$font-size-base: 14;
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/helpers";
+@import "~bootstrap/scss/utilities/api";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/containers";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/buttons";
 @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/tables";
 @import "~bootstrap/scss/spinners";
 @import "~bootstrap/scss/badge";
 
-@import "fonts";
 @import "layout";
 @import "popper";
 @import "form";
@@ -18,5 +28,6 @@
 @import "table";
 @import "editor_aside";
 @import "settings_aside";
+@import "settings";
 @import "code_editor";
 @import "transitions";

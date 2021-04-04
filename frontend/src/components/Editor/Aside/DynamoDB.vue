@@ -3,26 +3,26 @@
     <Confirm ref="confirmModal" message="Selected function will be deleted. Do you want to continue?" @yes="deleteItem" />
     <DynamoDBModal ref="modal" @added="added" @updated="updated" />
     <div class="section-title" @click="showContent=!showContent" :class="{active: showContent}">
-      <IconDatabase :width="18" :height="18" />
+      <IconDatabase :width="18" :height="18" style="margin-right: 5px;" />
       DynamoDB
       <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
-      <div style="margin-left: auto">
-        <IconChevronRight v-if="showContent === false" :width="12" :height="12" :stroke-width="2" />
-        <IconChevronDown v-if="showContent" :width="12" :height="12" :stroke-width="2" />
+      <div style="margin-left: auto; color: #90959D;">
+        <IconChevronRight v-if="showContent === false" :width="20" :height="20" :stroke-width="1.5" />
+        <IconChevronDown v-if="showContent" :width="20" :height="20" :stroke-width="1.5" />
       </div>
     </div>
     <transition name="slide">
       <div v-if="showContent" class="content">
         <div v-if="loading === false">
-          <div class="item">
-            <a href="javascript:;" class="new-link" @click="openNewModal">
+          <div class="item new-link">
+            <a href="javascript:;" class="link" @click="openNewModal">
               <IconSquarePlus :width="18" :height="18" />
               New Table
             </a>
           </div>
           <div v-for="item in items" :key="item.id">
             <div class="item">
-              <a href="javascript:;">
+              <a href="javascript:;" class="link">
                 <div class="item-name">{{item.name}}</div>
               </a>
               <div class="action-menu">

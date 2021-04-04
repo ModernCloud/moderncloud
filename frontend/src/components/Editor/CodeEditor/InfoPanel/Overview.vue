@@ -6,6 +6,7 @@
         <table>
           <tr v-if="file.type === 'endpoint'">
             <th>Endpoint</th>
+            <th>:</th>
             <td>
               {{ file.method }}
               {{ file.path }}
@@ -13,40 +14,47 @@
           </tr>
           <tr v-if="file.type === 'function'">
             <th>Function</th>
+            <th>:</th>
             <td>{{ file.name }}</td>
           </tr>
+          <tr v-if="file.description">
+            <th>Description</th>
+            <th>:</th>
+            <td>{{file.description}}</td>
+          </tr>
         </table>
-        <p v-if="file.description">{{file.description}}</p>
       </div>
     </section>
-    <div class="menu">
-      <div class="environments">
-        <a href="javascript:;" v-for="environment in environments" :key="environment.id" :class="{active: selectedEnvironmentId === environment.id}" @click="selectedEnvironmentId = environment.id">{{environment.name}}</a>
+    <section>
+      <div class="menu">
+        <div class="environments">
+          <a href="javascript:;" v-for="environment in environments" :key="environment.id" :class="{active: selectedEnvironmentId === environment.id}" @click="selectedEnvironmentId = environment.id">{{environment.name}}</a>
+        </div>
+        <div class="time">
+          <a href="javascript:;" @click="timePeriod = 1" :class="{active: timePeriod === 1}">1h</a>
+          <a href="javascript:;" @click="timePeriod = 3" :class="{active: timePeriod === 3}">3h</a>
+          <a href="javascript:;" @click="timePeriod = 6" :class="{active: timePeriod === 6}">6h</a>
+          <a href="javascript:;" @click="timePeriod = 12" :class="{active: timePeriod === 12}">12h</a>
+          <a href="javascript:;" @click="timePeriod = 24" :class="{active: timePeriod === 24}">24h</a>
+        </div>
       </div>
-      <div class="time">
-        <a href="javascript:;" @click="timePeriod = 1" :class="{active: timePeriod === 1}">1h</a>
-        <a href="javascript:;" @click="timePeriod = 3" :class="{active: timePeriod === 3}">3h</a>
-        <a href="javascript:;" @click="timePeriod = 6" :class="{active: timePeriod === 6}">6h</a>
-        <a href="javascript:;" @click="timePeriod = 12" :class="{active: timePeriod === 12}">12h</a>
-        <a href="javascript:;" @click="timePeriod = 24" :class="{active: timePeriod === 24}">24h</a>
+      <div class="stats">
+        <div class="number">{{metrics.totalInvocations}}</div>
+        <div class="title">Total Invocations</div>
       </div>
-    </div>
-    <div class="stats">
-      <div class="number">{{metrics.totalInvocations}}</div>
-      <div class="title">Total Invocations</div>
-    </div>
-    <div class="stats">
-      <div class="number">{{metrics.totalErrors}}</div>
-      <div class="title">Total Errors</div>
-    </div>
-    <div class="stats">
-      <div class="number">{{metrics.avgConcurrency}}</div>
-      <div class="title">Avg. Concurrency</div>
-    </div>
-    <div class="stats">
-      <div class="number">{{metrics.avgDuration}}</div>
-      <div class="title">Avg. Duration (ms)</div>
-    </div>
+      <div class="stats">
+        <div class="number">{{metrics.totalErrors}}</div>
+        <div class="title">Total Errors</div>
+      </div>
+      <div class="stats">
+        <div class="number">{{metrics.avgConcurrency}}</div>
+        <div class="title">Avg. Concurrency</div>
+      </div>
+      <div class="stats">
+        <div class="number">{{metrics.avgDuration}}</div>
+        <div class="title">Avg. Duration (ms)</div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -63,6 +71,7 @@ export default {
   },
   data() {
     return {
+      initialized: false,
       loading: false,
       loadingEnvironments: false,
       loadingMetrics: false,
@@ -83,9 +92,11 @@ export default {
       await this.loadEnvironments();
     },
     async selectedEnvironmentId() {
+      this.initialized = false;
       await this.loadMetrics();
     },
     async timePeriod() {
+      this.initialized = false;
       await this.loadMetrics();
     }
   },
@@ -115,10 +126,12 @@ export default {
       }
     },
     async loadMetrics() {
-      this.metrics.totalInvocations = '...';
-      this.metrics.totalErrors = '...';
-      this.metrics.avgConcurrency = '...';
-      this.metrics.avgDuration = '...'
+      if (this.initialized === false) {
+        this.metrics.totalInvocations = '...';
+        this.metrics.totalErrors = '...';
+        this.metrics.avgConcurrency = '...';
+        this.metrics.avgDuration = '...'
+      }
       this.loadingMetrics = true;
       try {
         let response = await axios.get(`/api/environments/${this.selectedEnvironmentId}/metrics/${this.file.function_name}?time_period=${this.timePeriod}`);
@@ -129,6 +142,7 @@ export default {
       } catch (e) {
         console.log(e);
       } finally {
+        this.initialized = true;
         this.loadingMetrics = false;
         this.timeoutId = setTimeout(async () => {
           if (this.loadingMetrics) {

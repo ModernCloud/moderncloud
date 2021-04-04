@@ -5,7 +5,7 @@
   top: 0;
   bottom: 0;
   z-index: 600000;
-  background: rgba(0, 0, 0, .4);
+  background: transparent;
   overflow-y: auto;
   display: flex;
   align-items: center;
@@ -13,24 +13,21 @@
 
   .modal-wrapper {
     background: #fff;
-    box-shadow: 0 1px 32px rgba(255, 255, 255, .2);
-    border: 1px solid rgba(0, 0, 0, .4);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .3);
     width: 500px;
     margin: 0 auto;
-    border-radius: 4px;
+    border-radius: 12px;
 
     .header {
       display: flex;
-      background: rgba(0, 0, 0, .05);
-      border-bottom: 1px solid rgba(0, 0, 0, .1);
-      padding: 10px;
+      padding: 20px;
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
       align-items: center;
       line-height: 30px;
 
       .title {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 500;
         line-height: 30px;
         color: #000 !important;
@@ -39,7 +36,7 @@
 
       .close {
         margin-left: auto;
-        color: rgba(0, 0, 0, .6);
+        color: #6B6F77;
         text-underline: none;
         line-height: 18px;
 
@@ -50,17 +47,18 @@
     }
 
     .body {
-      padding: 10px;
+      padding: 0 20px;
+      overflow: auto;
+      max-height: 500px;
     }
 
     .actions {
-      background: rgba(0, 0, 0, .05);
-      border-top: 1px solid rgba(0, 0, 0, .1);
-      padding: 10px;
+      padding: 20px;
       display: flex;
+      flex-direction: row-reverse;
 
       .btn {
-        margin-right: 5px;
+        margin-left: 5px;
       }
     }
   }

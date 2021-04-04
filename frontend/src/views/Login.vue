@@ -1,25 +1,25 @@
 <template>
   <div id="login">
-    <div></div>
-    <div class="segment shadow-lg">
+    <div class="segment">
       <section>
-        <h3>Modern Cloud</h3>
+        <div class="header">
+          <h1>Welcome back to</h1>
+          <img src="../assets/img/logo.png" height="24" />
+        </div>
         <form @submit.prevent="submit">
           <div class="alert alert-danger" v-if="hasError">Wrong email or password!</div>
-          <div class="mb-2">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" v-model="form.email" />
+          <div class="mb-3">
+            <input type="email" class="form-control" v-model="form.email" placeholder="Enter your email" />
           </div>
-          <div class="mb-2">
-            <label class="form-label">Password</label>
-            <input type="password" class="form-control" v-model="form.password" />
+          <div class="mb-3">
+            <input type="password" class="form-control" v-model="form.password" placeholder="Enter your password" />
           </div>
-          <button type="submit" class="btn btn-primary" style="width: 100%" :disabled="loading">
+          <button type="submit" class="btn btn-primary" style="width: 100%;" :disabled="loading">
             <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
             Sign in
           </button>
-          <div class="divider" style="margin: 10px 0;"></div>
-          <p style="font-size: 13px; font-weight: 400;">Don't have an account? <router-link to="/register">Sign up</router-link></p>
+          <div class="divider" style="margin: 30px 0;"></div>
+          <p style="text-align: center">Don't have an account? <router-link to="/register">Sign up</router-link></p>
         </form>
       </section>
     </div>
@@ -60,12 +60,12 @@ export default {
 <style lang="scss" scoped>
 #login {
   height: 100%;
-  display: grid;
-  background: rgb(239, 239, 239);
-  grid-template-columns: 1fr 600px;
-  grid-template-rows: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .segment {
+    width: 500px;
     background: #fff;
     display: flex;
     align-items: center;
@@ -74,14 +74,21 @@ export default {
     section {
       flex-grow: 1;
       padding: 0 80px;
-    }
 
-    h3 {
-      text-align: center;
-      color: rgb(29, 53, 87);
-      font-size: 35px;
-      font-family: Edition, serif;
-      margin-bottom: 20px;
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+
+        h1 {
+          font-size: 18px;
+          font-weight: 500;
+        }
+      }
+
+      .form-control, .btn {
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
     }
   }
 }

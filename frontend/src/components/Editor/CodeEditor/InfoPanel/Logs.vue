@@ -7,8 +7,9 @@
       </div>
     </div>
     <div class="log_streams">
+      <div v-if="initialized === false">...</div>
       <div class="stream" v-for="(logStream, index) in logStreams" :key="index" @click="$refs.logs.show(selectedEnvironmentId, file.function_name, logStream.logStreamName)">
-        <div class="time">Last Event: {{formatDate(logStream.lastIngestionTime)}}</div>
+        <div class="time">{{formatDate(logStream.lastIngestionTime)}}</div>
         <div class="name">{{logStream.logStreamName}}</div>
       </div>
     </div>
@@ -31,6 +32,7 @@ export default {
   },
   data() {
     return {
+      initialized: false,
       loading: false,
       loadingEnvironments: false,
       loadingLogs: false,
@@ -45,6 +47,7 @@ export default {
       await this.loadEnvironments();
     },
     async selectedEnvironmentId() {
+      this.initialized = false;
       this.logStreams = [];
       await this.loadLogStreams();
     }
@@ -83,6 +86,7 @@ export default {
         console.log(e);
       } finally {
         this.loadingLogs = false;
+        this.initialized = true;
         this.timeoutId = setTimeout(async () => {
           if (this.loadingLogs) {
             return;

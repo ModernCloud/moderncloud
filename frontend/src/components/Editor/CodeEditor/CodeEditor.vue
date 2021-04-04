@@ -1,13 +1,16 @@
 <template>
   <div role="main" id="code-editor" :class="{collapsed: collapsed}">
     <div class="empty-state" v-if="hasSourceCode === false">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="160" height="160" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="7 8 3 12 7 16" /><polyline points="17 8 21 12 17 16" /><line x1="14" y1="4" x2="10" y2="20" /></svg>
+      <div>
+        <h2>Welcome Back {{$store.state.account.user.name}}</h2>
+        <p>Did you know that you can create an endpoint and then mix it with some magic stuff to get awesome results.</p>
+      </div>
     </div>
     <div class="code-state" v-if="hasSourceCode">
       <div class="code-area">
         <div class="tools">
           <a href="javascript:;" @click="scrollLeft()" class="button-scroll-left" :class="{disabled: disableLeftScrollButton}">
-            <IconChevronLeft :stroke-width="1.7" />
+            <IconChevronLeft :stroke-width="1.7" :width="18" :height="18" />
           </a>
           <div class="files">
             <div class="file" :class="{open: item.id === file.id && item.type === file.type}" v-for="item in files" :key="item.type + '_' + item.id">
@@ -30,15 +33,11 @@
             </div>
           </div>
           <a href="javascript:;" @click="scrollRight()" class="button-scroll-right" :class="{disabled: disableRightScrollButton}">
-            <IconChevronRight :stroke-width="1.7" />
+            <IconChevronRight :stroke-width="1.7" :width="18" :height="18" />
           </a>
         </div>
         <monaco-editor ref="monaco" class="monaco-editor" v-model="sourceCode" @change="changed"></monaco-editor>
       </div>
-      <a href="javascript:;" class="button-collapse" @click="collapsed = !collapsed">
-        <IconChevronsLeft v-if="collapsed" :width="10" :height="10" />
-        <IconChevronsRight v-if="collapsed === false" :width="10" :height="10" />
-      </a>
       <InfoPanel v-if="hasSourceCode && collapsed === false" ref="info" :file="file" />
     </div>
   </div>
@@ -52,13 +51,9 @@ import MonacoEditor from './MonacoEditor.vue';
 import InfoPanel from './InfoPanel.vue';
 import IconChevronLeft from "@/components/Icons/IconChevronLeft";
 import IconChevronRight from "@/components/Icons/IconChevronRight";
-import IconChevronsLeft from "@/components/Icons/IconChevronsLeft";
-import IconChevronsRight from "@/components/Icons/IconChevronsRight";
 
 export default {
   components: {
-    IconChevronsRight,
-    IconChevronsLeft,
     IconChevronRight,
     IconChevronLeft,
     MonacoEditor,

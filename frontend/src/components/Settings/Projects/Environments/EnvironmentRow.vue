@@ -63,7 +63,7 @@ export default {
   },
   data() {
     return {
-      certificate_validation_options: JSON.parse(this.environment.certificate_validation_options || {}),
+      certificate_validation_options: JSON.parse(this.environment.certificate_validation_options || '{}'),
       show_details: false,
       status_loading: false
     }
