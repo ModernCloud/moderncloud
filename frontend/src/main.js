@@ -12,6 +12,18 @@ import store from './store'
 import axios from 'axios';
 import './assets/app.scss';
 
+import firebase from "firebase/app";
+import "firebase/analytics";
+import "firebase/auth";
+firebase.initializeApp({
+    apiKey: "AIzaSyAV5XeHaikSuThrfDnOjBeUXarz5lNzJbI",
+    authDomain: "moderncloud---test.firebaseapp.com",
+    projectId: "moderncloud---test",
+    storageBucket: "moderncloud---test.appspot.com",
+    messagingSenderId: "247003552904",
+    appId: "1:247003552904:web:94ed3b9afed3cff9b8133d"
+});
+
 
 document.getElementById('loading').remove();
 

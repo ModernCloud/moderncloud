@@ -22,6 +22,10 @@
             <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
             Create account
           </button>
+          <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 5px;" :disabled="loading" @click="continueWithGoogle">
+            <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Continue with Google
+          </button>
           <div class="divider" style="margin: 30px 0;"></div>
           <p style="text-align: center">Already have an account? <router-link to="/login">Sign in</router-link></p>
         </form>
@@ -32,6 +36,7 @@
 
 <script>
 import axios from 'axios';
+import firebase from "firebase";
 
 export default {
   data() {
@@ -65,6 +70,25 @@ export default {
         this.hasError = true;
         this.loading = false;
       }
+    },
+    continueWithGoogle() {
+      this.loading = true;
+      let provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+      provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+      firebase.auth().signInWithPopup(provider)
+        .then(result => {
+          return result.user.getIdToken();
+        }).then(idToken => {
+          return axios.post('/api/auth/verify-google', {id_token: idToken});
+        }).then(response => {
+          this.$store.commit('login', response.data);
+          this.$router.push('/');
+        }).catch((error) => {
+          console.log(error);
+        }).finally(() => {
+          this.loading = false;
+        });
     }
   }
 }

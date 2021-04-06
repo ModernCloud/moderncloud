@@ -23,6 +23,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "firebase-admin": "^9.6.0",
     "joi": "^17.4.0",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.1",

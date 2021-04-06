@@ -1,16 +1,17 @@
 const Joi = require('joi');
-const bcrypt = require('bcryptjs');
+const firebaseAdmin = require('../../common/firebase');
 const JWT = require('../jwt');
 const ApiAction = require('../action');
 const ApiError = require('../error');
 const { User } = require('../../common/db');
+const setupDefaultResources = require('./setup_default_resources');
 
 class GenerateToken extends ApiAction
 {
     async tryExecute() {
         await this.validateParams();
+        await this.loadGoogleUser();
         await this.loadUser();
-        await this.validatePassword();
         await this.createToken();
         return this.response.success({
             token: this.token,
@@ -24,23 +25,30 @@ class GenerateToken extends ApiAction
 
     async validateParams() {
         let schema = Joi.object({
-            email: Joi.string().email().required(),
-            password: Joi.string().min(6).required()
+            id_token: Joi.string().required()
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
 
+    async loadGoogleUser() {
+        let decodedIdToken = await firebaseAdmin.auth().verifyIdToken(this.validRequest.id_token);
+        this.googleUser = await firebaseAdmin.auth().getUser(decodedIdToken.uid);
+    }
+
     async loadUser() {
-        this.user = await User.query().where({'email': this.validRequest.email}).first();
+        this.user = await User.query().where({'email': this.googleUser.email}).first();
         if (!(this.user instanceof User)) {
-            throw new ApiError('Wrong email or password', 10501, 404);
+            await this.createUserIfNotExists();
         }
     }
 
-    async validatePassword() {
-        if (bcrypt.compareSync(this.validRequest.password, this.user.password) === false) {
-            throw new ApiError('Wrong email or password', 10501, 404);
-        }
+    async createUserIfNotExists() {
+        this.user = await User.query().insert({
+            email: this.googleUser.email,
+            password: '',
+            name: this.googleUser.displayName
+        });
+        await setupDefaultResources(this.user);
     }
 
     async createToken() {
