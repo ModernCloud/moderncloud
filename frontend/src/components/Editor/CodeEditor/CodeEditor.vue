@@ -1,19 +1,19 @@
 <template>
   <div role="main" id="code-editor" :class="{collapsed: collapsed}">
-    <div class="empty-state" v-if="hasSourceCode === false">
+    <div class="empty-state" v-if="sourceCode === null">
       <div>
         <h2>Welcome Back {{$store.state.account.user.name}}</h2>
         <p>Did you know that you can create an endpoint and then mix it with some magic stuff to get awesome results.</p>
       </div>
     </div>
-    <div class="code-state" v-if="hasSourceCode">
+    <div class="code-state" v-if="sourceCode !== null">
       <div class="code-area">
         <div class="tools">
           <a href="javascript:;" @click="scrollLeft()" class="button-scroll-left" :class="{disabled: disableLeftScrollButton}">
             <IconChevronLeft :stroke-width="1.7" :width="18" :height="18" />
           </a>
           <div class="files">
-            <div class="file" :class="{open: item.id === file.id && item.type === file.type}" v-for="item in files" :key="item.type + '_' + item.id">
+            <div class="file" :class="{open: item.id === $store.state.project.currentFile.id && item.type === $store.state.project.currentFile.type}" v-for="item in $store.state.project.files" :key="item.type + '_' + item.id">
               <div class="name" @click="openFile(item)">
                 <small v-if="item.type === 'endpoint'" :style="{
                 'display': 'inline-block',
@@ -22,12 +22,12 @@
                 'color': methodLabelColor(item.method),
                 'font-size': '9px'
               }">{{item.method}}</small>
-                <svg v-if="item.type === 'function'" xmlns="http://www.w3.org/2000/svg" class="icon" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 10h1c1 0 1 1 2.016 3.527c.984 2.473 .984 3.473 1.984 3.473h1" /><path d="M13 17c1.5 0 3 -2 4 -3.5s2.5 -3.5 4 -3.5" /><path d="M3 19c0 1.5 .5 2 2 2s2 -4 3 -9s1.5 -9 3 -9s2 .5 2 2" /><line x1="5" y1="12" x2="11" y2="12" /></svg>
+                <IconFunction :width="12" :height="12" :stroke-width="2" v-if="item.type === 'function'" />
                 {{item.name}}
               </div>
               <div class="action" @click="removeFile(item)">
                 <div class="icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                  <IconX :width="12" :height="12" :stroke-width="2" />
                 </div>
               </div>
             </div>
@@ -38,22 +38,25 @@
         </div>
         <monaco-editor ref="monaco" class="monaco-editor" v-model="sourceCode" @change="changed"></monaco-editor>
       </div>
-      <InfoPanel v-if="hasSourceCode && collapsed === false" ref="info" :file="file" />
+      <InfoPanel v-if="sourceCode !== null && collapsed === false" ref="info" :file="$store.state.project.currentFile" />
     </div>
   </div>
 </template>
 
 <script>
-import find from 'lodash/find';
 import findIndex from 'lodash/findIndex';
 import {CodeEditorEvents} from '@/lib/code_editor_events';
 import MonacoEditor from './MonacoEditor.vue';
 import InfoPanel from './InfoPanel.vue';
 import IconChevronLeft from "@/components/Icons/IconChevronLeft";
 import IconChevronRight from "@/components/Icons/IconChevronRight";
+import IconFunction from "@/components/Icons/IconFunction";
+import IconX from "@/components/Icons/IconX";
 
 export default {
   components: {
+    IconX,
+    IconFunction,
     IconChevronRight,
     IconChevronLeft,
     MonacoEditor,
@@ -62,30 +65,24 @@ export default {
   data() {
     return {
       collapsed: false,
-      files: [],
       disableLeftScrollButton: true,
       disableRightScrollButton: true,
-      file: {
-        id: null,
-        type: null,
-        sourceCode: null
-      },
       sourceCode: null,
-      hasSourceCode: false
+      keyupTimer: null
     }
   },
   watch: {
     '$store.state.project.selected'() {
-      this.file = {id: null, name: null, type: null, sourceCode: null};
-      this.files = [];
       this.sourceCode = null;
-      this.hasSourceCode = false;
     }
   },
   mounted() {
     CodeEditorEvents.$on('openFile', this.openFile);
     CodeEditorEvents.$on('removeFile', this.removeFile);
     CodeEditorEvents.$on('addPackage', this.addPackage);
+    if (this.$store.state.project.files.length > 0) {
+      this.openFile(this.$store.state.project.currentFile);
+    }
   },
   destroyed() {
     CodeEditorEvents.$off('openFile');
@@ -94,36 +91,32 @@ export default {
   },
   methods: {
     openFile(file) {
-      if (find(this.files, {id: file.id, type: file.type}) === undefined) {
-        this.files.push(file);
-      }
-      this.file = file;
+      this.$store.commit('openFile', file);
       this.sourceCode = file.sourceCode;
-      this.hasSourceCode = true;
-      if (this.files.length < 2) {
+      if (this.$store.state.project.files.length < 2) {
         return;
       }
-      this.updateScroll(file);
+      this.updateScroll();
     },
     removeFile(file) {
-      let index = findIndex(this.files, {id: file.id, type: file.type});
-      this.files.splice(index, 1);
-      if (file.id === this.file.id) {
-        if (this.files.length === 0) {
-          this.file = {id: null, name: null, type: null, sourceCode: null};
-          this.hasSourceCode = false;
-          this.sourceCode = null;
-          CodeEditorEvents.$emit('empty');
-        } else {
-          this.file = this.files[0];
-          this.sourceCode = this.file.sourceCode;
-        }
+      this.$store.commit('closeFile', file);
+      if (this.$store.state.project.files.length === 0) {
+        this.sourceCode = null;
+        CodeEditorEvents.$emit('empty');
+      } else {
+        this.sourceCode = this.$store.state.project.currentFile.sourceCode;
       }
-      this.updateScroll(this.file);
+      this.updateScroll();
     },
     changed(code) {
-      this.file.sourceCode = code;
-      CodeEditorEvents.$emit('fileChanged', this.file);
+      this.$store.commit('updateSourceCode', code);
+      if (this.keyupTimer) {
+        clearTimeout(this.keyupTimer);
+        this.keyupTimer = null;
+      }
+      this.keyupTimer = setTimeout(() => {
+        CodeEditorEvents.$emit('fileChanged', this.$store.state.project.currentFile);
+      }, 700);
     },
     async addPackage(name, version) {
       await this.$refs.monaco.addExtraLib(name, version);
@@ -140,7 +133,7 @@ export default {
       }
     },
     showPanel() {
-      this.$refs.info.show(this.file);
+      this.$refs.info.show(this.$store.state.project.currentFile);
     },
     scrollLeft() {
       let content = document.querySelector(".files");
@@ -154,11 +147,11 @@ export default {
     },
     updateScroll(file) {
       this.updateScrollButtons();
-      if (this.files.length === 0) {
+      if (this.$store.state.project.files.length === 0) {
         return;
       }
       setTimeout(() => {
-        let newIndex = findIndex(this.files, {id: file.id, type: file.type})
+        let newIndex = findIndex(this.$store.state.project.files, {id: file.id, type: file.type})
         document.querySelector(".files").scrollLeft = newIndex * 150;
         this.updateScrollButtons();
       }, 200);

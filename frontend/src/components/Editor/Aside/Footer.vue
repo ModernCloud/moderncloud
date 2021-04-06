@@ -88,7 +88,6 @@ export default {
       }
     },
     mouseDownEventListener () {
-      console.log('OKOK');
       if (this.mouse_over_projects_menu === false && this.menu_projects_visible === true) {
         this.menu_projects_visible = false;
       }
