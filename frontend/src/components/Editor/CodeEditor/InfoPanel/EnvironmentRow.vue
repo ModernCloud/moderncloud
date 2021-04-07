@@ -5,11 +5,14 @@
     <div>
       <div class="section-header" style="margin-top: 0px;">
         <h3>{{environment.name}}</h3>
-        <button type="button" class="btn btn-primary" :disabled="isRunning || (this.environment.access_key == null || this.environment.secret_key == null)" @click="$refs.confirmModal.show({})">
-          <span v-if="isRunning" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
-          <span v-if="isRunning">Running</span>
-          <span v-if="isRunning === false">Deploy</span>
-        </button>
+        <div class="buttons">
+          <button class="btn btn-primary" @click="$emit('show-variables', environment.id)">.env</button>
+          <button type="button" class="btn btn-primary" :disabled="isRunning || (this.environment.access_key == null || this.environment.secret_key == null)" @click="$refs.confirmModal.show({})">
+            <span v-if="isRunning" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
+            <span v-if="isRunning">Running</span>
+            <span v-if="isRunning === false">Deploy</span>
+          </button>
+        </div>
       </div>
       <div style="padding: 10px;">
         <div v-if="this.environment.access_key == null || this.environment.secret_key == null" class="alert alert-danger">

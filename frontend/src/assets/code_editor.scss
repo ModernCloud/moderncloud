@@ -212,7 +212,7 @@
         top: 50px;
         border-radius: 12px;
         background: #fff;
-        padding: 20px;
+        padding: 15px 20px;
         z-index: 10000;
         box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
 
@@ -221,6 +221,10 @@
           color: #3C4149;
           margin-bottom: 8px;
           clear: both;
+
+          &:last-child {
+            margin-bottom: 0px;
+          }
 
           svg:first-child {
             margin-right: 5px;
@@ -235,22 +239,22 @@
       }
     }
 
-    .body {
+    > .body {
       padding: 8px;
       overflow: hidden;
 
       .section-link {
         border-bottom: 1px solid #EFF1F4;
-        padding: 15px 0;
+        padding: 15px 8px;
         color: #3C4149;
         display: block;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
       }
 
       .section-header {
         display: flex;
         padding: 8px;
-        margin: 10px 0;
+        margin: 5px 0;
         align-items: baseline;
 
         h3 {
@@ -259,15 +263,19 @@
           color: #3C4149;
         }
 
-        button {
+        .buttons {
           margin-left: auto;
-          border: 1px solid #DFE1E4;
-          background: #fff;
-          color: #3C4149;
-          font-weight: 500;
 
-          &:hover {
-            background: #DFE1E4;
+          button {
+            border: 1px solid #DFE1E4;
+            background: #fff;
+            color: #3C4149;
+            font-weight: 500;
+            margin-left: 5px;
+
+            &:hover {
+              background: #DFE1E4;
+            }
           }
         }
       }
@@ -301,7 +309,7 @@
 
     .deployment {
       .environment-row {
-        padding: 20px 0;
+        padding: 5px 0;
         border-bottom: 1px solid #EFF1F4;
 
         &:last-child {

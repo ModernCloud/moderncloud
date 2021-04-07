@@ -1,8 +1,9 @@
 <template>
   <div class="deployment">
     <LogsModal ref="logs" />
+    <EnvironmentVariablesModal ref="variables" />
     <router-link class="section-link" :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">Manage Environments <IconArrowNarrowRight /></router-link>
-    <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show"></EnvironmentRow>
+    <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show" @show-variables="$refs.variables.show"></EnvironmentRow>
   </div>
 </template>
 
@@ -11,9 +12,11 @@ import LogsModal from '@/components/Environments/LogsModal.vue';
 import EnvironmentRow from "./EnvironmentRow";
 import axios from 'axios';
 import IconArrowNarrowRight from "@/components/Icons/IconArrowNarrowRight";
+import EnvironmentVariablesModal from "@/components/Settings/Projects/Environments/EnvironmentVariablesModal";
 
 export default {
   components: {
+    EnvironmentVariablesModal,
     IconArrowNarrowRight,
     EnvironmentRow,
     LogsModal
