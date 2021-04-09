@@ -20,6 +20,7 @@
     "@aws-sdk/client-s3": "^3.9.0",
     "amqplib": "^0.7.0",
     "aws-sdk": "^2.841.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

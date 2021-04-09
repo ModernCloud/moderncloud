@@ -22,13 +22,10 @@
           </div>
           <div v-for="item in items" :key="item.id">
             <div class="item">
-              <a href="javascript:;" class="link">
+              <a href="javascript:;" class="link" @click="openEditModal(item.id)">
                 <div class="item-name">{{item.name}}</div>
               </a>
               <div class="action-menu">
-                <a href="javascript:;" @click="openEditModal(item.id)">
-                  <IconEdit :width="14" :height="14" :stroke-width="1" />
-                </a>
                 <a href="javascript:;" @click="$refs.confirmModal.show({id: item.id})">
                   <IconDelete :width="14" :height="14" :stroke-width="1" />
                 </a>
@@ -49,13 +46,11 @@ import IconDatabase from "@/components/Icons/IconDatabase";
 import IconChevronRight from "@/components/Icons/IconChevronRight";
 import IconChevronDown from "@/components/Icons/IconChevronDown";
 import IconSquarePlus from "@/components/Icons/IconSquarePlus";
-import IconEdit from "@/components/Icons/IconEdit";
 import IconDelete from "@/components/Icons/IconDelete";
 
 export default {
   components: {
     IconDelete,
-    IconEdit,
     IconSquarePlus,
     IconChevronDown,
     IconChevronRight,

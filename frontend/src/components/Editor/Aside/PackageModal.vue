@@ -5,12 +5,30 @@
         <div class="title">{{actionName}} Package</div>
         <a href="javascript:;" class="close" @click="closeModal"><IconX :width="18" :height="18" :stroke-width="1.5" /></a>
       </div>
-      <div class="body">
+      <div class="body" style="overflow: unset; max-height: unset;">
         <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
         <form @submit.prevent="submit">
           <div class="mb-2">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" v-model="form.name" />
+            <v-select @search="searchPackage" v-model="selected" :options="searchResult">
+              <template slot="no-options">
+                type to search packages
+              </template>
+              <template slot="option" slot-scope="option">
+                <div style="display: flex; align-items: center; padding: 5px 0;">
+                  <div style="overflow: hidden; width: 350px;">
+                    <strong>{{ option.label }}</strong>
+                    <p>{{ option.description }}</p>
+                  </div>
+                  <div style="margin-left: auto">{{ option.version }}</div>
+                </div>
+              </template>
+              <template slot="selected-option" slot-scope="option">
+                <div class="selected">
+                  {{ option.label }}
+                </div>
+              </template>
+            </v-select>
           </div>
           <div>
             <label class="form-label">Version</label>
@@ -35,15 +53,20 @@
 import {CodeEditorEvents} from '@/lib/code_editor_events';
 import axios from "axios";
 import IconX from "@/components/Icons/IconX";
+import VSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 
 export default {
-  components: {IconX},
+  components: {IconX,VSelect},
   data() {
     return {
       visible: false,
       hasError: false,
       loading: false,
       current_id: 0,
+      searchTimeout: null,
+      searchResult: [],
+      selected: null,
       form: {
         name: '',
         version: ''
@@ -53,6 +76,14 @@ export default {
   computed: {
     actionName() {
       return this.current_id > 0 ? 'Edit' : 'Add';
+    }
+  },
+  watch: {
+    selected() {
+      if (this.selected != null) {
+        this.form.name = this.selected.label;
+        this.form.version = this.selected.version;
+      }
     }
   },
   methods: {
@@ -72,6 +103,8 @@ export default {
       this.form.name = '';
       this.form.version = '';
       this.current_id = 0;
+      this.selected = null;
+      this.searchResult = [];
     },
     async loadItem(id) {
       this.loading = true;
@@ -79,6 +112,12 @@ export default {
         let response = await axios.get(`/api/packages/${id}`);
         this.form.name = response.data.package.name;
         this.form.version = response.data.package.version;
+        if (this.form.name) {
+          this.selected = {
+            label: this.form.name,
+            version: this.form.version
+          };
+        }
       } catch (e) {
         console.log(e);
       } finally {
@@ -110,6 +149,25 @@ export default {
       this.$emit('added', response.data.id);
       CodeEditorEvents.$emit('addPackage', this.form.name, this.form.version);
       this.closeModal();
+    },
+    searchPackage(search, loading) {
+      if (search == null || search.length === 0) {
+        return;
+      }
+      loading(true);
+      if (this.searchTimeout) {
+        clearTimeout(this.searchTimeout);
+      }
+      let that = this;
+      this.searchTimeout = setTimeout(function () {
+        axios.get(`/api/packages/search-npms?q=${escape(search)}&size=10`)
+          .then(response => {
+            loading(false);
+            that.searchResult = response.data.results.map(item => {
+              return {label: item.package.name, version: item.package.version, description: item.package.description}
+            });
+          });
+      }, 400);
     }
   }
 }
