@@ -15,23 +15,15 @@
         </div>
       </div>
       <p v-if="initialized === false">Loading...</p>
-      <table v-if="initialized" class="table table-hover" style="margin-top: 10px;">
-        <thead>
-          <tr>
-            <th style="width: 150px;"></th>
-            <th>Project</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="project in $store.state.project.projects" :key="project.id">
-            <td>
-              <a href="javascript:;" @click="openEditModal(project.id)">Edit</a> -
-              <router-link :to="{name: 'environments', params: {project_id: project.id}}">Environments</router-link>
-            </td>
-            <td>{{project.name}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div v-if="initialized" class="projects">
+        <div class="project" v-for="project in $store.state.project.projects" :key="project.id">
+          <div class="name">{{project.name}}</div>
+          <div class="links">
+            <a href="javascript:;" @click="openEditModal(project.id)" class="btn btn-light">Edit</a>
+            <router-link :to="{name: 'environments', params: {project_id: project.id}}" class="btn btn-light">Environments</router-link>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -76,3 +68,36 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .projects {
+    .project {
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+      .name {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 18px;
+      }
+
+      .links {
+        margin-top: 5px;
+        display: flex;
+
+        a {
+          font-size: 11px;
+          margin-right: 5px;
+          min-width: auto;
+
+          &:hover {
+            background: rgba(0, 0, 0, .16);
+          }
+        }
+      }
+    }
+  }
+</style>

@@ -20,16 +20,7 @@
         </div>
       </div>
       <p v-if="initialized === false">Loading...</p>
-      <table v-if="initialized" class="table table-hover" style="margin-top: 10px;">
-        <thead>
-          <tr>
-            <th style="width: 70px;"></th>
-            <th style="width: 150px;">Name</th>
-            <th>Custom Domain</th>
-            <th style="width: 150px; text-align: right">Region</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div class="environments" v-if="initialized">
           <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment"
                           @addDomain="$refs.domainModal.showAdd"
                           @showEdit="$refs.modal.showEdit"
@@ -37,8 +28,7 @@
                           @confirm="$refs.confirmModal.show"
                           @confirmDeleteDomain="$refs.confirmDeleteDomainModal.show"
           />
-        </tbody>
-      </table>
+      </div>
     </div>
   </div>
 </template>

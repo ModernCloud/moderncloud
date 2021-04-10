@@ -1,61 +1,34 @@
 <template>
-  <tr>
-    <td>
-      <a href="javascript:;" @click="$emit('showEdit', environment.id)" title="Edit"><IconEdit :width="16" :height="16" /></a>
-      <a href="javascript:;" @click="$emit('showVariables', environment.id)" title="Variables"><IconVariables :width="16" :height="16" :stroke-width="2" /></a>
-      <a href="javascript:;" @click="$emit('confirm', {environment_id: environment.id})" title="Destroy"><IconDestroyEnvironment :width="16" :height="16" /></a>
-    </td>
-    <td>{{environment.name}}</td>
-    <td v-if="environment.domain_name == null">
-      <a href="javascript:;" @click="$emit('addDomain', environment.id)">Add Domain</a>
-    </td>
-    <td v-if="environment.domain_name != null">
-      {{environment.domain_name}}
-      <div style="font-size: 10px;">
-        (<a href="javascript:;" @click="show_details = !show_details"><span v-if="show_details === false">Show Details</span><span v-if="show_details">Hide Details</span></a>)
-        (<a href="javascript:;" @click="refreshStatus"><span v-if="status_loading === false">Refresh Status</span><span v-if="status_loading">Loading...</span></a>)
-        (<a href="javascript:;" @click="$emit('confirmDeleteDomain', {environment_id: environment.id})">Remove Domain</a>)
+  <div class="environment">
+    <div class="environment-header">
+      <div class="name">{{environment.name}}</div>
+    </div>
+    <div class="info">
+      <div class="item">
+        <div class="name">Region :</div>
+        {{regionName}}
       </div>
-      <div v-if="show_details" style="margin-top: 10px; font-size: 11px; width: 250px; word-wrap: break-word">
-        <p>Add the following CNAME record to the DNS configuration for your domain. The procedure for adding CNAME records depends on your DNS service Provider. <a href="https://docs.aws.amazon.com/acm/latest/userguide/dns-validation.html" target="_blank">DNS Validation</a></p>
-        <div class="mb-3">
-          <strong>Status</strong>
-          <div>{{domainStatus}}</div>
-        </div>
-        <div class="mb-3">
-          <strong><a href="javascript:;" @click="copy(resourceRecord.Name)"><IconClipboard :width="14" :height="14" /></a> Record Name</strong>
-          <div>{{resourceRecord.Name}}</div>
-        </div>
-        <div class="mb-3">
-          <strong><a href="javascript:;" @click="copy(resourceRecord.Type)"><IconClipboard :width="14" :height="14" /></a> Type</strong>
-          <div>{{resourceRecord.Type}}</div>
-        </div>
-        <div class="mb-3">
-          <strong><a href="javascript:;" @click="copy(resourceRecord.Value)"><IconClipboard :width="14" :height="14" /></a> Value</strong>
-          <div>{{resourceRecord.Value}}</div>
-        </div>
+      <div class="item" v-if="environment.last_success_deployment">
+        <div class="name">Last Deployed :</div>
+        {{formatDate(environment.last_success_deployment.updated_at)}}
       </div>
-    </td>
-    <td style="text-align: right">{{regionName}}</td>
-  </tr>
+    </div>
+    <div class="links">
+      <a href="javascript:;" @click="$emit('showEdit', environment.id)" class="btn btn-light">Edit</a>
+      <a href="javascript:;" @click="$emit('showVariables', environment.id)" class="btn btn-light">Variables</a>
+      <a href="javascript:;" class="btn btn-light">Domains</a>
+      <a href="javascript:;" @click="$emit('confirm', {environment_id: environment.id})" class="btn btn-light btn-outline-danger">Destroy</a>
+    </div>
+  </div>
 </template>
 
 <script>
 import regions from '@/constants/regions';
-import IconEdit from "@/components/Icons/IconEdit";
-import IconDestroyEnvironment from "@/components/Icons/IconDestroyEnvironment";
-import IconVariables from "@/components/Icons/IconVariables";
 import get from 'lodash/get';
-import IconClipboard from "@/components/Icons/IconClipboard";
 import axios from "axios";
+import moment from "moment";
 
 export default {
-  components: {
-    IconClipboard,
-    IconEdit,
-    IconVariables,
-    IconDestroyEnvironment
-  },
   props: {
     environment: {
       type: Object
@@ -98,7 +71,67 @@ export default {
         type: 'success',
         text: 'Copied!'
       });
-    }
+    },
+    formatDate(date) {
+      return moment(date).format('DD MMM YYYY HH:mm:ss Z');
+    },
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.environment {
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+  .environment-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+
+    .name {
+      font-size: 18px;
+      font-weight: 500;
+
+      .region {
+        font-size: 12px;
+        color: rgba(0, 0, 0, .5);
+        font-weight: 400;
+      }
+    }
+  }
+
+  .links {
+    margin-top: 5px;
+    display: flex;
+
+    a {
+      font-size: 11px;
+      margin-right: 5px;
+      min-width: auto;
+
+      &:hover {
+        background: rgba(0, 0, 0, .16);
+      }
+    }
+  }
+
+  .info {
+    font-size: 12px;
+    color: rgba(0, 0, 0, .5);
+    margin-top: 10px;
+
+    .item {
+      margin-bottom: 10px;
+      border-left: 1px dashed rgba(0, 0, 0, .1);
+      padding-left: 5px;
+
+      .name {
+        font-weight: bold;
+      }
+    }
+  }
+}
+</style>
