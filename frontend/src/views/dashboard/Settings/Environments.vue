@@ -1,11 +1,9 @@
 <template>
   <div class="page">
-    <DomainModal ref="domainModal" @added="loadEnvironments" />
+    <DomainModal ref="domainModal" @refresh="loadEnvironments" />
     <EnvironmentModal ref="modal" @updated="loadEnvironments" @added="loadEnvironments" />
     <EnvironmentVariablesModal ref="variables" />
     <notifications position="top center" />
-    <Confirm ref="confirmModal" message="All resources will be destroyed. Do you want to continue?" @yes="destroy" />
-    <Confirm ref="confirmDeleteDomainModal" message="This domain will be delete. Do you want to continue?" @yes="deleteDomain" />
     <div class="content">
       <div class="header">
         <div>
@@ -22,12 +20,9 @@
       <p v-if="initialized === false">Loading...</p>
       <div class="environments" v-if="initialized">
           <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment"
-                          @addDomain="$refs.domainModal.showAdd"
+                          @setDomain="$refs.domainModal.showAdd"
                           @showEdit="$refs.modal.showEdit"
-                          @showVariables="$refs.variables.show"
-                          @confirm="$refs.confirmModal.show"
-                          @confirmDeleteDomain="$refs.confirmDeleteDomainModal.show"
-          />
+                          @showVariables="$refs.variables.show" />
       </div>
     </div>
   </div>
@@ -39,11 +34,9 @@ import EnvironmentRow from '@/components/Settings/Projects/Environments/Environm
 import EnvironmentModal from '@/components/Settings/Projects/Environments/EnvironmentModal.vue';
 import EnvironmentVariablesModal from '@/components/Settings/Projects/Environments/EnvironmentVariablesModal.vue';
 import axios from "axios";
-import Confirm from "@/components/Confirm";
 
 export default {
   components: {
-    Confirm,
     DomainModal,
     EnvironmentRow,
     EnvironmentModal,
@@ -97,21 +90,6 @@ export default {
           title: 'Success',
           type: 'success',
           text: 'Related resources will be destroyed.'
-        });
-      } catch (e) {
-        console.log(e);
-      } finally {
-        this.loading = false;
-      }
-    },
-    async deleteDomain(params) {
-      this.loading = true;
-      try {
-        await axios.post('/api/environments/' + params.environment_id + '/delete-domain');
-        this.$notify({
-          title: 'Success',
-          type: 'success',
-          text: 'Domain deleted!'
         });
       } catch (e) {
         console.log(e);

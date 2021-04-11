@@ -23,7 +23,6 @@ class Certificate {
 
     async updateDetails() {
         let resultDetail = await this.acmClient.describeCertificate({CertificateArn: this.environment.certificate_arn});
-        console.log(resultDetail.Certificate.DomainValidationOptions[0]);
         this.environment.certificate_validation_options = JSON.stringify(resultDetail.Certificate.DomainValidationOptions[0]);
         await Environment.query().where('id', this.environment.id).update({
             certificate_arn: this.environment.certificate_arn,
@@ -31,17 +30,13 @@ class Certificate {
         });
         if (resultDetail.Certificate.DomainValidationOptions[0].ResourceRecord === undefined) {
             await delay(2000);
-            await this.updateDetails();
+            return await this.updateDetails();
         }
+        return resultDetail;
     }
 
     async deleteCertificate() {
         await this.acmClient.deleteCertificate({CertificateArn: this.environment.certificate_arn});
-        await Environment.query().where('id', this.environment.id).update({
-            domain_name: null,
-            certificate_arn: null,
-            certificate_validation_options: null
-        });
     }
 }
 

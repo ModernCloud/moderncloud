@@ -13,3 +13,11 @@ resource "aws_dynamodb_table" "{{project.name}}_{{environment.name}}_{{table.nam
 
   {% endfor %}
 }
+
+output "{{table.name}}_id" {
+  value = aws_dynamodb_table.{{project.name}}_{{environment.name}}_{{table.name}}.id
+}
+
+output "{{table.name}}_arn" {
+  value = aws_dynamodb_table.{{project.name}}_{{environment.name}}_{{table.name}}.arn
+}

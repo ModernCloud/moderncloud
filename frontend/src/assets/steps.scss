@@ -1,0 +1,32 @@
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .step {
+    flex: 1;
+    padding: 5px;
+    color: rgba(0, 0, 0, .5);
+    border-bottom:2px solid rgba(82, 50, 201, .2);
+    margin-right: 5px;
+    cursor: pointer;
+
+    .number {
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .name {
+      font-size: 13px;
+    }
+
+    &.active {
+      border-bottom:2px solid #5269C9;
+      color: #5269C9;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

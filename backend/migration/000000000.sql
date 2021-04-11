@@ -86,6 +86,10 @@ CREATE TABLE IF NOT EXISTS `environment` (
     domain_name VARCHAR(255) DEFAULT NULL,
     certificate_arn VARCHAR(255) DEFAULT NULL,
     validation_options JSON DEFAULT NULL,
+    api_gateway_id VARCHAR(255) DEFAULT NULL,
+    api_gateway_url VARCHAR(255) DEFAULT NULL,
+    api_gateway_arn VARCHAR(255) DEFAULT NULL,
+    cloudfront_domain_name VARCHAR(255) DEFAULT NULL,
     UNIQUE name_uniq (project_id, name),
     INDEX project_idx (project_id),
     PRIMARY KEY(id)

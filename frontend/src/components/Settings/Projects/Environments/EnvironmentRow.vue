@@ -8,16 +8,25 @@
         <div class="name">Region :</div>
         {{regionName}}
       </div>
-      <div class="item" v-if="environment.last_success_deployment">
+      <div class="item">
         <div class="name">Last Deployed :</div>
-        {{formatDate(environment.last_success_deployment.updated_at)}}
+        <div v-if="environment.last_success_deployment === null">None</div>
+        <div v-if="environment.last_success_deployment">{{formatDate(environment.last_success_deployment.updated_at)}}</div>
+      </div>
+      <div class="item">
+        <div class="name">API Gateway :</div>
+        <div v-if="environment.api_gateway_url === null">None</div>
+        <div v-if="environment.api_gateway_url">{{ environment.api_gateway_url }}</div>
       </div>
     </div>
     <div class="links">
       <a href="javascript:;" @click="$emit('showEdit', environment.id)" class="btn btn-light">Edit</a>
       <a href="javascript:;" @click="$emit('showVariables', environment.id)" class="btn btn-light">Variables</a>
-      <a href="javascript:;" class="btn btn-light">Domains</a>
-      <a href="javascript:;" @click="$emit('confirm', {environment_id: environment.id})" class="btn btn-light btn-outline-danger">Destroy</a>
+      <a href="javascript:;" class="btn btn-light" v-if="environment.last_success_deployment" @click="$emit('setDomain', environment.id)">Custom Domain</a>
+      <div style="margin-left: auto">
+        <a href="javascript:;" class="btn btn-light btn-outline-success">Deploy</a>
+        <a href="javascript:;" @click="$emit('confirm', {environment_id: environment.id})" class="btn btn-light btn-outline-danger" v-if="environment.last_success_deployment">Destroy</a>
+      </div>
     </div>
   </div>
 </template>
@@ -63,14 +72,6 @@ export default {
       } finally {
         this.status_loading = false;
       }
-    },
-    async copy(data) {
-      await navigator.clipboard.writeText(data);
-      this.$notify({
-        title: 'Success',
-        type: 'success',
-        text: 'Copied!'
-      });
     },
     formatDate(date) {
       return moment(date).format('DD MMM YYYY HH:mm:ss Z');

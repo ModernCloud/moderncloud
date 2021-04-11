@@ -20,11 +20,14 @@ module.exports = app => {
     app.post('/environments/:id/destroy', async (req, res) => {
         await require('./action_destroy').execute(req, res);
     });
-    app.post('/environments/:id/add-domain', async (req, res) => {
-        await require('./action_domain_add').execute(req, res);
+    app.post('/environments/:id/set-domain', async (req, res) => {
+        await require('./action_domain_set').execute(req, res);
     });
     app.post('/environments/:id/delete-domain', async (req, res) => {
         await require('./action_domain_delete').execute(req, res);
+    });
+    app.post('/environments/:id/attach-domain', async (req, res) => {
+        await require('./action_domain_attach').execute(req, res);
     });
     app.get('/environments/:id/metrics/:function_name', async (req, res) => {
         await require('./action_get_function_metrics').execute(req, res);

@@ -150,7 +150,7 @@ export default {
       return moment(date).format('DD MMM YYYY HH:mm:ss');
     },
     apiUrl() {
-      return get(this.environment, 'last_success_deployment.output.api_url.value', null);
+      return get(this.environment, 'last_success_deployment.output.api_gateway_url.value', null);
     },
     hasSuccessDeployment() {
       return has(this.environment, ['last_success_deployment', 'output', this.file.function_name + '_invoke_arn']);

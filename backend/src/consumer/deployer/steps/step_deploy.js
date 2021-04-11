@@ -1,5 +1,5 @@
 const shelljs = require('shelljs');
-const {Deployment} = require('../../../common/db');
+const {Deployment, Environment} = require('../../../common/db');
 
 async function runInit(job) {
     await job.addLog(`$ terraform init`);
@@ -12,20 +12,6 @@ async function runInit(job) {
     }
     if (result.code > 0) {
         throw new Error(`Failed: terraform init | Deployment: ${job.deployment.id}`);
-    }
-}
-
-async function runPlan(job) {
-    await job.addLog(`$ terraform plan`);
-    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} plan -input=false -no-color`, {silent: true});
-    if (result.stdout) {
-        await job.addLog(result.stdout);
-    }
-    if (result.stderr) {
-        await job.addLog(result.stderr);
-    }
-    if (result.code > 0) {
-        throw new Error(`Failed: terraform plan | Deployment: ${job.deployment.id}`);
     }
 }
 
@@ -58,12 +44,19 @@ async function runOutput(job) {
     await Deployment.query()
         .where('id', job.deployment.id)
         .update({'output': result.stdout});
+    let json = JSON.parse(result.stdout);
+    await Environment.query()
+        .where('id', job.environment.id)
+        .update({
+            'api_gateway_id': json.api_gateway_id.value,
+            'api_gateway_url': json.api_gateway_url.value,
+            'api_gateway_arn': json.api_gateway_arn.value,
+        });
 }
 
 module.exports = {
     run: async (job) => {
         await runInit(job);
-        await runPlan(job); // TODO: Save plan file and use with apply
         await runApply(job);
         await runOutput(job);
     }
