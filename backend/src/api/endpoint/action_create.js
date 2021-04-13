@@ -14,10 +14,12 @@ class CreateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
-            user_name: Joi.string().required(),
-            method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').required(),
-            path: Joi.string().required(),
-            description: Joi.string().required()
+            user_name: Joi.string().required().label('Name'),
+            method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').required().label('Method'),
+            path: Joi.string().required().label('Path'),
+            description: Joi.string().required().allow(null, '').label('Description'),
+            memory_size: Joi.number().optional().default(128).min(128).max(10240).label('Memory Size'),
+            timeout: Joi.number().optional().default(3).min(3).max(900).label('Timeout')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -39,7 +41,9 @@ class CreateAction extends ApiAction
 }`,
             method: this.validRequest.method,
             path: this.validRequest.path,
-            description: this.validRequest.description
+            description: this.validRequest.description,
+            memory_size: this.validRequest.memory_size,
+            timeout: this.validRequest.timeout
         });
     }
 }

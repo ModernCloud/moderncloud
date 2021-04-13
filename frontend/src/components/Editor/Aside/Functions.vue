@@ -20,7 +20,7 @@
           <div v-for="item in items" :key="item.id">
             <div class="item">
               <a href="javascript:;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" class="link">
-                <div class="item-name">{{item.name}}</div>
+                <div class="item-name">{{item.user_name}}</div>
               </a>
               <div class="action-menu">
                 <a href="javascript:;" @click="openEditModal(item.id)">
@@ -125,7 +125,7 @@ export default {
         let response = await axios.get('/api/functions/' + id);
         let file = {
           id: id,
-          name: response.data.function.name,
+          name: response.data.function.user_name,
           type: 'function',
           sourceCode: response.data.function.code,
           function_name: response.data.function.name,

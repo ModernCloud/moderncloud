@@ -87,6 +87,7 @@ import axios from "axios";
 import IconX from "@/components/Icons/IconX";
 import get from "lodash/get";
 import IconClipboard from "@/components/Icons/IconClipboard";
+import {getErrorMessage} from "../../../../lib/get_error_message";
 
 export default {
   components: {IconClipboard, IconX},
@@ -129,6 +130,7 @@ export default {
     },
     async loadItem(id) {
       this.loading = true;
+      this.errorMessage = null;
       try {
         let response = await axios.get(`/api/environments/${id}`);
         this.environment = response.data.environment;
@@ -141,15 +143,7 @@ export default {
           this.step = 3;
         }
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.error) {
-          if (e.response.data.error.message === 'ValidationError') {
-            this.errorMessage = e.response.data.error.details[0].message;
-          } else {
-            this.errorMessage = e.response.data.error.message;
-          }
-        } else {
-          this.errorMessage = 'An error occurred!';
-        }
+        this.errorMessage = getErrorMessage(e);
       } finally {
         this.loading = false;
       }
@@ -167,15 +161,7 @@ export default {
       try {
         await axios.post(`/api/environments/${this.current_id}/set-domain`, {...this.form});
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.error) {
-          if (e.response.data.error.message === 'ValidationError') {
-            this.errorMessage = e.response.data.error.details[0].message;
-          } else {
-            this.errorMessage = e.response.data.error.message;
-          }
-        } else {
-          this.errorMessage = 'An error occurred!';
-        }
+        this.errorMessage = getErrorMessage(e);
       } finally {
         this.loading = false;
         await this.loadItem(this.current_id);
@@ -187,15 +173,7 @@ export default {
       try {
         await axios.post(`/api/environments/${this.current_id}/attach-domain`);
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.error) {
-          if (e.response.data.error.message === 'ValidationError') {
-            this.errorMessage = e.response.data.error.details[0].message;
-          } else {
-            this.errorMessage = e.response.data.error.message;
-          }
-        } else {
-          this.errorMessage = 'An error occurred!';
-        }
+        this.errorMessage = getErrorMessage(e);
       } finally {
         this.loading = false;
         await this.loadItem(this.current_id);
@@ -213,15 +191,7 @@ export default {
           text: 'Custom domain has been deleted!'
         });
       } catch (e) {
-        if (e.response && e.response.data && e.response.data.error) {
-          if (e.response.data.error.message === 'ValidationError') {
-            this.errorMessage = e.response.data.error.details[0].message;
-          } else {
-            this.errorMessage = e.response.data.error.message;
-          }
-        } else {
-          this.errorMessage = 'An error occurred!';
-        }
+        this.errorMessage = getErrorMessage(e);
       } finally {
         this.loading = false;
       }

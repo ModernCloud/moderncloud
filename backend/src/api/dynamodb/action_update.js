@@ -16,12 +16,12 @@ class UpdateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
-            name: Joi.string().optional(),
-            read_capacity: Joi.number().optional(),
-            write_capacity: Joi.number().optional(),
-            hash_key: Joi.string().optional(),
-            range_key: Joi.string().optional(),
-            attributes: Joi.array().optional()
+            name: Joi.string().optional().label('Name'),
+            read_capacity: Joi.number().optional().label('Read Capacity'),
+            write_capacity: Joi.number().optional().label('Write Capacity'),
+            hash_key: Joi.string().optional().label('Hash Key'),
+            range_key: Joi.string().optional().label('Range Key'),
+            attributes: Joi.array().optional().label('Attributes')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }

@@ -17,12 +17,14 @@ class UpdateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
-            name: Joi.string().alphanum().optional(),
-            main_file: Joi.string().optional(),
-            handler: Joi.string().optional(),
-            runtime: Joi.string().optional(),
-            code: Joi.string().optional(),
-            description: Joi.string().optional()
+            user_name: Joi.string().optional().label('Name'),
+            main_file: Joi.string().optional().label('Main File'),
+            handler: Joi.string().optional().label('Handler'),
+            runtime: Joi.string().optional().label('Runtime'),
+            code: Joi.string().optional().label('Code'),
+            description: Joi.string().optional().allow(null, '').label('Description'),
+            memory_size: Joi.number().optional().default(128).min(128).max(10240).label('Memory Size'),
+            timeout: Joi.number().optional().default(3).min(3).max(900).label('Timeout')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -40,8 +42,8 @@ class UpdateAction extends ApiAction
 
     async updateFunction() {
         let updateParams = {};
-        if (this.validRequest.hasOwnProperty('name')) {
-            updateParams.name = this.validRequest.name;
+        if (this.validRequest.hasOwnProperty('user_name')) {
+            updateParams.user_name = this.validRequest.user_name;
         }
         if (this.validRequest.hasOwnProperty('main_file')) {
             updateParams.main_file = this.validRequest.main_file;
@@ -57,6 +59,12 @@ class UpdateAction extends ApiAction
         }
         if (this.validRequest.hasOwnProperty('description')) {
             updateParams.description = this.validRequest.description;
+        }
+        if (this.validRequest.hasOwnProperty('memory_size')) {
+            updateParams.memory_size = this.validRequest.memory_size;
+        }
+        if (this.validRequest.hasOwnProperty('timeout')) {
+            updateParams.timeout = this.validRequest.timeout;
         }
         if (Object.keys(updateParams).length > 0) {
             await Function.query().where('id', this.function.id).update(updateParams);

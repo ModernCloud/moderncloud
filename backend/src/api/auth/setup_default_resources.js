@@ -46,7 +46,8 @@ async function createDefaultFunctions(project) {
     await Function.query().insert({
         user_id: project.user_id,
         project_id: project.id,
-        name: 'my-function',
+        user_name: 'My Function',
+        name: 'function_' + Date.now(),
         main_file: 'index.js',
         handler: 'index.handler',
         runtime: 'nodejs14.x',

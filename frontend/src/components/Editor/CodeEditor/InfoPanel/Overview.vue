@@ -135,10 +135,26 @@ export default {
       this.loadingMetrics = true;
       try {
         let response = await axios.get(`/api/environments/${this.selectedEnvironmentId}/metrics/${this.file.function_name}?time_period=${this.timePeriod}`);
-        this.metrics.totalInvocations = sum(response.data.metrics.invocations.MetricDataResults[0].Values);
-        this.metrics.totalErrors = sum(response.data.metrics.errors.MetricDataResults[0].Values);
-        this.metrics.avgConcurrency = mean(response.data.metrics.concurrency.MetricDataResults[0].Values).toFixed(2);
-        this.metrics.avgDuration = mean(response.data.metrics.duration.MetricDataResults[0].Values).toFixed(2);
+        if (response.data.metrics.invocations) {
+          this.metrics.totalInvocations = sum(response.data.metrics.invocations.MetricDataResults[0].Values);
+        } else {
+          this.metrics.totalInvocations = 0;
+        }
+        if (response.data.metrics.errors) {
+          this.metrics.totalErrors = sum(response.data.metrics.errors.MetricDataResults[0].Values);
+        } else {
+          this.metrics.totalErrors = 0;
+        }
+        if (response.data.metrics.concurrency) {
+          this.metrics.avgConcurrency = mean(response.data.metrics.concurrency.MetricDataResults[0].Values).toFixed(2);
+        } else {
+          this.metrics.avgConcurrency = 0.00;
+        }
+        if (response.data.metrics.duration) {
+          this.metrics.avgDuration = mean(response.data.metrics.duration.MetricDataResults[0].Values).toFixed(2);
+        } else {
+          this.metrics.avgDuration = 0.00;
+        }
       } catch (e) {
         console.log(e);
       } finally {

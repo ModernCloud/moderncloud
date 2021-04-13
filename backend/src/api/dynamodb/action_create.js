@@ -14,12 +14,12 @@ class CreateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
-            name: Joi.string().required(),
-            read_capacity: Joi.number().required(),
-            write_capacity: Joi.number().required(),
-            hash_key: Joi.string().required(),
-            range_key: Joi.string().optional().default(null),
-            attributes: Joi.array().required()
+            name: Joi.string().required().label('Name'),
+            read_capacity: Joi.number().required().label('Read Capacity'),
+            write_capacity: Joi.number().required().label('Write Capacity'),
+            hash_key: Joi.string().required().label('Hash Key'),
+            range_key: Joi.string().optional().allow(null, '').label('Range Key'),
+            attributes: Joi.array().required().label('Attributes')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
