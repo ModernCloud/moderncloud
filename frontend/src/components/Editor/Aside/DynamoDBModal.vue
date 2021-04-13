@@ -6,7 +6,7 @@
         <a href="javascript:;" class="close" @click="closeModal"><IconX :width="18" :height="18" :stroke-width="1.5" /></a>
       </div>
       <div class="body">
-        <div v-if="hasError" class="alert alert-danger">An error occurred!</div>
+        <div v-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
         <form @submit.prevent="submit">
           <div class="mb-2">
             <label class="form-label">Name</label>
@@ -79,17 +79,18 @@
 <script>
 import axios from "axios";
 import IconX from "@/components/Icons/IconX";
+import {getErrorMessage} from "../../../lib/get_error_message";
 
 export default {
   components: {IconX},
   data() {
     return {
       visible: false,
-      hasError: false,
+      errorMessage: null,
       loading: false,
       current_id: 0,
       form: {
-        name: '',
+        name: null,
         read_capacity: 1,
         write_capacity: 1,
         hash_key: null,
@@ -106,18 +107,20 @@ export default {
   methods: {
     async showAdd() {
       this.current_id = 0;
+      this.errorMessage = null;
       this.visible = !this.visible;
     },
     async showEdit(id) {
       this.visible = !this.visible;
+      this.errorMessage = null;
       this.loading = true;
       this.current_id = id;
       await this.loadItem(id);
     },
     closeModal() {
       this.visible = !this.visible;
-      this.hasError = false;
-      this.form.name = '';
+      this.errorMessage = null;
+      this.form.name = null;
       this.form.read_capacity = 1;
       this.form.write_capacity = 1;
       this.form.hash_key = null;
@@ -127,6 +130,7 @@ export default {
     },
     async loadItem(id) {
       this.loading = true;
+      this.errorMessage = null;
       try {
         let response = await axios.get(`/api/dynamodb/${id}`);
         this.form.name = response.data.table.name;
@@ -136,7 +140,7 @@ export default {
         this.form.range_key = response.data.table.range_key;
         this.form.attributes = JSON.parse(response.data.table.attributes || []);
       } catch (e) {
-        console.log(e);
+        this.errorMessage = getErrorMessage(e);
       } finally {
         this.loading = false;
       }
@@ -150,8 +154,7 @@ export default {
           await this.create();
         }
       } catch (e) {
-        console.log(e);
-        this.hasError = true;
+        this.errorMessage = getErrorMessage(e);
       } finally {
         this.loading = false;
       }

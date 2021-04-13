@@ -14,8 +14,8 @@ class CreateAction extends ApiAction
     async validateParams() {
         let schema = Joi.object({
             project_id: Joi.number().required(),
-            name: Joi.string().required(),
-            version: Joi.string().optional().default('*')
+            name: Joi.string().required().label('Name'),
+            version: Joi.string().optional().default('*').label('Version')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }

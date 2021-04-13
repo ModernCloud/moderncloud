@@ -20,9 +20,9 @@ class UpdateAction extends ApiAction
 
     async validateParams() {
         let schema = Joi.object({
-            name: Joi.string().optional(),
-            email: Joi.string().email().optional(),
-            password: Joi.any().optional()
+            name: Joi.string().optional().label('Name'),
+            email: Joi.string().email().optional().label('Email'),
+            password: Joi.any().optional().label('Password')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }

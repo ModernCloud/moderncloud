@@ -24,8 +24,8 @@ class GenerateToken extends ApiAction
 
     async validateParams() {
         let schema = Joi.object({
-            email: Joi.string().email().required(),
-            password: Joi.string().min(6).required()
+            email: Joi.string().email().required().label('Email'),
+            password: Joi.string().min(6).required().label('Password')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }

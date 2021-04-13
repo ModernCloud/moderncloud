@@ -24,6 +24,10 @@ class GetAction extends ApiAction
     }
 
     async loadMetrics() {
+        if (this.environment.api_gateway_id == null) {
+            this.metrics = {};
+            return;
+        }
         let timeRange = [moment().subtract(this.req.query.time_period ?? 1, 'hours'), moment()];
         let cloudwatch = new Cloudwatch(this.environment);
         let [invocations, errors, concurrency, duration] = await Promise.all([

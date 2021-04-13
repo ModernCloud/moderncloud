@@ -22,7 +22,7 @@ class SearchAction extends ApiAction
         this.functions = await Function.query()
             .where('user_id', this.currentUser.id)
             .where('project_id', this.validRequest.project_id)
-            .orderBy('name');
+            .orderBy('user_name');
     }
 }
 

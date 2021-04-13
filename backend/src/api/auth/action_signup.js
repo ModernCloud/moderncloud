@@ -26,9 +26,9 @@ class SignupAction extends ApiAction
 
     async validateParams() {
         let schema = Joi.object({
-            email: Joi.string().email().required(),
-            password: Joi.string().min(6).required(),
-            name: Joi.string().required()
+            email: Joi.string().email().required().label('Email'),
+            password: Joi.string().min(6).required().label('Password'),
+            name: Joi.string().required().label('Name')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
