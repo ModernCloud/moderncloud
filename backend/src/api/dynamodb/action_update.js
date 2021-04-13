@@ -20,7 +20,7 @@ class UpdateAction extends ApiAction
             read_capacity: Joi.number().optional().label('Read Capacity'),
             write_capacity: Joi.number().optional().label('Write Capacity'),
             hash_key: Joi.string().optional().label('Hash Key'),
-            range_key: Joi.string().optional().label('Range Key'),
+            range_key: Joi.string().optional().allow(null, '').label('Range Key'),
             attributes: Joi.array().optional().label('Attributes')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
