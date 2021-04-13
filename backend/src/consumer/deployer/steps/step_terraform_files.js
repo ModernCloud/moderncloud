@@ -60,9 +60,7 @@ async function createFunctionFiles(job) {
                     variables: envVariables
                 },
                 function: {
-                    name: row.name,
-                    handler: row.handler,
-                    runtime: row.runtime,
+                    ...row,
                     root: path.join(job.getFunctionsRoot(), row.name),
                     zip_file: path.join(job.getTmpRoot(), `function_${row.name}.zip`)
                 }
