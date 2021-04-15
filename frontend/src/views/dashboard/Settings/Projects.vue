@@ -68,36 +68,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  .projects {
-    .project {
-      padding: 20px;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-
-      .name {
-        display: flex;
-        align-items: center;
-        font-weight: 500;
-        font-size: 18px;
-      }
-
-      .links {
-        margin-top: 5px;
-        display: flex;
-
-        a {
-          font-size: 11px;
-          margin-right: 5px;
-          min-width: auto;
-
-          &:hover {
-            background: rgba(0, 0, 0, .16);
-          }
-        }
-      }
-    }
-  }
-</style>

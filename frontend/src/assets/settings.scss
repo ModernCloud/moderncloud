@@ -21,4 +21,143 @@
       }
     }
   }
+
+  .projects {
+    .project {
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+      .name {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        font-size: 18px;
+      }
+
+      .links {
+        margin-top: 5px;
+        display: flex;
+
+        a {
+          font-size: 11px;
+          margin-right: 5px;
+          min-width: auto;
+
+          &:hover {
+            background: rgba(0, 0, 0, .16);
+          }
+        }
+      }
+    }
+  }
+
+  .environment {
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+
+    .environment-header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: baseline;
+
+      .name {
+        font-size: 18px;
+        font-weight: 500;
+
+        .region {
+          font-size: 12px;
+          color: rgba(0, 0, 0, .5);
+          font-weight: 400;
+        }
+      }
+    }
+
+    .links {
+      margin-top: 5px;
+      display: flex;
+
+      a {
+        font-size: 11px;
+        margin-right: 5px;
+        min-width: auto;
+
+        &:hover {
+          background: rgba(0, 0, 0, .16);
+        }
+      }
+    }
+
+    .info {
+      font-size: 12px;
+      color: rgba(0, 0, 0, .5);
+      margin-top: 10px;
+
+      .item {
+        margin-bottom: 10px;
+        border-left: 1px dashed rgba(0, 0, 0, .1);
+        padding-left: 5px;
+
+        .name {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+[data-theme="dark"] {
+  #settings {
+    background-color: #202023;
+    .back-button {
+      border-bottom: 1px solid #303235;
+      a {
+        color: #F7F8F8;
+      }
+    }
+
+    .projects {
+      .project {
+        color: #F7F8F8;
+        box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 4px;
+
+        .links {
+          a {
+            &:hover {
+              background: rgba(255, 255, 255, 0.7);
+            }
+          }
+        }
+      }
+    }
+
+    .environment {
+      color: #F7F8F8;
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 1px 4px;
+
+      .environment-header {
+        .name {
+        }
+      }
+
+      .links {
+        a {
+          &:hover {
+            background: rgba(255, 255, 255, 0.7);
+          }
+        }
+      }
+
+      .info {
+        color: #F7F8F8;
+
+        .item {
+          border-left: 1px dashed rgba(255, 255, 255, .3);
+        }
+      }
+    }
+  }
 }

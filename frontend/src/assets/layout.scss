@@ -45,3 +45,17 @@ aside {
   height: 100%;
   overflow-y: auto;
 }
+
+[data-theme="dark"] {
+  header {
+    background-color: #202023;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .16);
+    border-bottom: 1px solid #303235;
+  }
+
+  aside {
+    background-color: #202023;
+    color: #F7F8F8;
+    border-right: 1px solid #303235;
+  }
+}

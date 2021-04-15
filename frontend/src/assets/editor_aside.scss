@@ -211,3 +211,71 @@ aside#editor-aside {
     }
   }
 }
+
+[data-theme="dark"] {
+  aside#editor-aside {
+    .footer {
+      .button-projects {
+        &:hover, &.active {
+          background: #2D2E36;
+        }
+
+        svg.chevron {
+          color: #90959D;
+        }
+
+        .menu {
+          background: #2D2E36 0% 0% no-repeat padding-box;
+          box-shadow: 0 20px 40px #00000033;
+
+          a {
+            color: #F7F8F8;
+
+            &.new-link {
+              border-top: 1px solid #303235;
+            }
+
+            svg {
+              color: #F7F8F8;
+            }
+          }
+        }
+      }
+    }
+
+    section {
+      &.accordion {
+        .section-title {
+          color: #F7F8F8;
+          &:hover, &:active {
+            background: #2D2E36;
+          }
+        }
+
+        .content {
+          .item {
+            a.link {
+              color: #F7F8F8;
+            }
+
+            .item-name {
+              color: #F7F8F8;
+            }
+
+            &:hover {
+              background: #2D2E36;
+
+              .action-menu {
+                a {
+                  &:hover {
+                    color: #5269C9;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

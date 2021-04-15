@@ -429,3 +429,198 @@
   .monaco-editor {
   }
 }
+
+[data-theme="dark"] {
+  #code-editor {
+    background: #202023;
+
+    .empty-state {
+      div {
+        color: #90959D;
+        p {
+          color: #90959D;
+        }
+      }
+    }
+
+    .button-collapse {
+      color: rgba(0, 0, 0, .8);
+
+      &:hover {
+        color: rgba(0, 0, 0, .9);
+        background: rgba(0, 0, 0, .1);
+      }
+    }
+
+    &.collapsed {
+      .button-collapse {
+        color: rgba(0, 0, 0, .9);
+        background: rgba(0, 0, 0, .1);
+      }
+    }
+
+    .code-area {
+      .tools {
+        border-bottom: 1px solid #303235;
+      }
+
+      .button-scroll-left, .button-scroll-right {
+        color: #F7F8F8;
+      }
+
+      .button-scroll-left.disabled, .button-scroll-right.disabled {
+        color: #303235;
+      }
+
+      .files {
+        .file {
+          color: #F7F8F8;
+          background: #202023;
+
+          .action {
+            &:hover {
+              color: #151b26;
+              .icon {
+                background: #35363E;
+              }
+            }
+          }
+
+          &.open, &:hover {
+            background: #35363E;
+          }
+        }
+      }
+    }
+
+    .info-panel {
+      border-left: 1px solid #303235;
+
+      .header-menu {
+        border-bottom: 1px solid #303235;
+
+        .button {
+          &:hover {
+            background: #35363E;
+          }
+
+          .icon {
+            color: #6B6F77;
+          }
+
+          .title {
+            h3 {
+              color: #F7F8F8;
+
+              svg {
+                color: #F7F8F8;
+              }
+            }
+          }
+        }
+
+        .options {
+          background: #fff;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
+
+          .option-item {
+            color: #3C4149;
+
+            .check {
+              color: #5269C9;
+            }
+          }
+        }
+      }
+
+      > .body {
+        color: #F7F8F8;
+
+        .section-link {
+          border-bottom: 1px solid #303235;
+          color: #F7F8F8;
+        }
+
+        .section-header {
+          h3 {
+            color: #F7F8F8;
+          }
+
+          .buttons {
+            button {
+              border: 1px solid #DFE1E4;
+              background: #fff;
+              color: #3C4149;
+
+              &:hover {
+                background: #DFE1E4;
+              }
+            }
+          }
+        }
+
+        h3 {
+          color: #F7F8F8;
+        }
+
+        section {
+          border-bottom: 1px solid #303235;
+        }
+      }
+
+      .deployment {
+        .environment-row {
+          border-bottom: 1px solid #303235;
+
+          .informations {
+            .information {
+              .detail {
+                color: #F7F8F8;
+              }
+            }
+          }
+        }
+      }
+
+      .overview, .logs {
+        .menu {
+          a {
+            background: #303235;
+            color: #F7F8F8;
+
+            &.active, &:hover {
+              color: #303235;
+              background: #F1F3F8;
+            }
+          }
+
+          .time, .environments {
+            border: 1px solid #303235;
+          }
+        }
+
+        .stats {
+          border-bottom: 1px solid #303235;
+          .number {
+            color: #F7F8F8;
+          }
+
+          .title {
+            color: #F7F8F8;
+          }
+        }
+      }
+
+      .logs {
+        .log_streams {
+          .stream {
+            border-bottom: 1px solid #303235;
+            &:hover {
+              background: #303235;
+            }
+          }
+        }
+      }
+    }
+  }
+}

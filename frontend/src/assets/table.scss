@@ -18,3 +18,22 @@ table {
     }
   }
 }
+
+[data-theme="dark"] {
+  table {
+    thead {
+      th {
+        color: #F7F8F8;
+        background: rgba(0, 0, 0, .16) !important;
+        border-bottom: 1px solid #303235 !important;
+      }
+    }
+
+    tbody {
+      td {
+        color: #F7F8F8;
+        border-bottom-color: #303235;
+      }
+    }
+  }
+}

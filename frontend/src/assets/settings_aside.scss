@@ -48,3 +48,31 @@ aside#settings-aside {
     }
   }
 }
+
+
+[data-theme="dark"] {
+  aside#settings-aside {
+    section {
+
+      &.links {
+        .title {
+          color: #F7F8F8;
+        }
+
+        a {
+          color: #F7F8F8;
+
+          &:hover, &.active {
+            background: #2D2E36;
+          }
+
+          &.logout {
+            &:hover {
+              background: transparent;
+            }
+          }
+        }
+      }
+    }
+  }
+}

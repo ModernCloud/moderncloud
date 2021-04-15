@@ -83,3 +83,28 @@
     }
   }
 }
+
+[data-theme="dark"] {
+  .modal {
+    color: #202023;
+
+    .modal-wrapper {
+      background: #202023;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+
+      .header {
+        .title {
+          color: #F7F8F8 !important;
+        }
+
+        .close {
+          color: #6B6F77;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+      }
+    }
+  }
+}

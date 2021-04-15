@@ -75,3 +75,41 @@ a {
     width: 100%;
   }
 }
+
+[data-theme="dark"] {
+  .divider {
+    background: #303235;
+  }
+
+  a {
+    color: #5269C9;
+  }
+
+  .text-success {
+    color: $success;
+  }
+
+  .text-danger {
+    color: $danger;
+  }
+
+  .text-primary {
+    color: $primary;
+  }
+
+  .page {
+    .content {
+      .header {
+        border-bottom: 1px solid #303235;
+
+        .title {
+          color: #F7F8F8;
+        }
+
+        .subtitle {
+          color: #F7F8F8;
+        }
+      }
+    }
+  }
+}

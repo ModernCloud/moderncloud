@@ -30,7 +30,7 @@ export default {
     this.monacoEditor = monaco.editor.create(document.getElementById('editor'), {
       value: this.value,
       language: "javascript",
-      theme: "vs-light",
+      theme: this.$store.state.account.settings.theme === 'dark' ? 'vs-dark' : 'vs-light',
       automaticLayout: true,
       minimap: { enabled: false },
       scrollBeyondLastLine: false,
