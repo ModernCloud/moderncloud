@@ -1,7 +1,10 @@
 <template>
   <aside id="editor-aside">
     <section class="brand">
-      <router-link to="/" class="name"><img src="../../../assets/img/logo.png" height="19" /></router-link>
+      <router-link to="/" class="name">
+      <img src="../../../assets/img/logo.png" height="19" v-if="$store.state.account.settings.theme === 'light'" />
+      <img src="../../../assets/img/logo_dark.png" height="19" v-if="$store.state.account.settings.theme === 'dark'" />
+      </router-link>
     </section>
     <perfect-scrollbar class="modules" :options="{suppressScrollX: true}">
         <Endpoints />

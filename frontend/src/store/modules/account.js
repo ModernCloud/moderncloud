@@ -25,8 +25,10 @@ const mutations = {
     },
 
     changeTheme(state, theme) {
-        state.settings.theme = theme;
-        document.getElementsByTagName('body').item(0).setAttribute('data-theme', theme);
+        if (theme) {
+            state.settings.theme = theme;
+        }
+        document.getElementsByTagName('body').item(0).setAttribute('data-theme', state.settings.theme);
     }
 }
 

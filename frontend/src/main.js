@@ -38,6 +38,7 @@ function checkToken() {
 
 async function run() {
     document.getElementById('loading').remove();
+    store.commit('changeTheme');
 
     firebase.initializeApp({
         apiKey: "AIzaSyAV5XeHaikSuThrfDnOjBeUXarz5lNzJbI",

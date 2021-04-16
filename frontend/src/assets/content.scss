@@ -74,6 +74,12 @@ a {
     max-width: 640px;
     width: 100%;
   }
+
+  section.preference {
+    h3 {
+      font-size: 20px;
+    }
+  }
 }
 
 [data-theme="dark"] {
@@ -108,6 +114,16 @@ a {
 
         .subtitle {
           color: #F7F8F8;
+        }
+      }
+
+      section.preference {
+        h3 {
+          color: #F7F8F8;
+        }
+
+        p {
+          color: rgba(255, 255, 255, .5);
         }
       }
     }
