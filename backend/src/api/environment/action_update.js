@@ -2,12 +2,14 @@ const Joi = require('joi');
 const ApiAction = require('../action');
 const ApiError = require('../error');
 const { Environment } = require('../../common/db');
+const IAM = require('../../common/aws/iam');
 
 class UpdateAction extends ApiAction
 {
     async tryExecute() {
         await this.checkUser();
         await this.validateParams();
+        await this.checkAWSPermissions();
         await this.loadEnvironment();
         await this.updateEnvironment();
         return this.response.success({}, 200);
@@ -22,6 +24,15 @@ class UpdateAction extends ApiAction
             secret_key: Joi.string().allow(null, '').optional().default(null).label('Secret Key')
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
+    }
+
+    async checkAWSPermissions() {
+        if (this.validRequest.access_key && this.validRequest.secret_key) {
+            let hasPermissions = await (new IAM(this.validRequest.access_key, this.validRequest.secret_key)).hasPermissions();
+            if (hasPermissions === false) {
+                throw new ApiError('Your AWS credential does not have required permissions!', 10515, 400);
+            }
+        }
     }
 
     async loadEnvironment() {

@@ -20,12 +20,13 @@
           </div>
           <div class="mb-2">
             <label class="form-label">AWS Access Key</label>
-            <input type="text" class="form-control" v-model="form.access_key" />
+            <input type="text" class="form-control" v-model="form.access_key" :disabled="isDeployed" />
           </div>
           <div class="mb-2">
             <label class="form-label">AWS Secret Key</label>
-            <input type="text" class="form-control" v-model="form.secret_key" />
+            <input type="text" class="form-control" v-model="form.secret_key" :disabled="isDeployed" />
           </div>
+          <div class="form-text" v-if="isDeployed">Please destroy resources first to change AWS credentials.</div>
         </form>
       </div>
       <div class="actions">
@@ -54,6 +55,7 @@ export default {
       loading: false,
       current_id: 0,
       regions: regions,
+      isDeployed: false,
       form: {
         name: null,
         region: null,
@@ -98,6 +100,11 @@ export default {
         this.form.region = response.data.environment.region;
         this.form.access_key = response.data.environment.access_key;
         this.form.secret_key = response.data.environment.secret_key;
+        if (response.data.environment.api_gateway_id != null
+          || response.data.environment.api_gateway_arn != null
+          || response.data.environment.api_gateway_url != null) {
+          this.isDeployed = true;
+        }
       } catch (e) {
         this.errorMessage = getErrorMessage(e);
       } finally {
