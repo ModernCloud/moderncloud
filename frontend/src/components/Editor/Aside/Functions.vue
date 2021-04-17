@@ -109,8 +109,9 @@ export default {
       await this.loadItems();
       await this.openFile(id);
     },
-    async updated() {
+    async updated(id) {
       await this.loadItems();
+      await this.openFile(id);
     },
     async openFile(id) {
       this.fileIsOpening = id;

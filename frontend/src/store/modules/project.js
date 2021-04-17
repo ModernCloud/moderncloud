@@ -1,6 +1,5 @@
 import axios from "axios";
 import router from '@/router';
-import find from "lodash/find";
 import findIndex from "lodash/findIndex";
 
 const state = {
@@ -12,7 +11,10 @@ const state = {
 
 const mutations = {
     openFile(state, file) {
-        if (find(state.files, {id: file.id, type: file.type}) === undefined) {
+        let index = findIndex(state.files, {id: file.id, type: file.type});
+        if (index > -1) {
+            state.files[index] = file;
+        } else {
             state.files.push(file);
         }
         state.currentFile = file;
