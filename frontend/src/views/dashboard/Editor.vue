@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-    <EditorAside ref="aside"></EditorAside>
-    <CodeEditor ref="codeEditor" @changed="codeChanged"></CodeEditor>
+    <EditorAside></EditorAside>
+    <CodeEditor></CodeEditor>
   </div>
 </template>
 
@@ -13,11 +13,6 @@ export default {
   components: {
     EditorAside,
     CodeEditor
-  },
-  methods: {
-    codeChanged(file) {
-      this.$refs.aside.codeChanged(file);
-    }
   }
 }
 </script>

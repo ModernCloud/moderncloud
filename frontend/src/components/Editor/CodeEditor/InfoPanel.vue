@@ -13,13 +13,13 @@
           </div>
         </div>
         <div class="options" v-if="menu_visible">
-          <div class="option-item" @click="showMode('overview')">
-            <IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview
-            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isOverview" />
-          </div>
           <div class="option-item" @click="showMode('deployment')">
             <IconDeployment :stroke-width="1.5" :width="18" :height="18" /> Deployment
             <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isDeployment" />
+          </div>
+          <div class="option-item" @click="showMode('overview')">
+            <IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview
+            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isOverview" />
           </div>
           <div class="option-item" @click="showMode('logs')">
             <IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       menu_visible: false,
-      mode: 'overview'
+      mode: 'deployment'
     }
   },
   watch: {

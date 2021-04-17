@@ -8,6 +8,9 @@ module.exports = app => {
     app.put('/functions/:id', async (req, res) => {
         await require('./action_update').execute(req, res);
     });
+    app.put('/functions/:id/code', async (req, res) => {
+        await require('./action_update_code').execute(req, res);
+    });
     app.get('/functions/:id', async (req, res) => {
         await require('./action_get').execute(req, res);
     });

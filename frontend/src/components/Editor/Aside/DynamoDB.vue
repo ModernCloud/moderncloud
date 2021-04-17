@@ -60,7 +60,7 @@ export default {
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       showContent: false,
       items: []
     }
@@ -71,7 +71,9 @@ export default {
     }
   },
   async mounted() {
-    await this.loadItems();
+    if (this.$store.state.project.selected != null && this.loading === false) {
+      await this.loadItems();
+    }
   },
   methods: {
     async loadItems() {

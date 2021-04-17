@@ -17,6 +17,9 @@ const mutations = {
         }
         state.currentFile = file;
     },
+    switchFile(state, file) {
+        state.currentFile = file;
+    },
     closeFile(state, file) {
         let index = findIndex(state.files, {id: file.id, type: file.type});
         state.files.splice(index, 1);
@@ -24,7 +27,7 @@ const mutations = {
             if (state.files.length === 0) {
                 state.currentFile = {id: null, name: null, type: null, sourceCode: null};
             } else {
-                state.currentFile = state.files[index > 0 ? index-- : index++];
+                state.currentFile = state.files[index > 0 ? --index : 0];
             }
         }
     },

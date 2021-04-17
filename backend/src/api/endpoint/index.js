@@ -8,6 +8,9 @@ module.exports = app => {
     app.put('/endpoints/:id', async (req, res) => {
         await require('./action_update').execute(req, res);
     });
+    app.put('/endpoints/:id/code', async (req, res) => {
+        await require('./action_update_code').execute(req, res);
+    });
     app.get('/endpoints/:id', async (req, res) => {
         await require('./action_get').execute(req, res);
     });

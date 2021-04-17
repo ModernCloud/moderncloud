@@ -2,6 +2,31 @@
   <div class="deployment">
     <LogsModal ref="logs" />
     <EnvironmentVariablesModal ref="variables" />
+    <section style="padding-left: 8px; padding-right: 8px;">
+      <h4>File Details</h4>
+      <div>
+        <table>
+          <tr v-if="file.type === 'endpoint'">
+            <th>Endpoint</th>
+            <th>:</th>
+            <td>
+              {{ file.method }}
+              {{ file.path }}
+            </td>
+          </tr>
+          <tr v-if="file.type === 'function'">
+            <th>Function</th>
+            <th>:</th>
+            <td>{{ file.name }}</td>
+          </tr>
+          <tr v-if="file.description">
+            <th>Description</th>
+            <th>:</th>
+            <td>{{file.description}}</td>
+          </tr>
+        </table>
+      </div>
+    </section>
     <router-link class="section-link" :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">Manage Environments <IconArrowNarrowRight /></router-link>
     <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show" @show-variables="$refs.variables.show"></EnvironmentRow>
   </div>

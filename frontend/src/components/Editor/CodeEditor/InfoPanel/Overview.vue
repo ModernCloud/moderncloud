@@ -1,34 +1,9 @@
 <template>
   <div class="overview">
     <section>
-      <h3>File Details</h3>
-      <div>
-        <table>
-          <tr v-if="file.type === 'endpoint'">
-            <th>Endpoint</th>
-            <th>:</th>
-            <td>
-              {{ file.method }}
-              {{ file.path }}
-            </td>
-          </tr>
-          <tr v-if="file.type === 'function'">
-            <th>Function</th>
-            <th>:</th>
-            <td>{{ file.name }}</td>
-          </tr>
-          <tr v-if="file.description">
-            <th>Description</th>
-            <th>:</th>
-            <td>{{file.description}}</td>
-          </tr>
-        </table>
-      </div>
-    </section>
-    <section>
       <div class="menu">
         <div class="environments">
-          <a href="javascript:;" v-for="environment in environments" :key="environment.id" :class="{active: selectedEnvironmentId === environment.id}" @click="selectedEnvironmentId = environment.id">{{environment.name}}</a>
+          <a href="javascript:;" v-for="environment in environments" :key="environment.id" :class="{active: selectedEnvironment.id === environment.id}" @click="selectedEnvironment = environment">{{environment.name}}</a>
         </div>
         <div class="time">
           <a href="javascript:;" @click="timePeriod = 1" :class="{active: timePeriod === 1}">1h</a>
@@ -76,7 +51,7 @@ export default {
       loadingEnvironments: false,
       loadingMetrics: false,
       environments: [],
-      selectedEnvironmentId: 0,
+      selectedEnvironment: {id: null},
       timePeriod: 1,
       metrics: {
         totalInvocations: 0,
@@ -91,7 +66,7 @@ export default {
     async file() {
       await this.loadEnvironments();
     },
-    async selectedEnvironmentId() {
+    async selectedEnvironment() {
       this.initialized = false;
       await this.loadMetrics();
     },
@@ -112,13 +87,13 @@ export default {
     async loadEnvironments() {
       this.loadingEnvironments = true;
       try {
-        let response = await axios.get('/api/environments',{
+        let response = await axios.get('/api/environments?with_last_success_deployment=true',{
           params: {
             project_id: this.$store.state.project.selected.id
           }
         });
         this.environments = response.data.environments;
-        this.selectedEnvironmentId = this.environments[0].id;
+        this.selectedEnvironment = this.environments[0];
       } catch (e) {
         console.log(e);
       } finally {
@@ -126,6 +101,17 @@ export default {
       }
     },
     async loadMetrics() {
+      if (this.timeoutId != null) {
+        clearTimeout(this.timeoutId);
+      }
+      if (this.selectedEnvironment.id != null && this.selectedEnvironment.last_success_deployment == null) {
+        this.metrics.totalInvocations = 0;
+        this.metrics.totalErrors = 0;
+        this.metrics.avgConcurrency = 0.00;
+        this.metrics.avgDuration = 0.00
+        this.initialized = true;
+        return;
+      }
       if (this.initialized === false) {
         this.metrics.totalInvocations = '...';
         this.metrics.totalErrors = '...';
@@ -134,7 +120,7 @@ export default {
       }
       this.loadingMetrics = true;
       try {
-        let response = await axios.get(`/api/environments/${this.selectedEnvironmentId}/metrics/${this.file.function_name}?time_period=${this.timePeriod}`);
+        let response = await axios.get(`/api/environments/${this.selectedEnvironment.id}/metrics/${this.file.function_name}?time_period=${this.timePeriod}`);
         if (response.data.metrics.invocations) {
           this.metrics.totalInvocations = sum(response.data.metrics.invocations.MetricDataResults[0].Values);
         } else {

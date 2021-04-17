@@ -63,15 +63,10 @@ export default {
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       showContent: false,
       items: [],
       fileIsOpening: null,
-      currentFile: {
-        id: null,
-        type: null,
-        sourceCode: null
-      }
     }
   },
   watch: {
@@ -80,15 +75,13 @@ export default {
     }
   },
   async mounted() {
-    await this.loadItems();
-    CodeEditorEvents.$on('fileChanged', this.fileChanged);
-    CodeEditorEvents.$on('openFile', file => {
-      this.currentFile = file;
-    });
+    if (this.$store.state.project.selected != null && this.loading === false) {
+      await this.loadItems();
+    }
+    CodeEditorEvents.$on('sourceCodeUpdated', this.updateSourceCode);
   },
   destroyed() {
-    CodeEditorEvents.$off('fileChanged');
-    CodeEditorEvents.$off('openFile');
+    CodeEditorEvents.$off('sourceCodeUpdated');
   },
   methods: {
     async loadItems() {
@@ -138,12 +131,12 @@ export default {
         this.fileIsOpening = null;
       }
     },
-    async fileChanged(file) {
+    async updateSourceCode(file) {
       if (file.type !== 'function') {
         return;
       }
       try {
-        await axios.put('/api/functions/' + file.id, {
+        await axios.put('/api/functions/' + file.id + '/code', {
           project_id: this.$store.state.project.selected.id,
           code: file.sourceCode
         });
@@ -155,7 +148,7 @@ export default {
       this.loading = true;
       try {
         await axios.delete('/api/functions/' + selectedItem.id);
-        CodeEditorEvents.$emit('removeFile', {id: selectedItem.id, type: 'function', sourceCode: null});
+        CodeEditorEvents.$emit('closeFile', {id: selectedItem.id, type: 'function', sourceCode: null});
       } catch (e) {
         console.log(e);
       } finally {
