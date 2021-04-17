@@ -1,5 +1,5 @@
 const shelljs = require('shelljs');
-const {Deployment, Environment} = require('../../../common/db');
+const {Environment, EnvironmentOutput, Endpoint, Function} = require('../../../common/db');
 
 async function runInit(job) {
     await job.addLog(`$ terraform init`);
@@ -11,7 +11,7 @@ async function runInit(job) {
         await job.addLog(result.stderr);
     }
     if (result.code > 0) {
-        throw new Error(`Failed: terraform init | Deployment: ${job.deployment.id}`);
+        throw new Error(`Failed: terraform init | Task: ${job.task.id}`);
     }
 }
 
@@ -25,7 +25,7 @@ async function runApply(job) {
         await job.addLog(result.stderr);
     }
     if (result.code > 0) {
-        throw new Error(`Failed: terraform apply | Deployment: ${job.deployment.id}`);
+        throw new Error(`Failed: terraform apply | Task: ${job.task.id}`);
     }
 }
 
@@ -39,18 +39,19 @@ async function runOutput(job) {
         await job.addLog(result.stderr);
     }
     if (result.code > 0) {
-        throw new Error(`Failed: terraform output | Deployment: ${job.deployment.id}`);
+        throw new Error(`Failed: terraform output | Task: ${job.task.id}`);
     }
-    await Deployment.query()
-        .where('id', job.deployment.id)
-        .update({'output': result.stdout});
-    let json = JSON.parse(result.stdout);
+    return JSON.parse(result.stdout);
+}
+
+async function updateEnvironmentOutputs(job, json) {
     await Environment.query()
         .where('id', job.environment.id)
         .update({
             'api_gateway_id': json.api_gateway_id.value,
             'api_gateway_url': json.api_gateway_url.value,
             'api_gateway_arn': json.api_gateway_arn.value,
+            'output': JSON.stringify(json)
         });
 }
 
@@ -58,6 +59,7 @@ module.exports = {
     run: async (job) => {
         await runInit(job);
         await runApply(job);
-        await runOutput(job);
+        let output = await runOutput(job);
+        await updateEnvironmentOutputs(job, output);
     }
 }

@@ -5,28 +5,12 @@ const rimraf = require('rimraf');
 const { Function, Endpoint, EnvironmentVariable, Dynamodb } = require('../../../common/db');
 const render = require('../../../common/template/render');
 
-async function updateTerraformFiles(job) {
-    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'iam.tf'), path.join(job.getTerraformRoot(), 'iam.tf'));
-    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'main.tf'), path.join(job.getTerraformRoot(), 'main.tf'));
-    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'variables.tf'), path.join(job.getTerraformRoot(), 'variables.tf'));
-    render(
-        path.join(job.getTerraformTemplates(), 'terraform.tfvars.twig'),
-        path.join(job.getTerraformRoot(), 'terraform.tfvars'),
-        {
-            aws: {
-                region: job.environment.region,
-                access_key: job.environment.access_key,
-                secret_key: job.environment.secret_key
-            }
-        }
-    )
-}
-
 async function removeFiles(job) {
     for (const filePath of fs.readdirSync(job.getTerraformRoot())) {
-        if (filePath.indexOf('lambda_') > -1
-            || filePath.indexOf('endpoint_') > -1
-            || filePath.indexOf('api_gateway_') > -1) {
+        if (filePath.indexOf('*.tf') > -1) {
+            fs.unlinkSync(path.join(job.getTerraformRoot(), filePath));
+        }
+        if (filePath.indexOf('*.tfvars') > -1) {
             fs.unlinkSync(path.join(job.getTerraformRoot(), filePath));
         }
     }
@@ -44,6 +28,23 @@ async function removeFiles(job) {
     }
 }
 
+async function updateTerraformFiles(job) {
+    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'iam.tf'), path.join(job.getTerraformRoot(), 'iam.tf'));
+    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'main.tf'), path.join(job.getTerraformRoot(), 'main.tf'));
+    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'variables.tf'), path.join(job.getTerraformRoot(), 'variables.tf'));
+    render(
+        path.join(job.getTerraformTemplates(), 'terraform.tfvars.twig'),
+        path.join(job.getTerraformRoot(), 'terraform.tfvars'),
+        {
+            aws: {
+                region: job.environment.region,
+                access_key: job.environment.access_key,
+                secret_key: job.environment.secret_key
+            }
+        }
+    )
+}
+
 async function createFunctionFiles(job) {
     let functions = await Function.query().where('project_id', job.project.id);
     let envVariables = await EnvironmentVariable.query()
@@ -52,7 +53,7 @@ async function createFunctionFiles(job) {
     for (const row of functions) {
         render(
             path.join(job.getTerraformTemplates(), 'lambda.tf.twig'),
-            path.join(job.getTerraformRoot(), `lambda_${row.name}.tf`),
+            path.join(job.getTerraformRoot(), `${row.name}.tf`),
             {
                 project: job.project,
                 environment: {
@@ -62,7 +63,7 @@ async function createFunctionFiles(job) {
                 function: {
                     ...row,
                     root: path.join(job.getFunctionsRoot(), row.name),
-                    zip_file: path.join(job.getTmpRoot(), `function_${row.name}.zip`)
+                    zip_file: path.join(job.getTmpRoot(), `${row.name}.zip`)
                 }
             }
         );

@@ -14,11 +14,11 @@ services:
       - ./backend:/data
     working_dir: /data
     command: npm run dev_api
-  deployer:
-    container_name: moderncloud_deployer
+  worker:
+    container_name: moderncloud_worker
     build:
       context: ./
-      dockerfile: Dockerfile.consumer
+      dockerfile: Dockerfile.backend
     depends_on:
       - mysql
       - rabbitmq
@@ -27,21 +27,7 @@ services:
     volumes:
       - ./backend:/data
     working_dir: /data
-    command: npm run dev_deployer
-  destroyer:
-    container_name: moderncloud_destroyer
-    build:
-      context: ./
-      dockerfile: ./Dockerfile.consumer
-    depends_on:
-      - mysql
-      - rabbitmq
-    env_file:
-      - backend/.env
-    volumes:
-      - ./backend:/data
-    working_dir: /data
-    command: npm run dev_destroyer
+    command: npm run dev_worker
   postgres:
     container_name: moderncloud_postgres
     image: postgres:13.2

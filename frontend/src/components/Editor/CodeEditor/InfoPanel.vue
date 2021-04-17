@@ -70,7 +70,7 @@ export default {
   },
   watch: {
     file() {
-      this.mode = 'overview';
+      this.mode = 'deployment';
     }
   },
   computed: {

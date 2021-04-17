@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const ApiAction = require('../action');
-const { Environment, Deployment, DeploymentLog } = require('../../common/db');
+const { Environment, Task, TaskLog } = require('../../common/db');
 
 class SearchAction extends ApiAction
 {
@@ -8,8 +8,6 @@ class SearchAction extends ApiAction
         await this.checkUser();
         await this.validateParams();
         await this.loadEnvironments();
-        await this.loadLastDeployment();
-        await this.loadLastSuccessDeployment();
         return this.response.success({environments: this.environments});
     }
 
@@ -27,48 +25,52 @@ class SearchAction extends ApiAction
             .where('user_id', this.currentUser.id)
             .where('project_id', this.validRequest.project_id)
             .orderBy('name');
+        for (const index in this.environments) {
+            this.environments[index].output = JSON.parse(this.environments[index].output || '{}');
+            await this.loadLastDeployment(index);
+            await this.loadLastSuccessDeployment(index);
+        }
     }
 
-    async loadLastDeployment() {
+    async loadLastDeployment(index) {
         if (this.validRequest.with_last_deployment === false) {
             return;
         }
-        for (const index in this.environments) {
-            let deployment = await Deployment.query()
-                .where('environment_id', this.environments[index].id)
-                .orderBy('id', 'desc')
-                .first();
-            if (deployment instanceof Deployment) {
-                deployment.logs = await DeploymentLog.query()
-                    .where('deployment_id', deployment.id)
-                    .orderBy('created_at');
-            } else {
-                deployment = null;
-            }
-            this.environments[index].last_deployment = deployment;
+        let deployment = await Task.query()
+            .where('user_id', this.currentUser.id)
+            .where('environment_id', this.environments[index].id)
+            .whereIn('name', ['deploy', 'destroy'])
+            .orderBy('id', 'desc')
+            .first();
+        if (deployment instanceof Task) {
+            deployment.logs = await TaskLog.query()
+                .where('task_id', deployment.id)
+                .orderBy('created_at');
+        } else {
+            deployment = null;
         }
+        this.environments[index].last_deployment = deployment;
     }
 
-    async loadLastSuccessDeployment() {
+    async loadLastSuccessDeployment(index) {
         if (this.validRequest.with_last_success_deployment === false) {
             return;
         }
-        for (const index in this.environments) {
-            let deployment = await Deployment.query()
-                .where('environment_id', this.environments[index].id)
-                .where('current_status', 1)
-                .orderBy('id', 'desc')
-                .first();
-            if (deployment instanceof Deployment) {
-                deployment.logs = await DeploymentLog.query()
-                    .where('deployment_id', deployment.id)
-                    .orderBy('created_at');
-                deployment.output = JSON.parse(deployment.output) ?? {};
-            } else {
-                deployment = null;
-            }
-            this.environments[index].last_success_deployment = deployment;
+        let deployment = await Task.query()
+            .where('user_id', this.currentUser.id)
+            .where('environment_id', this.environments[index].id)
+            .whereIn('name', ['deploy', 'destroy'])
+            .where('current_status', 1)
+            .orderBy('id', 'desc')
+            .first();
+        if (deployment instanceof Task) {
+            deployment.logs = await TaskLog.query()
+                .where('task_id', deployment.id)
+                .orderBy('created_at');
+        } else {
+            deployment = null;
         }
+        this.environments[index].last_success_deployment = deployment;
     }
 }
 

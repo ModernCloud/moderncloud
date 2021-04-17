@@ -10,7 +10,7 @@ class Service {
 
     async hasPermissions() {
         let requiredPermissions = [
-            'IAMReadOnlyAccess',
+            'IAMFullAccess',
             'AWSLambda_FullAccess',
             'AmazonS3FullAccess',
             'AmazonDynamoDBFullAccess',

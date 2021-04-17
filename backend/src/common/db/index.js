@@ -1,11 +1,12 @@
 exports.knex = require('./knex');
-exports.Deployment = require('./models/Deployment');
-exports.DeploymentLog = require('./models/DeploymentLog');
 exports.Environment = require('./models/Environment');
 exports.EnvironmentVariable = require('./models/EnvironmentVariable');
+exports.EnvironmentOutput = require('./models/EnvironmentOutput');
 exports.Function = require('./models/Function');
 exports.Project = require('./models/Project');
 exports.Endpoint = require('./models/Endpoint');
 exports.User = require('./models/User');
 exports.Package = require('./models/Package');
 exports.Dynamodb = require('./models/Dynamodb');
+exports.Task = require('./models/Task');
+exports.TaskLog = require('./models/TaskLog');

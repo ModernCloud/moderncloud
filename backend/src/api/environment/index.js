@@ -17,9 +17,6 @@ module.exports = app => {
     app.put('/environments/:id/variables', async (req, res) => {
         await require('./action_variables_update').execute(req, res);
     });
-    app.post('/environments/:id/destroy', async (req, res) => {
-        await require('./action_destroy').execute(req, res);
-    });
     app.post('/environments/:id/set-domain', async (req, res) => {
         await require('./action_domain_set').execute(req, res);
     });

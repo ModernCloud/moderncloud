@@ -1,6 +1,6 @@
 const ApiAction = require('../action');
 const ApiError = require('../error');
-const { Environment, Deployment, DeploymentLog } = require('../../common/db');
+const { Environment, Task, TaskLog } = require('../../common/db');
 const Certificate = require('../../common/aws/certificate');
 
 class GetAction extends ApiAction
@@ -24,22 +24,24 @@ class GetAction extends ApiAction
         if (!(this.environment instanceof Environment)) {
             throw new ApiError('Environment not found!', 10504, 404);
         }
+        this.environment.output = JSON.parse(this.environment.output || '{}');
     }
 
     async loadLastSuccessDeployment() {
         if (this.req.query.hasOwnProperty('with_last_success_deployment') === false) {
             return;
         }
-        let deployment = await Deployment.query()
+        let deployment = await Task.query()
+            .where('user_id', this.currentUser.id)
             .where('environment_id', this.environment.id)
+            .whereIn('name', ['deploy', 'destroy'])
             .where('current_status', 1)
             .orderBy('id', 'desc')
             .first();
-        if (deployment instanceof Deployment) {
-            deployment.logs = await DeploymentLog.query()
-                .where('deployment_id', deployment.id)
+        if (deployment instanceof Task) {
+            deployment.logs = await TaskLog.query()
+                .where('task_id', deployment.id)
                 .orderBy('created_at');
-            deployment.output = JSON.parse(deployment.output) ?? {};
         } else {
             deployment = null;
         }

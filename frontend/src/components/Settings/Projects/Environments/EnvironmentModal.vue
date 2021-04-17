@@ -72,6 +72,7 @@ export default {
   methods: {
     async showAdd() {
       this.current_id = 0;
+      this.isDeployed = false;
       this.errorMessage = null;
       this.visible = !this.visible;
     },
@@ -79,12 +80,14 @@ export default {
       this.visible = !this.visible;
       this.errorMessage = null;
       this.loading = true;
+      this.isDeployed = false;
       this.current_id = id;
       await this.loadItem(id);
     },
     closeModal() {
       this.visible = !this.visible;
       this.errorMessage = null;
+      this.isDeployed = false;
       this.form.name = null;
       this.form.region = 'us-east-1';
       this.form.access_key = null;

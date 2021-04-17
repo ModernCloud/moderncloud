@@ -1,46 +1,33 @@
 const moment = require('moment');
-const {Deployment, DeploymentLog, Environment, Project} = require('../../common/db');
+const {Task, TaskLog, Environment, Project} = require('../../common/db');
 const path = require('path');
 
-class Deployer {
-    constructor(message) {
-        this.message = message;
-        this.json = JSON.parse(Buffer.from(message.content).toString());
+class TaskDeploy {
+    constructor(task, json) {
+        this.task = task;
+        this.json = json;
     }
 
     async run() {
         try {
-            await this.loadDeployment();
             await this.loadProject();
             await this.loadEnvironment();
             await require('./steps').run(this);
         } catch (e) {
             console.log(e);
-            if (this.deployment instanceof Deployment) {
-                await this.updateTaskStatus(2);
-            }
-        }
-    }
-
-    async loadDeployment() {
-        this.deployment = await Deployment.query()
-            .where('id', this.json.deployment_id)
-            .where('current_status', 0)
-            .first();
-        if (!(this.deployment instanceof Deployment)) {
-            throw new Error(`Deployment not found!`);
+            await this.updateTaskStatus(2);
         }
     }
 
     async loadProject() {
-        this.project = await Project.query().findById(this.deployment.project_id);
+        this.project = await Project.query().findById(this.task.project_id);
         if (!(this.project instanceof Project)) {
             throw new Error(`Project not found!`);
         }
     }
 
     async loadEnvironment() {
-        this.environment = await Environment.query().findById(this.deployment.environment_id);
+        this.environment = await Environment.query().findById(this.task.environment_id);
         if (!(this.environment instanceof Environment)) {
             throw new Error(`Environment not found!`);
         }
@@ -53,19 +40,19 @@ class Deployer {
 
     async updateTaskStatus(status) {
         let currentDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-        await Deployment.query()
-            .where('id', this.deployment.id)
+        await Task.query()
+            .where('id', this.task.id)
             .update({'current_status': status, 'updated_at': currentDate});
     }
 
     async addLog(detail) {
         let currentDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-        await Deployment.query()
-            .where('id', this.deployment.id)
+        await Task.query()
+            .where('id', this.task.id)
             .update({'updated_at': currentDate});
 
-        await DeploymentLog.query().insert({
-            deployment_id: this.deployment.id,
+        await TaskLog.query().insert({
+            task_id: this.task.id,
             detail: detail,
             created_at: currentDate
         });
@@ -104,4 +91,4 @@ class Deployer {
     }
 }
 
-module.exports = Deployer;
+module.exports = TaskDeploy;

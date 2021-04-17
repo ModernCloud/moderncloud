@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `environment` (
     api_gateway_url VARCHAR(255) DEFAULT NULL,
     api_gateway_arn VARCHAR(255) DEFAULT NULL,
     cloudfront_domain_name VARCHAR(255) DEFAULT NULL,
+    output JSON DEFAULT NULL,
     UNIQUE name_uniq (project_id, name),
     INDEX project_idx (project_id),
     PRIMARY KEY(id)
@@ -112,23 +113,25 @@ CREATE TABLE IF NOT EXISTS `environment_variable` (
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `deployment` (
+CREATE TABLE IF NOT EXISTS `task` (
     id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
-    user_id BIGINT UNSIGNED NOT NULL,
-    project_id BIGINT UNSIGNED NOT NULL,
-    environment_id BIGINT UNSIGNED NOT NULL,
-    output JSON DEFAULT NULL,
+    user_id BIGINT UNSIGNED AS (params->>'$.user_id'),
+    project_id BIGINT UNSIGNED AS (params->>'$.project_id'),
+    environment_id BIGINT UNSIGNED AS (params->>'$.environment_id'),
+    name VARCHAR(50) NOT NULL,
+    params JSON NOT NULL,
     current_status INT NOT NULL DEFAULT 0,
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
-    INDEX project_idx (project_id),
+    INDEX project_id (user_id, project_id),
+    INDEX environment_idx (user_id, environment_id),
     INDEX updated_at_idx (updated_at desc),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS `deployment_log` (
-    deployment_id BIGINT UNSIGNED NOT NULL,
+CREATE TABLE IF NOT EXISTS `task_log` (
+    task_id BIGINT UNSIGNED NOT NULL,
     detail TEXT DEFAULT NULL,
     created_at DATETIME NOT NULL,
-    INDEX deployment_idx (deployment_id)
+    INDEX task_idx (task_id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;

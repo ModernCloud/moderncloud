@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <DomainModal ref="domainModal" @refresh="loadEnvironments" />
+    <LogsModal ref="logs" />
     <EnvironmentModal ref="modal" @updated="loadEnvironments" @added="loadEnvironments" />
     <EnvironmentVariablesModal ref="variables" />
     <notifications position="top center" />
@@ -20,6 +21,8 @@
       <p v-if="initialized === false">Loading...</p>
       <div class="environments" v-if="initialized">
           <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment"
+                          @loadEnvironments="loadEnvironments()"
+                          @showLogs="$refs.logs.show"
                           @setDomain="$refs.domainModal.showAdd"
                           @showEdit="$refs.modal.showEdit"
                           @showVariables="$refs.variables.show" />
@@ -29,6 +32,7 @@
 </template>
 
 <script>
+import LogsModal from '@/components/Environments/LogsModal.vue';
 import DomainModal from '@/components/Settings/Projects/Environments/DomainModal.vue';
 import EnvironmentRow from '@/components/Settings/Projects/Environments/EnvironmentRow.vue';
 import EnvironmentModal from '@/components/Settings/Projects/Environments/EnvironmentModal.vue';
@@ -38,6 +42,7 @@ import axios from "axios";
 export default {
   components: {
     DomainModal,
+    LogsModal,
     EnvironmentRow,
     EnvironmentModal,
     EnvironmentVariablesModal

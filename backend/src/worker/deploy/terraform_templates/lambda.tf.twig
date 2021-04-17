@@ -5,7 +5,7 @@ data "archive_file" "{{ function.name }}_archive" {
 }
 
 resource "aws_lambda_function" "{{ function.name }}_function" {
-  function_name = "{{ function.name }}"
+  function_name = "{{project.name}}_{{environment.name}}_{{ function.name }}"
   filename = "{{ function.zip_file }}"
   source_code_hash = data.archive_file.{{ function.name }}_archive.output_base64sha256
 
@@ -28,7 +28,7 @@ resource "aws_lambda_function" "{{ function.name }}_function" {
 }
 
 resource "aws_cloudwatch_log_group" "{{ function.name }}_log_group" {
-  name              = "/aws/lambda/{{ function.name }}"
+  name              = "/aws/lambda/${aws_lambda_function.{{ function.name }}_function.function_name}"
   retention_in_days = 7
 }
 

@@ -1,10 +1,13 @@
 Backend
 
 ```bash
-$ cp backend/env.sample backend/.env
+$ cd backend/
+$ npm install --exact
+$ cp env.sample .env
+$ cd ..
 $ cp docker-compose.yml.sample docker-compose.yml
 $ docker-compose up -d
-$ docker-compose logs -f 
+$ docker-compose logs --tail=20 -f 
 ```
 
 Frontend

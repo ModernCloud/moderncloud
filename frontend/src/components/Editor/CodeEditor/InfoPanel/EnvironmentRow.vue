@@ -21,7 +21,7 @@
         <div v-if="environment.last_deployment === null" class="alert alert-warning">
           {{ resourceType }} has not been deployed yet in this environment.
         </div>
-        <div v-if="environment.last_deployment !== null && hasSuccessDeployment() === false" class="alert alert-warning">
+        <div v-if="isFileDeployed === false" class="alert alert-warning">
           This is a new <strong>{{ resourceType }}</strong>. Please click to <strong>Deploy</strong> button to see related informations.
         </div>
         <div class="informations" v-if="environment.last_deployment !== null">
@@ -48,10 +48,10 @@
               {{formatDate(environment.last_deployment.updated_at)}}
             </div>
           </div>
-          <div class="information" v-if="file.type === 'endpoint' && hasSuccessDeployment()">
+          <div class="information" v-if="file.type === 'endpoint' && isFileDeployed">
             <div class="name">URL :</div>
             <div class="detail">
-              <a href="javascript:;" @click="copyUrl()">{{ apiUrl() }}{{file.path}}</a>
+              <a href="javascript:;" @click="copyUrl()">{{ environment.api_gateway_url }}{{file.path}}</a>
             </div>
           </div>
         </div>
@@ -64,7 +64,6 @@
 import Confirm from "@/components/Confirm";
 import moment from "moment";
 import axios from "axios";
-import get from 'lodash/get';
 import has from 'lodash/has';
 
 export default {
@@ -81,7 +80,7 @@ export default {
   },
   data() {
     return {
-      isRunning: (this.environment.last_deployment == null || this.environment.last_deployment.current_status > 0) === false,
+      isRunning: (this.environment.last_deployment !== null && this.environment.last_deployment.current_status === 0),
       timeoutId: null
     }
   },
@@ -96,6 +95,9 @@ export default {
         return `${parseInt(seconds/60)} minutes ${seconds % 60} seconds`;
       }
       return seconds + ' seconds';
+    },
+    isFileDeployed() {
+      return has(this.environment.output, `${this.file.function_name}_invoke_arn`);
     }
   },
   mounted() {
@@ -112,33 +114,40 @@ export default {
     async deploy() {
       this.isRunning = true;
       try {
-        let response = await axios.post('/api/deployments',{
+        let response = await axios.post('/api/tasks/deploy/run',{
           project_id: this.$store.state.project.selected.id,
           environment_id: this.environment.id
         });
         this.createStatusChecker(response.data.id);
       } catch (e) {
         console.log(e);
+        this.isRunning = false;
+        this.$notify({
+          title: 'Failed',
+          type: 'danger',
+          text: 'Please try again!'
+        });
       }
     },
     createStatusChecker(deploymentId) {
       this.timeoutId = setTimeout(() => {
-        axios.get('/api/deployments/' + deploymentId).then(response => {
-          let deployment = response.data.deployment;
+        axios.get('/api/tasks/' + deploymentId).then(response => {
+          let deployment = response.data.task;
           deployment.logs = response.data.logs;
           this.environment.last_deployment = deployment;
-          if (response.data.deployment.current_status === 0) {
+          if (deployment.current_status === 0) {
             this.isRunning = true;
             this.createStatusChecker(deploymentId);
           } else {
             this.timeoutId = null;
             this.isRunning = false;
+            this.$emit('loadEnvironments');
           }
         });
       }, 1000);
     },
     async copyUrl() {
-      let url = this.apiUrl() + this.file.path;
+      let url = this.environment.api_gateway_url + this.file.path;
       await navigator.clipboard.writeText(url);
       this.$notify({
         title: 'Success',
@@ -148,13 +157,7 @@ export default {
     },
     formatDate(date) {
       return moment(date).format('DD MMM YYYY HH:mm:ss');
-    },
-    apiUrl() {
-      return get(this.environment, 'last_success_deployment.output.api_gateway_url.value', null);
-    },
-    hasSuccessDeployment() {
-      return has(this.environment, ['last_success_deployment', 'output', this.file.function_name + '_invoke_arn']);
-    },
+    }
   }
 }
 </script>

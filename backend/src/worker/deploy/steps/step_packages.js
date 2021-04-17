@@ -17,7 +17,7 @@ async function runNpmInstall(job) {
     let result = shelljs.exec(`npm install --prefix "${job.getPackagesNodejsRoot()}"`, {silent: true});
     await job.addLog(result.stdout || result.stderr);
     if (result.code > 0) {
-        throw new Error(`Failed: npm install --prefix "${job.getPackagesNodejsRoot()}" | Deployment: ${job.deployment.id}`);
+        throw new Error(`Failed: npm install --prefix "${job.getPackagesNodejsRoot()}" | Task: ${job.task.id}`);
     }
 }
 

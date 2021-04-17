@@ -14,11 +14,6 @@
               {{ file.path }}
             </td>
           </tr>
-          <tr v-if="file.type === 'function'">
-            <th>Function</th>
-            <th>:</th>
-            <td>{{ file.name }}</td>
-          </tr>
           <tr v-if="file.description">
             <th>Description</th>
             <th>:</th>
@@ -28,7 +23,11 @@
       </div>
     </section>
     <router-link class="section-link" :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">Manage Environments <IconArrowNarrowRight /></router-link>
-    <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file" @show-logs="$refs.logs.show" @show-variables="$refs.variables.show"></EnvironmentRow>
+    <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file"
+                    @loadEnvironments="loadEnvironments()"
+                    @show-logs="$refs.logs.show"
+                    @show-variables="$refs.variables.show">
+    </EnvironmentRow>
   </div>
 </template>
 
