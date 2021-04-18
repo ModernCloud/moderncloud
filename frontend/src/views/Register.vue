@@ -51,6 +51,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$store.commit('changeTheme', 'light');
+  },
   methods: {
     async submit() {
       this.loading = true;

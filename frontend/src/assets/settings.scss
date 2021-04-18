@@ -107,6 +107,26 @@
       }
     }
   }
+
+  #preferences {
+    .theme-switcher {
+      width: 180px;
+      display: flex;
+      border: 1px solid #ddd;
+      border-radius: 18px;
+
+      a {
+        width: 50%;
+        padding: 5px 10px;
+
+        &.active {
+          border-radius: 18px;
+          background: #ddd;
+          color: #000;
+        }
+      }
+    }
+  }
 }
 
 [data-theme="dark"] {

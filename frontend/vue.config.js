@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = {
   configureWebpack: {
@@ -9,6 +10,17 @@ module.exports = {
       }),
       new MonacoWebpackPlugin({
         languages: ['javascript', 'typescript']
+      }),
+      new FileManagerPlugin({
+        events: {
+          onEnd: {
+            copy: [
+              {source: 'assets/img/loading.gif', destination: '../dist/img/loading.gif'},
+              {source: 'assets/img/favicon_16.png', destination: '../dist/img/favicon_16.png'},
+              {source: 'assets/img/favicon_32.png', destination: '../dist/img/favicon_32.png'},
+            ]
+          }
+        }
       })
     ]
   },
