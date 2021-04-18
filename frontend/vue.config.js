@@ -15,9 +15,9 @@ module.exports = {
         events: {
           onEnd: {
             copy: [
-              {source: 'assets/img/loading.gif', destination: '../dist/img/loading.gif'},
-              {source: 'assets/img/favicon_16.png', destination: '../dist/img/favicon_16.png'},
-              {source: 'assets/img/favicon_32.png', destination: '../dist/img/favicon_32.png'},
+              {source: 'src/assets/img/loading.gif', destination: 'dist/img/loading.gif'},
+              {source: 'src/assets/img/favicon_16.png', destination: 'dist/img/favicon_16.png'},
+              {source: 'src/assets/img/favicon_32.png', destination: 'dist/img/favicon_32.png'},
             ]
           }
         }
