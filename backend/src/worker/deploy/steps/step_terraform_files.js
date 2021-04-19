@@ -2,15 +2,13 @@ const path = require('path');
 const fs = require('fs');
 const get = require('lodash/get');
 const rimraf = require('rimraf');
-const { Function, Endpoint, EnvironmentVariable, Dynamodb } = require('../../../common/db');
+const { Function, Endpoint, Package, EnvironmentVariable, Dynamodb } = require('../../../common/db');
 const render = require('../../../common/template/render');
 
 async function removeFiles(job) {
     for (const filePath of fs.readdirSync(job.getTerraformRoot())) {
-        if (filePath.indexOf('*.tf') > -1) {
-            fs.unlinkSync(path.join(job.getTerraformRoot(), filePath));
-        }
-        if (filePath.indexOf('*.tfvars') > -1) {
+        let extension = filePath.split('.').pop();
+        if (['tf', 'tfvars'].indexOf(extension) > -1) {
             fs.unlinkSync(path.join(job.getTerraformRoot(), filePath));
         }
     }
@@ -51,6 +49,7 @@ async function createFunctionFiles(job) {
         .where('project_id', job.project.id)
         .where('environment_id', job.environment.id);
     for (const row of functions) {
+        let hasPackage = await createLambdaPackages(job, row);
         render(
             path.join(job.getTerraformTemplates(), 'lambda.tf.twig'),
             path.join(job.getTerraformRoot(), `${row.name}.tf`),
@@ -64,7 +63,8 @@ async function createFunctionFiles(job) {
                     ...row,
                     root: path.join(job.getFunctionsRoot(), row.name),
                     zip_file: path.join(job.getTmpRoot(), `${row.name}.zip`)
-                }
+                },
+                hasPackage: hasPackage
             }
         );
     }
@@ -90,6 +90,7 @@ async function createEndpointFiles(job) {
         .where('project_id', job.project.id)
         .where('environment_id', job.environment.id);
     for (const row of endpoints) {
+        let hasPackage = await createLambdaPackages(job, row);
         render(
             path.join(job.getTerraformTemplates(), 'endpoint.tf.twig'),
             path.join(job.getTerraformRoot(), `${row.name}.tf`),
@@ -103,23 +104,33 @@ async function createEndpointFiles(job) {
                     ...row,
                     root: path.join(job.getEndpointsRoot(), row.name),
                     zip_file: path.join(job.getTmpRoot(), `${row.name}.zip`)
-                }
+                },
+                hasPackage: hasPackage
             }
         )
     }
 }
 
-async function createPackages(job) {
-    render(
-        path.join(job.getTerraformTemplates(), 'packages.tf.twig'),
-        path.join(job.getTerraformRoot(), `packages.tf`),
-        {
-            project: job.project,
-            environment: job.environment,
-            root: job.getPackagesRoot(),
-            zip_file: path.join(job.getTmpRoot(), `packages.zip`)
-        }
-    )
+
+async function createLambdaPackages(job, lambda) {
+    let hasPackage = await Package.query()
+        .where('project_id', job.project.id)
+        .where('file_id', lambda.id)
+        .where('file_type', lambda instanceof Endpoint ? 'endpoint' : 'function')
+        .first() instanceof Package;
+    if (hasPackage) {
+        let layerName = `${job.project.name}_${job.environment.name}_${lambda.name}`;
+        render(
+            path.join(job.getTerraformTemplates(), 'packages.tf.twig'),
+            path.join(job.getTerraformRoot(), `${layerName}_packages.tf`),
+            {
+                layer_name: layerName,
+                root: job.getLambdaPackagesRoot(lambda.name),
+                zip_file: path.join(job.getTmpRoot(), `${layerName}_packages.zip`)
+            }
+        )
+    }
+    return hasPackage;
 }
 
 async function createDynamoDBFiles(job) {
@@ -147,7 +158,6 @@ module.exports = {
         await createFunctionFiles(job);
         await createApiGatewayFiles(job);
         await createEndpointFiles(job);
-        await createPackages(job);
         await createDynamoDBFiles(job);
     }
 }

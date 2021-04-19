@@ -6,6 +6,7 @@
           <div class="title">
             <h3 v-if="isOverview"><IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview</h3>
             <h3 v-if="isDeployment"><IconDeployment :stroke-width="1.5" :width="18" :height="18" /> Deployment</h3>
+            <h3 v-if="isPackages"><IconPackage :stroke-width="1.5" :width="18" :height="18" /> Packages</h3>
             <h3 v-if="isLogs"><IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs</h3>
           </div>
           <div class="icon">
@@ -21,6 +22,10 @@
             <IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview
             <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isOverview" />
           </div>
+          <div class="option-item" @click="showMode('packages')">
+            <IconPackage :stroke-width="1.5" :width="18" :height="18" /> Packages
+            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isPackages" />
+          </div>
           <div class="option-item" @click="showMode('logs')">
             <IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs
             <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isLogs" />
@@ -31,6 +36,7 @@
     <perfect-scrollbar class="body" :options="{suppressScrollX: true}">
       <Overview v-if="isOverview" :file="file" />
       <Deployment v-if="isDeployment" :file="file" />
+      <Packages v-if="isPackages" :file="file" />
       <Logs v-if="isLogs" :file="file" />
     </perfect-scrollbar>
   </div>
@@ -39,15 +45,18 @@
 <script>
 import Overview from "@/components/Editor/CodeEditor/InfoPanel/Overview";
 import Deployment from "@/components/Editor/CodeEditor/InfoPanel/Deployment";
+import Packages from "@/components/Editor/CodeEditor/InfoPanel/Packages";
 import Logs from "@/components/Editor/CodeEditor/InfoPanel/Logs";
 import IconDeployment from "@/components/Icons/IconDeployment";
 import IconLogs from "@/components/Icons/IconLogs";
 import IconOverview from "@/components/Icons/IconOverview";
 import IconChevronDown from "@/components/Icons/IconChevronDown";
 import IconCheck from "@/components/Icons/IconCheck";
+import IconPackage from "@/components/Icons/IconPackage";
 
 export default {
   components: {
+    IconPackage,
     IconCheck,
     IconChevronDown,
     IconOverview,
@@ -55,6 +64,7 @@ export default {
     IconDeployment,
     Deployment,
     Overview,
+    Packages,
     Logs
   },
   props: {
@@ -79,6 +89,9 @@ export default {
     },
     isDeployment() {
       return this.mode === 'deployment';
+    },
+    isPackages() {
+      return this.mode === 'packages';
     },
     isLogs() {
       return this.mode === 'logs';

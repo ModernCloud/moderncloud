@@ -78,6 +78,14 @@ class TaskDeploy {
         return path.join(this.getProjectRoot(), 'tmp');
     }
 
+    getLambdaPackagesNodejsRoot(functionName) {
+        return path.join(this.getProjectRoot(), 'lambda_packages', functionName, 'nodejs');
+    }
+
+    getLambdaPackagesRoot(functionName) {
+        return path.join(this.getProjectRoot(), 'lambda_packages', functionName);
+    }
+
     getPackagesNodejsRoot() {
         return path.join(this.getProjectRoot(), 'packages', 'nodejs');
     }

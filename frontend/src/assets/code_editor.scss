@@ -424,6 +424,42 @@
         }
       }
     }
+
+    .packages {
+      .new-package {
+        padding: 10px 0;
+        border-bottom: 1px solid #EFF1F4;
+      }
+
+      .package {
+        padding: 10px 0;
+        border-bottom: 1px solid #EFF1F4;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .package-name {
+          flex: 1;
+        }
+
+        .action-menu {
+          display: none;
+
+          a {
+            padding: 0;
+          }
+        }
+
+        &:hover {
+          &:hover {
+            .action-menu {
+              display: block;
+              margin-left: auto;
+            }
+          }
+        }
+      }
+    }
   }
 
   .monaco-editor {

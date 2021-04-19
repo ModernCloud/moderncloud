@@ -9,7 +9,6 @@
     <perfect-scrollbar class="modules" :options="{suppressScrollX: true}">
         <Endpoints />
         <Functions />
-        <Packages />
         <DynamoDB />
     </perfect-scrollbar>
     <Footer />
@@ -19,7 +18,6 @@
 <script>
 import Endpoints from './Endpoints.vue';
 import Functions from './Functions.vue';
-import Packages from './Packages.vue';
 import DynamoDB from "./DynamoDB.vue";
 import Footer from "./Footer.vue";
 
@@ -28,7 +26,6 @@ export default {
     DynamoDB,
     Endpoints,
     Functions,
-    Packages,
     Footer
   }
 }

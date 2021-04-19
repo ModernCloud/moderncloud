@@ -55,7 +55,7 @@ import axios from "axios";
 import IconX from "@/components/Icons/IconX";
 import VSelect from 'vue-select';
 import 'vue-select/dist/vue-select.css';
-import {getErrorMessage} from "../../../lib/get_error_message";
+import {getErrorMessage} from "@/lib/get_error_message";
 
 export default {
   components: {IconX,VSelect},
@@ -65,6 +65,7 @@ export default {
       errorMessage: null,
       loading: false,
       current_id: 0,
+      currentFile: null,
       searchTimeout: null,
       searchResult: [],
       selected: null,
@@ -88,15 +89,17 @@ export default {
     }
   },
   methods: {
-    async showAdd() {
+    async showAdd(file) {
       this.current_id = 0;
       this.errorMessage = null;
+      this.currentFile = file;
       this.visible = !this.visible;
     },
-    async showEdit(id) {
+    async showEdit(file, id) {
       this.visible = !this.visible;
       this.errorMessage = null;
       this.loading = true;
+      this.currentFile = file;
       this.current_id = id;
       await this.loadItem(id);
     },
@@ -105,6 +108,7 @@ export default {
       this.errorMessage = null;
       this.form.name = null;
       this.form.version = null;
+      this.currentFile = null;
       this.current_id = 0;
       this.selected = null;
       this.searchResult = [];
@@ -142,12 +146,20 @@ export default {
       }
     },
     async update() {
-      await axios.put(`/api/packages/${this.current_id}`, {...this.form, project_id: this.$store.state.project.selected.id});
+      await axios.put(`/api/packages/${this.current_id}`, {
+        ...this.form,
+        project_id: this.$store.state.project.selected.id
+      });
       this.$emit('updated', this.current_id);
       this.closeModal();
     },
     async create() {
-      let response = await axios.post('/api/packages', {...this.form, project_id: this.$store.state.project.selected.id});
+      let response = await axios.post('/api/packages', {
+        ...this.form,
+        project_id: this.$store.state.project.selected.id,
+        file_id: this.currentFile.id,
+        file_type: this.currentFile.type
+      });
       this.$emit('added', response.data.id);
       CodeEditorEvents.$emit('addPackage', this.form.name, this.form.version);
       this.closeModal();

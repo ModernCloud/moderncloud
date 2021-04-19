@@ -20,10 +20,12 @@ CREATE TABLE IF NOT EXISTS `package` (
     id BIGINT UNSIGNED AUTO_INCREMENT NOT NULL,
     user_id BIGINT UNSIGNED NOT NULL,
     project_id BIGINT UNSIGNED NOT NULL,
+    file_id BIGINT UNSIGNED DEFAULT NULL,
+    file_type VARCHAR(20) DEFAULT NULL,
     name VARCHAR(50) NOT NULL,
     version VARCHAR(10) NOT NULL,
-    UNIQUE name_uniq (project_id, name),
     INDEX project_idx (project_id),
+    INDEX file_idx (file_id, file_type),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
