@@ -5,7 +5,7 @@
         <div class="title">{{actionName}} DynamoDB Table</div>
         <a href="javascript:;" class="close" @click="closeModal"><IconX :width="18" :height="18" :stroke-width="1.5" /></a>
       </div>
-      <div class="body">
+      <perfect-scrollbar class="body" :options="{suppressScrollX: true}">
         <div v-if="errorMessage" class="alert alert-danger">{{errorMessage}}</div>
         <form @submit.prevent="submit">
           <div class="mb-2">
@@ -24,7 +24,7 @@
           </div>
           <div class="mb-2 row">
             <div class="col">
-              <label class="form-label">Hash Key</label>
+              <label class="form-label">Hash Key <span style="font-weight: 300; font-size: 10px;">(required)</span></label>
               <input type="text" class="form-control" v-model="form.hash_key" />
             </div>
             <div class="col">
@@ -35,7 +35,7 @@
           <div class="mb-2">
             <a style="font-size: 13px; font-weight: 400;" href="javascript:;" @click="form.attributes.push({name: '', type: 'S'})">New Attribute</a>
           </div>
-          <table class="table table-hover table-bordered mb-2">
+          <table class="table table-hover table-bordered mb-2" v-if="form.attributes.length > 0">
             <thead>
               <tr>
                 <th style="width: 30px;"></th>
@@ -46,7 +46,9 @@
             <tbody>
               <tr v-for="(attribute, index) in form.attributes" :key="index">
                 <td style="vertical-align: middle">
-                  <a href="javascript:;" @click="form.attributes.splice(index, 1)">Remove</a>
+                  <a href="javascript:;" @click="form.attributes.splice(index, 1)">
+                    <IconDelete :width="18" :height="18" />
+                  </a>
                 </td>
                 <td>
                   <input type="text" class="form-control" v-model="form.attributes[index].name" />
@@ -62,7 +64,7 @@
             </tbody>
           </table>
         </form>
-      </div>
+      </perfect-scrollbar>
       <div class="actions">
         <button type="submit" class="btn btn-primary" @click="submit" :disabled="loading">
           <span v-if="loading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -79,10 +81,11 @@
 <script>
 import axios from "axios";
 import IconX from "@/components/Icons/IconX";
-import {getErrorMessage} from "../../../lib/get_error_message";
+import {getErrorMessage} from "@/lib/get_error_message";
+import IconDelete from "@/components/Icons/IconDelete";
 
 export default {
-  components: {IconX},
+  components: {IconDelete, IconX},
   data() {
     return {
       visible: false,
