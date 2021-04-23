@@ -68,17 +68,28 @@ a {
       }
     }
 
+    p {
+      margin-bottom: 10px;
+    }
+
+    section {
+      h2 {
+        font-size: 18px;
+      }
+
+      &.with-divider {
+        border-bottom: 1px solid #ddd;
+      }
+      margin-bottom: 30px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+
     display: flex;
     flex: initial;
     flex-direction: column;
-    max-width: 640px;
+    max-width: 700px;
     width: 100%;
-  }
-
-  section.preference {
-    h3 {
-      font-size: 20px;
-    }
   }
 }
 
@@ -117,13 +128,17 @@ a {
         }
       }
 
-      section.preference {
-        h3 {
-          color: #F7F8F8;
-        }
+      h1, h2, h3, h4, h5 {
+        color: #F7F8F8;
+      }
 
-        p {
-          color: rgba(255, 255, 255, .5);
+      p {
+        color: rgba(255, 255, 255, .5);
+      }
+
+      section {
+        &.with-divider {
+          border-bottom: 1px solid #303235;
         }
       }
     }

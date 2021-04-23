@@ -7,7 +7,7 @@
           <div class="subtitle">Update your ModernCloud preferences</div>
         </div>
       </div>
-      <section class="preference">
+      <section>
         <h3>Theme</h3>
         <p>Select your interface scheme</p>
         <div class="theme-switcher">

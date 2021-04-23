@@ -36,8 +36,8 @@
       <a href="javascript:;" @click="$emit('showVariables', environment.id)" class="btn btn-light">Variables</a>
       <a href="javascript:;" class="btn btn-light" v-if="environment.last_success_deployment" @click="$emit('setDomain', environment.id)">Custom Domain</a>
       <div style="margin-left: auto" v-if="environment.access_key != null && environment.access_key !== '' && environment.secret_key != null && environment.secret_key != ''">
-        <a href="javascript:;" class="btn btn-light btn-outline-success" @click="$refs.confirmModal.show({})">Deploy</a>
-        <a href="javascript:;" class="btn btn-light btn-outline-danger" @click="$refs.confirmDestroyModal.show({})" v-if="environment.api_gateway_arn">Destroy</a>
+        <a href="javascript:;" class="btn btn-light" @click="$refs.confirmModal.show({})">Deploy</a>
+        <a href="javascript:;" class="btn btn-light" @click="$refs.confirmDestroyModal.show({})" v-if="environment.api_gateway_arn">Destroy</a>
       </div>
     </div>
   </div>

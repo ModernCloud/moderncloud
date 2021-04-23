@@ -15,6 +15,10 @@
         <IconPreferences :width="18" :height="18" :stroke-width="1.3" />
         Preferences
       </router-link>
+      <router-link to="/settings/plans" active-class="active">
+        <IconPackage :width="18" :height="18" :stroke-width="1.3" />
+        Plans
+      </router-link>
       <router-link to="/settings/billing" active-class="active">
         <IconCreditCard :width="18" :height="18" :stroke-width="1.3" />
         Billing
@@ -33,8 +37,9 @@ import IconLayers from "@/components/Icons/IconLayers";
 import IconCreditCard from "@/components/Icons/IconCreditCard";
 import IconUser from "@/components/Icons/IconUser";
 import IconPreferences from "@/components/Icons/IconPreferences";
+import IconPackage from "@/components/Icons/IconPackage";
 export default {
-  components: {IconUser, IconCreditCard, IconLayers, IconPreferences},
+  components: {IconPackage, IconUser, IconCreditCard, IconLayers, IconPreferences},
   methods: {
     logout() {
       this.$store.commit('logout');
