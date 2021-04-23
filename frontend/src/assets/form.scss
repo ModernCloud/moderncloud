@@ -157,11 +157,10 @@
     background: #dfe5fb;
     border: none;
     color: #394066;
-    text-transform: lowercase;
-    font-variant: small-caps;
   }
 
-  .custom-vue-select .vs__selected {
+  .custom-vue-select .vs__selected,
+  .custom-vue-select .vs__search {
     color: #F7F8F8;
   }
 }
