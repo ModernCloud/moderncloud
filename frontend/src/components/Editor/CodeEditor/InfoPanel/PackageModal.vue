@@ -10,7 +10,7 @@
         <form @submit.prevent="submit">
           <div class="mb-2">
             <label class="form-label">Name</label>
-            <v-select @search="searchPackage" v-model="selected" :options="searchResult">
+            <v-select class="custom-vue-select" @search="searchPackage" v-model="selected" :options="searchResult">
               <template slot="no-options">
                 type to search packages
               </template>

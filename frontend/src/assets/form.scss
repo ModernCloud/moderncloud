@@ -142,4 +142,26 @@
       border: 1px solid #4569BB;
     }
   }
+
+  .custom-vue-select .vs__dropdown-toggle {
+    color: #F7F8F8;
+    background: rgb(0, 0, 0, .5);
+    border: 1px solid rgba(69, 105, 187, .7);
+
+    &:focus {
+      border: 1px solid #4569BB;
+    }
+  }
+
+  .custom-vue-select .vs__dropdown-menu {
+    background: #dfe5fb;
+    border: none;
+    color: #394066;
+    text-transform: lowercase;
+    font-variant: small-caps;
+  }
+
+  .custom-vue-select .vs__selected {
+    color: #F7F8F8;
+  }
 }
