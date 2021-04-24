@@ -1,9 +1,9 @@
 const shelljs = require('shelljs');
-const {Environment, EnvironmentOutput, Endpoint, Function} = require('../../../common/db');
+const {Environment} = require('../../../common/db');
 
 async function runInit(job) {
     await job.addLog(`$ terraform init`);
-    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} init -input=false -no-color`, {silent: true});
+    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} init -backend-config="access_key=$TF_VAR_aws_access_key" -backend-config="secret_key=$TF_VAR_aws_secret_key" -input=false -no-color -force-copy`, {silent: true});
     if (result.stdout) {
         await job.addLog(result.stdout);
     }

@@ -97,6 +97,7 @@ CREATE TABLE IF NOT EXISTS `environment` (
     api_gateway_url VARCHAR(255) DEFAULT NULL,
     api_gateway_arn VARCHAR(255) DEFAULT NULL,
     cloudfront_domain_name VARCHAR(255) DEFAULT NULL,
+    terraform_s3_bucket VARCHAR(255) DEFAULT NULL,
     output JSON DEFAULT NULL,
     UNIQUE name_uniq (project_id, name),
     INDEX project_idx (project_id),

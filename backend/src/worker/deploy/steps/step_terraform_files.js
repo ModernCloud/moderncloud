@@ -27,8 +27,14 @@ async function removeFiles(job) {
 }
 
 async function updateTerraformFiles(job) {
+    render(
+        path.join(job.getTerraformTemplates(), 'main.tf.twig'),
+        path.join(job.getTerraformRoot(), 'main.tf'),
+        {
+            terraform_s3_bucket: job.environment.terraform_s3_bucket
+        }
+    );
     fs.copyFileSync(path.join(job.getTerraformTemplates(), 'iam.tf'), path.join(job.getTerraformRoot(), 'iam.tf'));
-    fs.copyFileSync(path.join(job.getTerraformTemplates(), 'main.tf'), path.join(job.getTerraformRoot(), 'main.tf'));
     fs.copyFileSync(path.join(job.getTerraformTemplates(), 'variables.tf'), path.join(job.getTerraformRoot(), 'variables.tf'));
 }
 

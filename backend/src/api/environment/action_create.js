@@ -3,6 +3,7 @@ const ApiAction = require('../action');
 const ApiError = require('../error');
 const { Environment } = require('../../common/db');
 const IAM = require('../../common/aws/iam');
+const S3 = require('../../common/aws/s3');
 
 class CreateAction extends ApiAction
 {
@@ -11,6 +12,7 @@ class CreateAction extends ApiAction
         await this.validateParams();
         await this.checkAWSPermissions();
         await this.createEnvironment();
+        await this.createS3Bucket();
         return this.response.success({id: this.environment.id}, 201);
     }
 
@@ -35,14 +37,26 @@ class CreateAction extends ApiAction
     }
 
     async createEnvironment() {
+        let terraformS3Bucket = null;
+        if (this.validRequest.access_key && this.validRequest.secret_key) {
+            let awsUser = await (new IAM(this.validRequest.access_key, this.validRequest.secret_key)).getUser();
+            terraformS3Bucket = `terraform-${awsUser.User.UserId}-${Date.now()}`.toLowerCase();
+        }
         this.environment = await Environment.query().insert({
             user_id: this.currentUser.id,
             project_id: this.validRequest.project_id,
             name: this.validRequest.name,
             region: this.validRequest.region,
             access_key: this.validRequest.access_key,
-            secret_key: this.validRequest.secret_key
+            secret_key: this.validRequest.secret_key,
+            terraform_s3_bucket: terraformS3Bucket
         });
+    }
+
+    async createS3Bucket() {
+        if (this.environment.terraform_s3_bucket) {
+            await (new S3(this.environment)).create(this.environment.terraform_s3_bucket);
+        }
     }
 }
 

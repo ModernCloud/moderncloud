@@ -34,6 +34,10 @@ class Service {
         let permissions = intersection(requiredPermissions, attachedPolicyNames);
         return permissions.length === requiredPermissions.length;
     }
+
+    async getUser() {
+        return await this.iamClient.getUser({});
+    }
 }
 
 module.exports = Service;

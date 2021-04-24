@@ -3,6 +3,7 @@ const ApiAction = require('../action');
 const ApiError = require('../error');
 const { Environment } = require('../../common/db');
 const IAM = require('../../common/aws/iam');
+const S3 = require('../../common/aws/s3');
 
 class UpdateAction extends ApiAction
 {
@@ -12,6 +13,7 @@ class UpdateAction extends ApiAction
         await this.checkAWSPermissions();
         await this.loadEnvironment();
         await this.updateEnvironment();
+        await this.createS3Bucket();
         return this.response.success({}, 200);
     }
 
@@ -62,6 +64,19 @@ class UpdateAction extends ApiAction
         }
         if (Object.keys(updateParams).length > 0) {
             await Environment.query().where('id', this.environment.id).update(updateParams);
+        }
+    }
+
+    async createS3Bucket() {
+        if (this.environment.terraform_s3_bucket == null
+            && this.environment.access_key
+            && this.environment.secret_key) {
+            let awsUser = await (new IAM(this.environment.access_key, this.environment.secret_key)).getUser();
+            let terraformS3Bucket = `terraform-${awsUser.User.UserId}-${Date.now()}`.toLowerCase();
+            await (new S3(this.environment)).create(terraformS3Bucket);
+            await Environment.query().where('id', this.environment.id).update({
+                terraform_s3_bucket: terraformS3Bucket
+            });
         }
     }
 }
