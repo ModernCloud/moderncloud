@@ -30,17 +30,6 @@ async function updateTerraformFiles(job) {
     fs.copyFileSync(path.join(job.getTerraformTemplates(), 'iam.tf'), path.join(job.getTerraformRoot(), 'iam.tf'));
     fs.copyFileSync(path.join(job.getTerraformTemplates(), 'main.tf'), path.join(job.getTerraformRoot(), 'main.tf'));
     fs.copyFileSync(path.join(job.getTerraformTemplates(), 'variables.tf'), path.join(job.getTerraformRoot(), 'variables.tf'));
-    render(
-        path.join(job.getTerraformTemplates(), 'terraform.tfvars.twig'),
-        path.join(job.getTerraformRoot(), 'terraform.tfvars'),
-        {
-            aws: {
-                region: job.environment.region,
-                access_key: job.environment.access_key,
-                secret_key: job.environment.secret_key
-            }
-        }
-    )
 }
 
 async function createFunctionFiles(job) {

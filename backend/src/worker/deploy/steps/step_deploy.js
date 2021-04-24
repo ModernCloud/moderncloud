@@ -57,6 +57,9 @@ async function updateEnvironmentOutputs(job, json) {
 
 module.exports = {
     run: async (job) => {
+        shelljs.env['TF_VAR_aws_region'] = job.environment.region;
+        shelljs.env['TF_VAR_aws_access_key'] = job.environment.access_key;
+        shelljs.env['TF_VAR_aws_secret_key'] = job.environment.secret_key;
         await runInit(job);
         await runApply(job);
         let output = await runOutput(job);

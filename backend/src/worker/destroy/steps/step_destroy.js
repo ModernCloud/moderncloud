@@ -1,5 +1,5 @@
 const shelljs = require('shelljs');
-const { Environment, EnvironmentOutput } = require('../../../common/db');
+const { Environment } = require('../../../common/db');
 
 async function runDestroy(job) {
     await job.addLog(`$ terraform destroy -auto-approve`);
@@ -28,6 +28,9 @@ async function updateEnvironment(job) {
 
 module.exports = {
     run: async (job) => {
+        shelljs.env['TF_VAR_aws_region'] = job.environment.region;
+        shelljs.env['TF_VAR_aws_access_key'] = job.environment.access_key;
+        shelljs.env['TF_VAR_aws_secret_key'] = job.environment.secret_key;
         await runDestroy(job);
         await updateEnvironment(job);
     }
