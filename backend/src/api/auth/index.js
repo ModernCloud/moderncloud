@@ -11,6 +11,12 @@ module.exports = app => {
     app.get('/auth/my-info', async (req, res) => {
         await require('./action_get').execute(req, res);
     });
+    app.get('/auth/current-subscription', async (req, res) => {
+        await require('./action_current_subscription').execute(req, res);
+    });
+    app.get('/auth/invoices', async (req, res) => {
+        await require('./action_invoices').execute(req, res);
+    });
     app.post('/auth/my-info', async (req, res) => {
         await require('./action_update').execute(req, res);
     });

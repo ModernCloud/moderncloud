@@ -3,7 +3,12 @@ CREATE TABLE IF NOT EXISTS `user` (
     name VARCHAR(50) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
+    stripe_customer_id VARCHAR(40) DEFAULT NULL,
+    current_subscription_id VARCHAR(40) DEFAULT NULL,
+    current_subscription_status VARCHAR(30) DEFAULT NULL,
     UNIQUE INDEX email_uniq (email),
+    UNIQUE INDEX stripe_customer_idx (stripe_customer_id),
+    UNIQUE INDEX current_subscription_idx (current_subscription_id),
     PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
