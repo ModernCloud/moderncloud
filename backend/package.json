@@ -21,7 +21,7 @@
     "bcryptjs": "2.4.3",
     "dotenv": "8.2.0",
     "express": "4.17.1",
-    "firebase-admin": "9.6.0",
+    "google-auth-library": "^7.0.4",
     "joi": "17.4.0",
     "jsonwebtoken": "8.5.1",
     "knex": "0.95.1",
@@ -32,6 +32,7 @@
     "objection": "2.2.14",
     "rimraf": "3.0.2",
     "shelljs": "0.8.4",
+    "stripe": "^8.145.0",
     "twig": "1.15.4",
     "uuid": "8.3.2"
   }

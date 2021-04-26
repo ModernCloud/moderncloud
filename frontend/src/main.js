@@ -1,8 +1,14 @@
 import Vue from 'vue'
+import VueGapi from 'vue-gapi'
 Vue.config.productionTip = false
+
+Vue.use(VueGapi, {
+    clientId: '527078498280-cb2u7idhd401g1te5kqv5cs5tdn356rm.apps.googleusercontent.com',
+    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+})
+
 import Notifications from 'vue-notification'
 Vue.use(Notifications);
-
 import PerfectScrollbar from 'vue2-perfect-scrollbar';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
 Vue.use(PerfectScrollbar);
@@ -12,10 +18,6 @@ import router from './router'
 import store from './store'
 import axios from 'axios';
 import './assets/app.scss';
-
-import firebase from "firebase/app";
-import "firebase/analytics";
-import "firebase/auth";
 
 axios.interceptors.request.use(
     reqConfig => {
@@ -39,15 +41,6 @@ function checkToken() {
 async function run() {
     document.getElementById('loading').remove();
     store.commit('changeTheme');
-
-    firebase.initializeApp({
-        apiKey: "AIzaSyAV5XeHaikSuThrfDnOjBeUXarz5lNzJbI",
-        authDomain: "moderncloud---test.firebaseapp.com",
-        projectId: "moderncloud---test",
-        storageBucket: "moderncloud---test.appspot.com",
-        messagingSenderId: "247003552904",
-        appId: "1:247003552904:web:94ed3b9afed3cff9b8133d"
-    });
 
     axios.interceptors.response.use(
         function (response) {

@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import firebase from 'firebase';
 import axios from "axios";
 
 export default {
@@ -63,22 +62,19 @@ export default {
     },
     continueWithGoogle() {
       this.loading = true;
-      let provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('https://www.googleapis.com/auth/userinfo.email');
-      provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
-      firebase.auth().signInWithPopup(provider)
-        .then(result => {
-          return result.user.getIdToken();
-        }).then(idToken => {
-          return axios.post('/api/auth/verify-google', {id_token: idToken});
-        }).then(response => {
-          this.$store.commit('login', response.data);
-          this.$router.push('/');
-        }).catch((error) => {
-          console.log(error);
-        }).finally(() => {
-          this.loading = false;
-        });
+      this.$gapi.login()
+          .then(() => {
+            return this.$gapi.getUserData();
+          }).then(currentUser => {
+            return axios.post('/api/auth/verify-google', {id_token: currentUser.idToken});
+          }).then(response => {
+            this.$store.commit('login', response.data);
+            this.$router.push('/');
+          }).catch((error) => {
+            console.log(error);
+          }).finally(() => {
+            this.loading = false;
+          });
     }
   }
 }

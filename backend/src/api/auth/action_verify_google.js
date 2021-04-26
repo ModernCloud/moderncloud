@@ -1,9 +1,10 @@
 const Joi = require('joi');
-const firebaseAdmin = require('../../common/firebase');
 const JWT = require('../jwt');
 const ApiAction = require('../action');
 const ApiError = require('../error');
 const { User } = require('../../common/db');
+const {OAuth2Client} = require('google-auth-library');
+const googleOAuth2Client = new OAuth2Client(process.env.GOOGLE_OAUTH_CLIENT_ID);
 const setupDefaultResources = require('./setup_default_resources');
 
 class GenerateToken extends ApiAction
@@ -31,8 +32,11 @@ class GenerateToken extends ApiAction
     }
 
     async loadGoogleUser() {
-        let decodedIdToken = await firebaseAdmin.auth().verifyIdToken(this.validRequest.id_token);
-        this.googleUser = await firebaseAdmin.auth().getUser(decodedIdToken.uid);
+        let decodedIdToken = await googleOAuth2Client.verifyIdToken({
+            idToken: this.validRequest.id_token,
+            audience: process.env.GOOGLE_OAUTH_CLIENT_ID
+        });
+        this.googleUser = decodedIdToken.getPayload();
     }
 
     async loadUser() {
@@ -46,7 +50,7 @@ class GenerateToken extends ApiAction
         this.user = await User.query().insert({
             email: this.googleUser.email,
             password: '',
-            name: this.googleUser.displayName
+            name: this.googleUser.name
         });
         await setupDefaultResources(this.user);
     }
