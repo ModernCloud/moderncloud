@@ -2,6 +2,7 @@
   <div class="environment">
     <Confirm style="z-index: 6000000" ref="confirmModal" :message="`We are going to deploy your project to the selected (<strong>${environment.name}</strong>) environment. Do you want to continue?`" @yes="deploy" />
     <Confirm style="z-index: 6000000" ref="confirmDestroyModal" :message="`We are going to destroy your environment's (<strong>${environment.name}</strong>) resources. Do you want to continue?`" @yes="destroy" />
+    <MessageDialog ref="credentialsMessage" :message="`Please update your AWS credentials.`" />
     <div class="environment-header">
       <div class="name">{{environment.name}}</div>
     </div>
@@ -34,10 +35,10 @@
     <div class="links" v-if="isRunning === false">
       <a href="javascript:;" @click="$emit('showEdit', environment.id)" class="btn btn-light">Edit</a>
       <a href="javascript:;" @click="$emit('showVariables', environment.id)" class="btn btn-light">Variables</a>
-      <a href="javascript:;" class="btn btn-light" v-if="environment.last_success_deployment" @click="$emit('setDomain', environment.id)">Custom Domain</a>
-      <div style="margin-left: auto" v-if="environment.access_key != null && environment.access_key !== '' && environment.secret_key != null && environment.secret_key != ''">
-        <a href="javascript:;" class="btn btn-light" @click="$refs.confirmModal.show({})">Deploy</a>
-        <a href="javascript:;" class="btn btn-light" @click="$refs.confirmDestroyModal.show({})" v-if="environment.api_gateway_arn">Destroy</a>
+      <a href="javascript:;" class="btn btn-light" @click="showCustomDomainModal">Custom Domain</a>
+      <div style="margin-left: auto">
+        <a href="javascript:;" class="btn btn-light" @click="showDeployConfirmation">Deploy</a>
+        <a href="javascript:;" class="btn btn-light" @click="showDestroyConfirmation">Destroy</a>
       </div>
     </div>
   </div>
@@ -49,9 +50,11 @@ import regions from '@/constants/regions';
 import get from 'lodash/get';
 import axios from "axios";
 import moment from "moment";
+import MessageDialog from "@/components/MessageDialog";
 
 export default {
   components: {
+    MessageDialog,
     Confirm
   },
   props: {
@@ -98,6 +101,30 @@ export default {
     }
   },
   methods: {
+    showCustomDomainModal() {
+      if (this.environment.last_success_deployment) {
+        this.$emit('setDomain', this.environment.id)
+      } else {
+        this.$refs.credentialsMessage.show({});
+      }
+    },
+    showDeployConfirmation() {
+      if (this.environment.access_key != null
+          && this.environment.access_key !== ''
+          && this.environment.secret_key != null
+          && this.environment.secret_key !== '') {
+        this.$refs.confirmModal.show({})
+      } else {
+        this.$refs.credentialsMessage.show({});
+      }
+    },
+    showDestroyConfirmation() {
+      if (this.environment.api_gateway_arn) {
+        this.$refs.confirmDestroyModal.show({})
+      } else {
+        this.$refs.credentialsMessage.show({});
+      }
+    },
     async deploy() {
       this.isRunning = true;
       try {
