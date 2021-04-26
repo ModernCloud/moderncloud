@@ -6,8 +6,8 @@
       <div class="section-header" style="margin-top: 0px;">
         <h3>{{environment.name}}</h3>
         <div class="buttons">
-          <button class="btn btn-primary" @click="$emit('show-variables', environment.id)">.env</button>
-          <button type="button" class="btn btn-primary" :disabled="isRunning || (this.environment.access_key == null || this.environment.secret_key == null)" @click="$refs.confirmModal.show({})">
+          <button class="btn btn-primary" style="font-size: 11px;" @click="$emit('show-variables', environment.id)">Env</button>
+          <button type="button" class="btn btn-primary" style="font-size: 11px" :disabled="isRunning || (this.environment.access_key == null || this.environment.secret_key == null)" @click="$refs.confirmModal.show({})">
             <span v-if="isRunning" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
             <span v-if="isRunning">Running</span>
             <span v-if="isRunning === false">Deploy</span>
@@ -16,7 +16,7 @@
       </div>
       <div style="padding: 10px;">
         <div v-if="this.environment.access_key == null || this.environment.secret_key == null" class="alert alert-danger">
-          Please update AWS credentials!
+          Please update your AWS credentials. <router-link :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">Click here.</router-link>
         </div>
         <div v-if="environment.last_deployment === null" class="alert alert-warning">
           {{ resourceType }} has not been deployed yet in this environment.
