@@ -64,7 +64,7 @@ export default {
   },
   computed: {
     packageName() {
-      let trial = '(Trial)';
+      let trial = ' (Trial)';
       return this.subscription.package_name + (this.subscription.is_trial ? trial : '');
     }
   },

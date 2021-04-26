@@ -1,7 +1,7 @@
 aside#editor-aside {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 90px auto 130px;
+  grid-template-rows: 90px auto 180px;
 
   .footer {
     .buttons {
@@ -14,6 +14,27 @@ aside#editor-aside {
       padding-left: 10px;
       padding-right: 10px;
       color: rgba(0, 0, 0, .5)
+    }
+
+    .button-subscription {
+      display: flex;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: justify;
+      justify-content: space-between;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0 0 0;
+      flex-shrink: 0;
+      width: 100%;
+      background-color: rgb(255, 255, 255);
+      border: 1px solid rgb(239, 241, 244);
+      box-shadow: rgb(0 0 0 / 10%) 0px 2px 4px;
+      font-size: 12px;
+
+      .package-name {
+        font-weight: 500;
+      }
     }
 
     .button-settings, .button-projects {
@@ -44,7 +65,7 @@ aside#editor-aside {
         position: absolute;
         left: 0;
         right: 0;
-        bottom: 50px;
+        bottom: 100px;
         background: #FFFFFF 0% 0% no-repeat padding-box;
         box-shadow: 0px 20px 40px #00000033;
         border-radius: 12px;
@@ -225,6 +246,12 @@ aside#editor-aside {
     .footer {
       .button-feedback {
         color: rgba(255, 255, 255, .5);
+      }
+
+      .button-subscription {
+        background-color: rgb(39, 40, 43);
+        border: 1px solid rgb(48, 50, 54);
+        box-shadow: rgb(0 0 0 / 10%) 0px 2px 4px;
       }
 
       .button-projects {

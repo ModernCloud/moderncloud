@@ -28,6 +28,10 @@
           </a>
         </div>
       </div>
+      <div class="button-subscription">
+        <div class="package-name">{{packageName}}</div>
+        <router-link to="/settings/plans">Upgrade</router-link>
+      </div>
     </div>
   </section>
 </template>
@@ -41,6 +45,7 @@ import IconChevronRight from "@/components/Icons/IconChevronRight";
 import IconChevronUp from "@/components/Icons/IconChevronUp";
 import IconEdit from "@/components/Icons/IconEdit";
 import IconChevronDown from "@/components/Icons/IconChevronDown";
+import axios from "axios";
 
 export default {
   components: {
@@ -58,6 +63,13 @@ export default {
       menu_projects_visible: false,
       menu_settings_visible: false,
       mouse_over_projects_menu: false,
+      subscription: {package_name: null, is_trial: null}
+    }
+  },
+  computed: {
+    packageName() {
+      let trial = ' (Trial)';
+      return this.subscription.package_name + (this.subscription.is_trial ? trial : '');
     }
   },
   watch: {
@@ -71,6 +83,7 @@ export default {
   },
   async mounted() {
     await this.loadProjects();
+    this.loadSubscription();
   },
   destroyed() {
     document.removeEventListener('mousedown', this.mouseDownEventListener);
@@ -87,6 +100,13 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    loadSubscription() {
+      axios.get('/api/auth/current-subscription')
+        .then(response => {
+          console.log(response);
+          this.subscription = response.data.subscription;
+        });
     },
     mouseDownEventListener () {
       if (this.mouse_over_projects_menu === false && this.menu_projects_visible === true) {
