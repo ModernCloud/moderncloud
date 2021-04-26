@@ -2,6 +2,7 @@
   <section class="footer">
     <ProjectModal ref="modal" />
     <div class="buttons">
+      <div class="button-feedback">If you have any feedback or questions, <a href="mailto:contact@moderncloud.io" target="_blank">email</a> us now</div>
       <div class="button-settings" @click="$router.push('/settings/account');">
         <IconSettings :width="18" :height="18" />
         Settings

@@ -1,11 +1,19 @@
 aside#editor-aside {
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 90px auto 80px;
+  grid-template-rows: 90px auto 130px;
 
   .footer {
     .buttons {
       position: relative;
+    }
+
+    .button-feedback {
+      font-size: 12px;
+      padding-bottom: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+      color: rgba(0, 0, 0, .5)
     }
 
     .button-settings, .button-projects {
@@ -215,6 +223,10 @@ aside#editor-aside {
 [data-theme="dark"] {
   aside#editor-aside {
     .footer {
+      .button-feedback {
+        color: rgba(255, 255, 255, .5);
+      }
+
       .button-projects {
         &:hover, &.active {
           background: #2D2E36;
