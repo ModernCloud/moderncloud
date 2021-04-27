@@ -22,6 +22,7 @@ class GetCurrentSubscription extends ApiAction
 
     async loadInvoices() {
         this.invoices = await stripe.invoices.list({
+            customer: this.currentUser.stripe_customer_id,
             limit: 24
         });
     }
