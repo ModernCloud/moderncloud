@@ -95,7 +95,7 @@ export default {
     },
     parseDate(timestamp) {
       if (timestamp) {
-        return moment.unix(timestamp).format('D MMM Y H:m:s');
+        return moment.unix(timestamp).format('D MMM Y HH:mm:ss');
       } else {
         return '-';
       }
