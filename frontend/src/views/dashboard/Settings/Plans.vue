@@ -21,7 +21,7 @@
             </div>
             <div class="price-column">
               <h2>Team</h2>
-              <div class="price">$20 / person</div>
+              <div class="price">$18 / person</div>
               <p>Best for teams building and working together</p>
               <a href="javascript:;" class="btn">Coming Soon</a>
             </div>
