@@ -3,6 +3,7 @@
     <Confirm style="z-index: 6000000" ref="confirmModal" :message="`We are going to deploy your project to the selected (<strong>${environment.name}</strong>) environment. Do you want to continue?`" @yes="deploy" />
     <Confirm style="z-index: 6000000" ref="confirmDestroyModal" :message="`We are going to destroy your environment's (<strong>${environment.name}</strong>) resources. Do you want to continue?`" @yes="destroy" />
     <MessageDialog ref="credentialsMessage" :message="`Please update your AWS credentials.`" />
+    <MessageDialog ref="deployMessage" :message="`Please deploy your environment.`" />
     <div class="environment-header">
       <div class="name">{{environment.name}}</div>
     </div>
@@ -102,10 +103,10 @@ export default {
   },
   methods: {
     showCustomDomainModal() {
-      if (this.environment.last_success_deployment) {
+      if (this.environment.api_gateway_arn) {
         this.$emit('setDomain', this.environment.id)
       } else {
-        this.$refs.credentialsMessage.show({});
+        this.$refs.deployMessage.show({});
       }
     },
     showDeployConfirmation() {
@@ -122,7 +123,7 @@ export default {
       if (this.environment.api_gateway_arn) {
         this.$refs.confirmDestroyModal.show({})
       } else {
-        this.$refs.credentialsMessage.show({});
+        this.$refs.deployMessage.show({});
       }
     },
     async deploy() {
