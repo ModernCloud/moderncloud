@@ -15,6 +15,7 @@ class Service {
             'AmazonS3FullAccess',
             'AmazonDynamoDBFullAccess',
             'CloudWatchFullAccess',
+            'CloudFrontFullAccess',
             'AmazonAPIGatewayAdministrator',
             'AWSCertificateManagerFullAccess'
         ];
