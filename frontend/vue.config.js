@@ -22,7 +22,20 @@ module.exports = {
           }
         }
       })
-    ]
+    ],
+    devtool: 'source-map',
+    node: {
+      "fs": "empty",
+      "crypto": "empty",
+      "tls": "empty",
+      "net": "empty",
+      "setImmediate": true
+    },
+    resolve: {
+      alias: {
+        'vscode': require.resolve('monaco-languageclient/lib/vscode-compatibility')
+      }
+    }
   },
   pages: {
     index: {

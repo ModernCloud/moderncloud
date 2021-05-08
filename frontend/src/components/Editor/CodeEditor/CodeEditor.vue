@@ -36,7 +36,7 @@
             <IconChevronRight :stroke-width="1.7" :width="18" :height="18" />
           </a>
         </div>
-        <monaco-editor ref="monaco" class="monaco-editor" v-model="sourceCode" @change="sourceCodeChanged"></monaco-editor>
+        <monaco-editor ref="monaco" class="monaco-editor"></monaco-editor>
       </div>
       <InfoPanel :file="$store.state.project.currentFile" />
     </div>
@@ -64,46 +64,29 @@ export default {
   },
   data() {
     return {
-      sourceCode: null,
-      keyupTimer: null,
       disableLeftScrollButton: true,
-      disableRightScrollButton: true,
-      skipMonacoEvent: true
-    }
-  },
-  watch: {
-    '$store.state.project.selected'() {
-      this.sourceCode = null;
+      disableRightScrollButton: true
     }
   },
   mounted() {
-    this.sourceCode = this.$store.state.project.currentFile.sourceCode;
     CodeEditorEvents.$on('openFile', this.openFile);
     CodeEditorEvents.$on('closeFile', this.closeFile);
-    CodeEditorEvents.$on('addPackage', this.addPackage);
   },
   destroyed() {
     CodeEditorEvents.$off('openFile');
     CodeEditorEvents.$off('closeFile');
-    CodeEditorEvents.$off('addPackage');
   },
   methods: {
     openFile(file) {
-      this.skipMonacoEvent = true;
       this.$store.commit('openFile', file);
-      this.sourceCode = this.$store.state.project.currentFile.sourceCode;
       this.updateScroll(file);
     },
     switchFile(file) {
-      this.skipMonacoEvent = true;
       this.$store.commit('switchFile', file);
-      this.sourceCode = this.$store.state.project.currentFile.sourceCode;
       this.updateScroll(file);
     },
     closeFile(file) {
-      this.skipMonacoEvent = true;
       this.$store.commit('closeFile', file);
-      this.sourceCode = this.$store.state.project.currentFile.sourceCode;
       this.updateScroll();
     },
     scrollLeft() {
@@ -153,25 +136,6 @@ export default {
           this.disableRightScrollButton = false;
         }
       }
-    },
-    sourceCodeChanged(code) {
-      if (this.skipMonacoEvent) {
-        this.skipMonacoEvent = false;
-        return;
-      }
-      this.$store.commit('updateSourceCode', code);
-      if (this.keyupTimer) {
-        clearTimeout(this.keyupTimer);
-        this.keyupTimer = null;
-      }
-      this.keyupTimer = setTimeout(() => {
-        CodeEditorEvents.$emit('sourceCodeUpdated', {
-          ...this.$store.state.project.currentFile
-        });
-      }, 700);
-    },
-    async addPackage(name, version) {
-      await this.$refs.monaco.addExtraLib(name, version);
     },
     methodLabelColor(method) {
       if (method === 'POST') {

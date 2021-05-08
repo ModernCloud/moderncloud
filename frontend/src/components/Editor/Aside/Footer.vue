@@ -104,7 +104,6 @@ export default {
     loadSubscription() {
       axios.get('/api/auth/current-subscription')
         .then(response => {
-          console.log(response);
           this.subscription = response.data.subscription;
         });
     },

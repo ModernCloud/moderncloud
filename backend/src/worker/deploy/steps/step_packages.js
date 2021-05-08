@@ -40,8 +40,8 @@ async function installDependencies(job, lambda) {
 }
 
 async function runNpmInstall(job, lambda) {
-    await job.addLog(`$ npm install --prefix ${lambda.name}`);
-    let result = shelljs.exec(`npm install --no-fund --no-audit --prefix "${job.getLambdaPackagesNodejsRoot(lambda.name)}"`, {silent: true});
+    await job.addLog(`$ npm install --no-fund --no-audit --prod --no-optional --ignore-scripts --no-bin-links --prefix ${lambda.name}`);
+    let result = shelljs.exec(`npm install --no-fund --no-audit --prod --no-optional --ignore-scripts --no-bin-links --prefix "${job.getLambdaPackagesNodejsRoot(lambda.name)}"`, {silent: true});
     await job.addLog(result.stdout || result.stderr);
     if (result.code > 0) {
         throw new Error(`Failed: npm install --prefix "${job.getLambdaPackagesNodejsRoot(lambda.name)}" | Task: ${job.task.id}`);

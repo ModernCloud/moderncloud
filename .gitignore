@@ -1,5 +1,6 @@
 node_modules
 .idea
 .env
+.env.local
 .DS_STORE
 docker-compose.yml
