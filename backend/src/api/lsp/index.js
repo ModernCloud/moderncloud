@@ -18,13 +18,15 @@ async function checkUser(token) {
     return User.query().findById(jwtResult.data.id);
 }
 
-function launch(socket) {
+function launch(projectId, socket) {
     const reader = new rpc.WebSocketMessageReader(socket);
     const writer = new rpc.WebSocketMessageWriter(socket);
     const serverConnection = rpcServer.createServerProcess('ts', 'docker', [
-        'run', '-v', `${process.env.STORAGE}/packages:/packages`,
-        '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR',
-        '-i', '--rm', 'moderncloud/runner:0.1', 'typescript-language-server', '--stdio'
+        'run',
+        '-v', `${process.env.STORAGE}/projects/${projectId}/packages:/packages`,
+        '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
+        'moderncloud/runner:0.1',
+        'node', '/startserver.js', '--stdio'
     ]);
     const socketConnection = rpcServer.createConnection(reader, writer, () => {
         socket.dispose();
@@ -67,9 +69,9 @@ module.exports = server => {
                     dispose: () => webSocket.close()
                 };
                 if (webSocket.readyState === webSocket.OPEN) {
-                    launch(socket);
+                    launch(project.id, socket);
                 } else {
-                    webSocket.on('open', () => launch(socket));
+                    webSocket.on('open', () => launch(project.id, socket));
                 }
             });
         }

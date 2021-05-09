@@ -42,6 +42,7 @@ export default {
         allowJs: true,
         allowNonTsExtensions: true,
         experimentalDecorators: true,
+        module: monaco.languages.typescript.ModuleKind.CommonJS,
         moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
         noEmit: true,
         lib: ['es6']

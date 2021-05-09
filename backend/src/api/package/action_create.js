@@ -1,13 +1,17 @@
 const Joi = require('joi');
 const ApiAction = require('../action');
-const { Package } = require('../../common/db');
+const ApiError = require('../error');
+const { Package, Project } = require('../../common/db');
+const updatePackagesFolder = require('./update_packages_folder');
 
 class CreateAction extends ApiAction
 {
     async tryExecute() {
         await this.checkUser();
         await this.validateParams();
+        await this.loadProject();
         await this.createPackage();
+        await updatePackagesFolder(this.project.id);
         return this.response.success({id: this.package.id}, 201);
     }
 
@@ -20,6 +24,16 @@ class CreateAction extends ApiAction
             file_type: Joi.string().allow('endpoint', 'function', null).optional().default(null)
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
+    }
+
+    async loadProject() {
+        this.project = await Project.query()
+            .where('user_id', this.currentUser.id)
+            .where('id', this.validRequest.project_id)
+            .first();
+        if (!(this.project instanceof Project)) {
+            throw new ApiError('Project not found!', 10502, 404);
+        }
     }
 
     async createPackage() {

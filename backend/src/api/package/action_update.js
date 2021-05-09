@@ -2,6 +2,7 @@ const Joi = require('joi');
 const ApiAction = require('../action');
 const ApiError = require('../error');
 const { Package } = require('../../common/db');
+const updatePackagesFolder = require('./update_packages_folder');
 
 class UpdateAction extends ApiAction
 {
@@ -10,6 +11,7 @@ class UpdateAction extends ApiAction
         await this.validateParams();
         await this.loadPackage();
         await this.updatePackage();
+        await updatePackagesFolder(this.package.project_id);
         return this.response.success({}, 200);
     }
 
