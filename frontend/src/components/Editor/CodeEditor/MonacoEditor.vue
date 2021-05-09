@@ -65,10 +65,10 @@ export default {
     },
     openFile() {
       let currentFile = this.$store.state.project.currentFile;
-      let filePath = monaco.Uri.parse(process.env.VUE_APP_ROOT_DIR + '/' + this.$store.state.project.currentFile.function_name +'/index.js');
+      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/index.js`);
       let currentModel = null;
       if ((currentModel = monaco.editor.getModel(filePath)) == null) {
-        currentModel = monaco.editor.createModel(currentFile.sourceCode, 'javascript', monaco.Uri.parse(filePath));
+        currentModel = monaco.editor.createModel(currentFile.sourceCode, 'javascript', filePath);
         let keyupTimer = null;
         currentModel.onDidChangeContent(() => {
           console.log('onDidChangeContent', currentFile.name, currentFile.function_name, currentModel.uri.path);
@@ -95,8 +95,7 @@ export default {
       } catch (e) {
         MonacoServices.install(monaco, {rootUri: process.env.VUE_APP_ROOT_DIR});
       }
-      const url = normalizeUrl(process.env.VUE_APP_LSP_PROXY_SERVER);
-      this.webSocket = this.createWebsocket(url);
+      this.webSocket = this.createWebsocket();
       listen({
         webSocket: this.webSocket,
         onConnection: connection => {
@@ -106,7 +105,8 @@ export default {
         }
       });
     },
-    createWebsocket(url) {
+    createWebsocket() {
+      let url = normalizeUrl(process.env.VUE_APP_LSP_PROXY_SERVER + '/' + this.$store.state.account.token + '/' + this.$store.state.project.selected.id);
       const socketOptions = {
         maxReconnectionDelay: 10000,
         minReconnectionDelay: 1000,
@@ -119,7 +119,7 @@ export default {
     },
     createLanguageClient(connection) {
       return new MonacoLanguageClient({
-        name: "Sample Language Client",
+        name: "ModernCloud Language Client",
         clientOptions: {
           documentSelector: ['javascript'],
           errorHandler: {

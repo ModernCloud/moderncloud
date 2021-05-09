@@ -35,7 +35,7 @@
     "stripe": "8.145.0",
     "twig": "1.15.4",
     "uuid": "8.3.2",
-    "vscode-ws-jsonrpc": "^0.2.0",
-    "ws": "^7.4.5"
+    "vscode-ws-jsonrpc": "0.2.0",
+    "ws": "7.4.5"
   }
 }
