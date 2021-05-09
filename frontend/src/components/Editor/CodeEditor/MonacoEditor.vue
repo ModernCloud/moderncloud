@@ -72,7 +72,6 @@ export default {
         currentModel = monaco.editor.createModel(currentFile.sourceCode, 'javascript', filePath);
         let keyupTimer = null;
         currentModel.onDidChangeContent(() => {
-          console.log('onDidChangeContent', currentFile.name, currentFile.function_name, currentModel.uri.path);
           let value = currentModel.getValue();
           currentFile.sourceCode = value;
           this.$store.commit('updateSourceCode', value);
@@ -81,7 +80,6 @@ export default {
             keyupTimer = null;
           }
           keyupTimer = setTimeout(() => {
-            console.log('SourceCodeUpdated', currentFile.name, currentFile.function_name, currentModel.uri.path);
             CodeEditorEvents.$emit('sourceCodeUpdated', {
               ...currentFile
             });
