@@ -66,7 +66,7 @@ export default {
     },
     openFile() {
       let currentFile = this.$store.state.project.currentFile;
-      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/index.js`);
+      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/${this.$store.state.project.selected.id}/index.js`);
       let currentModel = null;
       if ((currentModel = monaco.editor.getModel(filePath)) == null) {
         currentModel = monaco.editor.createModel(currentFile.sourceCode, 'javascript', filePath);

@@ -5,7 +5,7 @@ const render = require('../../common/template/render');
 const shelljs = require('shelljs');
 
 module.exports = async (projectId) => {
-    let projectPackages = process.env.STORAGE + '/projects/' + projectId + '/packages';
+    let projectPackages = process.env.STORAGE + '/packages/' + projectId;
     let packages = await Package.query()
         .select('name')
         .select(Package.raw('MAX(version) AS version'))

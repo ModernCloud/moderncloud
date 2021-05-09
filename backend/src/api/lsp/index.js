@@ -4,6 +4,14 @@ const rpcServer = require('vscode-ws-jsonrpc/lib/server');
 const JWT = require('../../api/jwt');
 const {User, Project} = require('../../common/db');
 
+const serverConnection = rpcServer.createServerProcess('ts', 'docker', [
+    'run',
+    '-v', `${process.env.STORAGE}/packages:/packages`,
+    '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
+    'moderncloud/runner:0.1',
+    'node', '/startserver.js', '--stdio'
+]);
+
 const wss = new ws.Server({
     noServer: true,
     perMessageDeflate: false
@@ -21,20 +29,10 @@ async function checkUser(token) {
 function launch(projectId, socket) {
     const reader = new rpc.WebSocketMessageReader(socket);
     const writer = new rpc.WebSocketMessageWriter(socket);
-    const serverConnection = rpcServer.createServerProcess('ts', 'docker', [
-        'run',
-        '-v', `${process.env.STORAGE}/projects/${projectId}/packages:/packages`,
-        '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
-        'moderncloud/runner:0.1',
-        'node', '/startserver.js', '--stdio'
-    ]);
     const socketConnection = rpcServer.createConnection(reader, writer, () => {
         socket.dispose();
     });
     rpcServer.forward(socketConnection, serverConnection);
-    socket.onClose(() => {
-        serverConnection.dispose();
-    });
 }
 
 module.exports = server => {
