@@ -5,7 +5,6 @@
 <script>
 import {CodeEditorEvents} from '@/lib/code_editor_events';
 import * as monaco from 'monaco-editor';
-import normalizeUrl from 'normalize-url';
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { listen } from 'vscode-ws-jsonrpc';
 import {MonacoLanguageClient, ErrorAction, CloseAction, createConnection, MonacoServices} from "monaco-languageclient";
@@ -105,7 +104,7 @@ export default {
       });
     },
     createWebsocket() {
-      let url = normalizeUrl(process.env.VUE_APP_LSP_PROXY_SERVER + '/' + this.$store.state.account.token + '/' + this.$store.state.project.selected.id);
+      let url = process.env.VUE_APP_LSP_PROXY_SERVER + '/' + this.$store.state.account.token + '/' + this.$store.state.project.selected.id;
       const socketOptions = {
         maxReconnectionDelay: 10000,
         minReconnectionDelay: 1000,
