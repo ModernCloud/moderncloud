@@ -18,6 +18,7 @@ require('./package')(app);
 require('./dynamodb')(app);
 require('./task')(app);
 
-const server = app.listen(process.env.PORT, () => console.log(`Listening on port: ${process.env.PORT}`));
-require('./lsp')(server);
+app.listen(process.env.PORT, () => {
+    console.log(`Listening on port: ${process.env.PORT}`)
+});
 
