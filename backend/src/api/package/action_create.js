@@ -11,7 +11,7 @@ class CreateAction extends ApiAction
         await this.validateParams();
         await this.loadProject();
         await this.createPackage();
-        await updatePackagesFolder(this.project.id);
+        await updatePackagesFolder(this.package.project_id);
         return this.response.success({id: this.package.id}, 201);
     }
 

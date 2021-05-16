@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const ApiAction = require('../action');
 const { Project, Environment, Endpoint, Function } = require('../../common/db');
+const updatePackagesFolder = require('../package/update_packages_folder');
 
 class CreateAction extends ApiAction
 {
@@ -11,6 +12,7 @@ class CreateAction extends ApiAction
         await this.createDefaultEnvironments();
         await this.createDefaultEndpoints();
         await this.createDefaultFunctions();
+        await updatePackagesFolder(this.project.id);
         return this.response.success({id: this.project.id}, 201);
     }
 

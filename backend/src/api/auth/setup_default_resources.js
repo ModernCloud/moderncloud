@@ -1,4 +1,5 @@
 const { Project, Environment, Endpoint, Function } = require('../../common/db');
+const updatePackagesFolder = require('../package/update_packages_folder');
 
 async function createDefaultProject(user) {
     return Project.query().insert({
@@ -65,4 +66,5 @@ module.exports = async (user) => {
     await createDefaultEnvironments(project);
     await createDefaultEndpoints(project);
     await createDefaultFunctions(project);
+    await updatePackagesFolder(project.id);
 };
