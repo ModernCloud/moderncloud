@@ -7,7 +7,7 @@
         <h3>{{environment.name}}</h3>
         <div class="buttons">
           <button class="btn btn-primary" style="font-size: 11px;" @click="$emit('show-variables', environment.id)">Env</button>
-          <button type="button" class="btn btn-primary" style="font-size: 11px" :disabled="isRunning || (this.environment.access_key == null || this.environment.secret_key == null)" @click="$refs.confirmModal.show({})">
+          <button type="button" class="btn btn-primary" style="font-size: 11px" :disabled="isRunning || (hasCredential === false)" @click="$refs.confirmModal.show({})">
             <span v-if="isRunning" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true" style="margin-right: 5px;"></span>
             <span v-if="isRunning">Running</span>
             <span v-if="isRunning === false">Deploy</span>
@@ -15,8 +15,8 @@
         </div>
       </div>
       <div style="padding: 10px;">
-        <div v-if="this.environment.access_key == null || this.environment.secret_key == null" class="alert alert-danger">
-          Please update your AWS credentials. <router-link :to="{name: 'environments', params: {project_id: this.$store.state.project.selected.id}}">Click here.</router-link>
+        <div v-if="hasCredential === false" class="alert alert-danger">
+          Please update your AWS credentials. <a href="javascript:;" @click="$emit('show-edit', environment.id);">Click here.</a>
         </div>
         <div v-if="environment.last_deployment === null" class="alert alert-warning">
           {{ resourceType }} has not been deployed yet in this environment.
@@ -85,6 +85,12 @@ export default {
     }
   },
   computed: {
+    hasCredential() {
+      return !(this.environment.access_key == null
+          || this.environment.secret_key == null
+          || this.environment.access_key === ''
+          || this.environment.secret_key === '');
+    },
     resourceType() {
       return this.file.type === 'endpoint' ? 'Endpoint' : 'Function';
     },

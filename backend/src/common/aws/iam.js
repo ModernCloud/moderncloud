@@ -1,3 +1,4 @@
+const ApiError = require('../../api/error');
 const mapValues = require('lodash/mapValues');
 const values = require('lodash/values');
 const intersection = require('lodash/intersection');
@@ -19,21 +20,28 @@ class Service {
             'AmazonAPIGatewayAdministrator',
             'AWSCertificateManagerFullAccess'
         ];
-        let result = await this.iamClient.getUser({});
-        let resultGroups = await this.iamClient.listGroups({});
-        let groupNames = values(mapValues(resultGroups.Groups, 'GroupName'));
-        let resultAttachedPolicies = await this.iamClient.listAttachedUserPolicies({UserName: result.User.UserName});
-        let attachedPolicyNames = values(mapValues(resultAttachedPolicies.AttachedPolicies, 'PolicyName'));
-        for (const groupName of groupNames) {
-            let resultAttachedGroupPolicies = await this.iamClient.listAttachedGroupPolicies({GroupName: groupName});
-            let groupPolicies = values(mapValues(resultAttachedGroupPolicies.AttachedPolicies, 'PolicyName'));
-            attachedPolicyNames.push(...groupPolicies);
+        try {
+            let result = await this.iamClient.getUser({});
+            let resultGroups = await this.iamClient.listGroups({});
+            let groupNames = values(mapValues(resultGroups.Groups, 'GroupName'));
+            let resultAttachedPolicies = await this.iamClient.listAttachedUserPolicies({UserName: result.User.UserName});
+            let attachedPolicyNames = values(mapValues(resultAttachedPolicies.AttachedPolicies, 'PolicyName'));
+            for (const groupName of groupNames) {
+                let resultAttachedGroupPolicies = await this.iamClient.listAttachedGroupPolicies({GroupName: groupName});
+                let groupPolicies = values(mapValues(resultAttachedGroupPolicies.AttachedPolicies, 'PolicyName'));
+                attachedPolicyNames.push(...groupPolicies);
+            }
+            if (attachedPolicyNames.indexOf('AdministratorAccess') > -1) {
+                return true;
+            }
+            let permissions = intersection(requiredPermissions, attachedPolicyNames);
+            return permissions.length === requiredPermissions.length;
+        } catch (e) {
+            if (e.Code && e.Code === 'InvalidClientTokenId') {
+                throw new ApiError('AWS credential is invalid!', 10522, 400);
+            }
+            throw e;
         }
-        if (attachedPolicyNames.indexOf('AdministratorAccess') > -1) {
-            return true;
-        }
-        let permissions = intersection(requiredPermissions, attachedPolicyNames);
-        return permissions.length === requiredPermissions.length;
     }
 
     async getUser() {

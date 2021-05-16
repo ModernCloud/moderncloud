@@ -2,6 +2,7 @@
   <div class="deployment">
     <LogsModal ref="logs" />
     <EnvironmentVariablesModal ref="variables" />
+    <EnvironmentModal ref="environment" @updated="loadEnvironments" @added="loadEnvironments" />
     <section style="padding-left: 8px; padding-right: 8px;">
       <h4>File Details</h4>
       <div>
@@ -26,7 +27,8 @@
     <EnvironmentRow v-for="environment in environments" :key="environment.id" :environment="environment" :file="file"
                     @loadEnvironments="loadEnvironments()"
                     @show-logs="$refs.logs.show"
-                    @show-variables="$refs.variables.show">
+                    @show-variables="$refs.variables.show"
+                    @show-edit="$refs.environment.showEdit">
     </EnvironmentRow>
   </div>
 </template>
@@ -37,10 +39,12 @@ import EnvironmentRow from "./EnvironmentRow";
 import axios from 'axios';
 import IconArrowNarrowRight from "@/components/Icons/IconArrowNarrowRight";
 import EnvironmentVariablesModal from "@/components/Settings/Projects/Environments/EnvironmentVariablesModal";
+import EnvironmentModal from "@/components/Settings/Projects/Environments/EnvironmentModal";
 
 export default {
   components: {
     EnvironmentVariablesModal,
+    EnvironmentModal,
     IconArrowNarrowRight,
     EnvironmentRow,
     LogsModal

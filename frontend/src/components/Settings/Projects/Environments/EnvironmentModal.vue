@@ -130,12 +130,12 @@ export default {
       }
     },
     async update() {
-      await axios.put(`/api/environments/${this.current_id}`, {...this.form, project_id: this.$route.params.project_id});
+      await axios.put(`/api/environments/${this.current_id}`, {...this.form, project_id: this.$route.params.project_id || this.$store.state.project.selected.id});
       this.$emit('updated', this.current_id);
       this.closeModal();
     },
     async create() {
-      let response = await axios.post('/api/environments', {...this.form, project_id: this.$route.params.project_id});
+      let response = await axios.post('/api/environments', {...this.form, project_id: this.$route.params.project_id || this.$store.state.project.selected.id});
       this.$emit('added', response.data.id);
       this.closeModal();
     }
