@@ -42,7 +42,7 @@ jobs:
           ssh deployment mkdir -p $RELEASE_DIR
           ssh deployment mkdir -p $BASE_DIR/storage/logs
       - name: Copy files
-        run: scp -r -F ~/.ssh/config -i ~/.ssh/deployment.key -o StrictHostKeyChecking=no ${{ github.workspace }}/runner/* ${SSH_USER}@${SSH_HOST}:$RELEASE_DIR
+        run: scp -r -F ~/.ssh/config -i ~/.ssh/deployment.key -o StrictHostKeyChecking=no ${{ github.workspace }}/* ${SSH_USER}@${SSH_HOST}:$RELEASE_DIR
       - name: Install dependencies
         run: ssh deployment npm install --no-fund --no-audit --prod --no-optional --prefix $RELEASE_DIR
       - name: Create symbolic links
