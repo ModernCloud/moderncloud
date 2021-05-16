@@ -44,9 +44,9 @@ jobs:
       - name: Copy files
         run: scp -r -F ~/.ssh/config -i ~/.ssh/deployment.key -o StrictHostKeyChecking=no ${{ github.workspace }}/* ${SSH_USER}@${SSH_HOST}:$RELEASE_DIR
       - name: Install dependencies
-        run: ssh deployment npm install --no-fund --no-audit --prod --no-optional --prefix $RELEASE_DIR
+        run: ssh deployment npm install --no-fund --no-audit --prod --no-optional --prefix $RELEASE_DIR/backend
       - name: Create symbolic links
-        run: ssh deployment ln -sf $BASE_DIR/.env $RELEASE_DIR/.env
+        run: ssh deployment ln -sf $BASE_DIR/.env $RELEASE_DIR/backend/.env
       - name: Activate release
         run: |
           ssh deployment rm -f $BASE_DIR/latest
