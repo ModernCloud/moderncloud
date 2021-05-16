@@ -1,4 +1,4 @@
-name: Runner Deployment
+name: Backend Deployment
 
 on:
   workflow_dispatch:
