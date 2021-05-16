@@ -65,7 +65,7 @@ export default {
     },
     openFile() {
       let currentFile = this.$store.state.project.currentFile;
-      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/${this.$store.state.project.selected.id}/index.js`);
+      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/${currentFile.function_name}.js`);
       let currentModel = null;
       if ((currentModel = monaco.editor.getModel(filePath)) == null) {
         currentModel = monaco.editor.createModel(currentFile.sourceCode, 'javascript', filePath);
@@ -82,7 +82,7 @@ export default {
             CodeEditorEvents.$emit('sourceCodeUpdated', {
               ...currentFile
             });
-          }, 2000);
+          }, 700);
         });
       }
       this.monacoEditor.setModel(currentModel);
@@ -104,7 +104,11 @@ export default {
       });
     },
     createWebsocket() {
-      let url = process.env.VUE_APP_LSP_PROXY_SERVER + '/' + this.$store.state.account.token + '/' + this.$store.state.project.selected.id;
+      let url = process.env.VUE_APP_LSP_PROXY_SERVER
+          + '/js?token='
+          + this.$store.state.account.token
+          + '&project_id='
+          + this.$store.state.project.selected.id;
       const socketOptions = {
         maxReconnectionDelay: 10000,
         minReconnectionDelay: 1000,

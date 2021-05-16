@@ -14,7 +14,7 @@
           </a>
           <div class="files">
             <div class="file" :class="{open: item.id === $store.state.project.currentFile.id && item.type === $store.state.project.currentFile.type}" v-for="item in $store.state.project.files" :key="item.type + '_' + item.id">
-              <div class="name" @click.prevent="switchFile(item)">
+              <div class="name" @click.prevent="openFile(item)">
                 <small v-if="item.type === 'endpoint'" :style="{
                 'display': 'inline-block',
                 'font-weight': 600,
@@ -79,10 +79,6 @@ export default {
   methods: {
     openFile(file) {
       this.$store.commit('openFile', file);
-      this.updateScroll(file);
-    },
-    switchFile(file) {
-      this.$store.commit('switchFile', file);
       this.updateScroll(file);
     },
     closeFile(file) {
