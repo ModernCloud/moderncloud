@@ -93,10 +93,10 @@ export default {
       this.current_id = 0;
       this.errorMessage = null;
       this.currentFile = file;
-      this.visible = !this.visible;
+      this.visible = true;
     },
     async showEdit(file, id) {
-      this.visible = !this.visible;
+      this.visible = true;
       this.errorMessage = null;
       this.loading = true;
       this.currentFile = file;
@@ -104,7 +104,7 @@ export default {
       await this.loadItem(id);
     },
     closeModal() {
-      this.visible = !this.visible;
+      this.visible = false;
       this.errorMessage = null;
       this.form.name = null;
       this.form.version = null;

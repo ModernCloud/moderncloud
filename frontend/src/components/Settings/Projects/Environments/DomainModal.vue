@@ -119,11 +119,11 @@ export default {
     async showAdd(id) {
       this.errorMessage = null;
       this.current_id = id;
-      this.visible = !this.visible;
+      this.visible = true;
       await this.loadItem(id);
     },
     closeModal() {
-      this.visible = !this.visible;
+      this.visible = false;
       this.errorMessage = null;
       this.form.domain_name = null;
       this.current_id = 0;

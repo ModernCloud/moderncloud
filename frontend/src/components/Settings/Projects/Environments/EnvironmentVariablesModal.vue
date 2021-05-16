@@ -66,14 +66,14 @@ export default {
   },
   methods: {
     async show(id) {
-      this.visible = !this.visible;
+      this.visible = true;
       this.errorMessage = null;
       this.loading = true;
       this.current_id = id;
       await this.loadVariables();
     },
     closeModal() {
-      this.visible = !this.visible;
+      this.visible = false;
       this.errorMessage = null;
       this.variables = [];
       this.current_id = 0;

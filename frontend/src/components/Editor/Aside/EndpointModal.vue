@@ -89,17 +89,17 @@ export default {
     async showAdd() {
       this.current_id = 0;
       this.errorMessage = null;
-      this.visible = !this.visible;
+      this.visible = true;
     },
     async showEdit(id) {
       this.errorMessage = null;
-      this.visible = !this.visible;
+      this.visible = true;
       this.loading = true;
       this.current_id = id;
       await this.loadItem(id);
     },
     closeModal() {
-      this.visible = !this.visible;
+      this.visible = false;
       this.errorMessage = null;
       this.form.user_name = null;
       this.form.method = 'POST';
