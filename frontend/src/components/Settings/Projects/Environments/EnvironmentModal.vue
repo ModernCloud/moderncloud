@@ -27,6 +27,7 @@
             <input type="text" class="form-control" v-model="form.secret_key" :disabled="isDeployed" />
           </div>
           <div class="form-text" v-if="isDeployed">Please destroy resources first to change AWS credentials.</div>
+          <div class="form-text d-flex align-items-center"><IconFileText :stroke-width="1.5" :height="16" :width="16" style="margin-right: 3px;" /> <a href="https://www.moderncloud.io/docs/aws-credentials" target="_blank">Get your AWS Credentials</a></div>
         </form>
       </div>
       <div class="actions">
@@ -45,9 +46,10 @@ import regions from '@/constants/regions';
 import axios from "axios";
 import IconX from "@/components/Icons/IconX";
 import {getErrorMessage} from "../../../../lib/get_error_message";
+import IconFileText from "../../../Icons/IconFileText";
 
 export default {
-  components: {IconX},
+  components: {IconFileText, IconX},
   data() {
     return {
       visible: false,
@@ -74,10 +76,10 @@ export default {
       this.current_id = 0;
       this.isDeployed = false;
       this.errorMessage = null;
-      this.visible = !this.visible;
+      this.visible = true;
     },
     async showEdit(id) {
-      this.visible = !this.visible;
+      this.visible = true;
       this.errorMessage = null;
       this.loading = true;
       this.isDeployed = false;
@@ -85,7 +87,7 @@ export default {
       await this.loadItem(id);
     },
     closeModal() {
-      this.visible = !this.visible;
+      this.visible = false;
       this.errorMessage = null;
       this.isDeployed = false;
       this.form.name = null;
