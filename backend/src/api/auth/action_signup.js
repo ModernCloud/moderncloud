@@ -4,8 +4,8 @@ const JWT = require('../jwt');
 const ApiAction = require('../action');
 const ApiError = require('../error');
 const { User } = require('../../common/db');
-const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 const setupDefaultResources = require('./setup_default_resources');
+const createStripeCustomer = require('./create_stripe_customer');
 
 class SignupAction extends ApiAction
 {
@@ -16,9 +16,8 @@ class SignupAction extends ApiAction
             await this.checkUserExists();
             await this.createUser();
             await this.createToken();
-            await setupDefaultResources(this.user);
-            await this.createStripeCustomer();
-            await this.startTrialSubscription();
+            await setupDefaultResources(this.transaction, this.user);
+            await createStripeCustomer(this.transaction, this.user);
             await this.transaction.commit();
         } catch (err) {
             await this.transaction.rollback();
@@ -60,31 +59,6 @@ class SignupAction extends ApiAction
 
     async createToken() {
         this.token = JWT.generate({id: this.user.id, email: this.user.email, name: this.user.name});
-    }
-
-    async createStripeCustomer() {
-        let customer = await stripe.customers.create({
-            name: this.user.name,
-            email: this.user.email
-        });
-        this.user.stripe_customer_id = customer.id;
-        await User.query(this.transaction).where('id', this.user.id).update({
-            stripe_customer_id: this.user.stripe_customer_id
-        });
-    }
-
-    async startTrialSubscription() {
-        let subscription = await stripe.subscriptions.create({
-            customer: this.user.stripe_customer_id,
-            items: [{
-                price: process.env.STRIPE_PACKAGE_PERSONAL_PRICE_ID
-            }],
-            trial_period_days: 30
-        });
-        await User.query(this.transaction).where('id', this.user.id).update({
-            current_subscription_id: subscription.id,
-            current_subscription_status: subscription.status
-        });
     }
 }
 
