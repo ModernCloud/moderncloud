@@ -52,9 +52,14 @@ export default {
         extensions: ['.js'],
         mimetypes: ['text/javascript']
       });
+      monaco.languages.register({
+        id: 'python',
+        aliases: ['Python', 'python', 'py'],
+        extensions: ['.py'],
+        mimetypes: ['text/x-python']
+      });
       this.monacoEditor = monaco.editor.create(this.$refs.editor, {
         model: null,
-        language: "javascript",
         theme: this.$store.state.account.settings.theme === 'dark' ? 'vs-dark' : 'vs-light',
         automaticLayout: true,
         folding: false,
@@ -65,10 +70,17 @@ export default {
     },
     openFile() {
       let currentFile = this.$store.state.project.currentFile;
-      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/${currentFile.function_name}.js`);
+      let language = 'javascript';
+      let fileExtension = 'js';
+      if (currentFile.runtime.indexOf('python') > -1) {
+        language = 'python';
+        fileExtension = 'py';
+      }
+      let fileName = `${currentFile.function_name}.${fileExtension}`;
+      let filePath = monaco.Uri.parse(`${process.env.VUE_APP_ROOT_DIR}/${fileName}`);
       let currentModel = null;
       if ((currentModel = monaco.editor.getModel(filePath)) == null) {
-        currentModel = monaco.editor.createModel(currentFile.sourceCode, 'javascript', filePath);
+        currentModel = monaco.editor.createModel(currentFile.sourceCode, language, filePath);
         let keyupTimer = null;
         currentModel.onDidChangeContent(() => {
           let value = currentModel.getValue();
@@ -123,7 +135,7 @@ export default {
       return new MonacoLanguageClient({
         name: "ModernCloud Language Client",
         clientOptions: {
-          documentSelector: ['javascript'],
+          documentSelector: ['javascript', 'python', 'go'],
           errorHandler: {
             error: () => ErrorAction.Continue,
             closed: () => CloseAction.DoNotRestart

@@ -1,7 +1,7 @@
 const ApiAction = require('../action');
 const axios = require('axios');
 
-class SearchNpmsAction extends ApiAction
+class SearchApiAction extends ApiAction
 {
     async tryExecute() {
         await this.checkUser();
@@ -18,4 +18,4 @@ class SearchNpmsAction extends ApiAction
     }
 }
 
-module.exports = SearchNpmsAction;
+module.exports = SearchApiAction;

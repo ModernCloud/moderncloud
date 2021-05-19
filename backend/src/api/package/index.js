@@ -1,6 +1,6 @@
 module.exports = app => {
-    app.get('/packages/search-npms', async (req, res) => {
-        await require('./action_search_npms').execute(req, res);
+    app.get('/packages/search-api', async (req, res) => {
+        await require('./action_search_api').execute(req, res);
     });
     app.get('/packages', async (req, res) => {
         await require('./action_search').execute(req, res);

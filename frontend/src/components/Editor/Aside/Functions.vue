@@ -121,6 +121,7 @@ export default {
           id: id,
           name: response.data.function.user_name,
           type: 'function',
+          runtime: response.data.function.runtime,
           sourceCode: response.data.function.code,
           function_name: response.data.function.name,
           description: response.data.function.description
