@@ -1,11 +1,11 @@
 const Joi = require('joi');
 const JWT = require('../jwt');
 const ApiAction = require('../action');
-const ApiError = require('../error');
 const { User } = require('../../common/db');
 const {OAuth2Client} = require('google-auth-library');
 const googleOAuth2Client = new OAuth2Client(process.env.GOOGLE_OAUTH_CLIENT_ID);
 const setupDefaultResources = require('./setup_default_resources');
+const createStripeCustomer = require('./create_stripe_customer');
 
 class GenerateToken extends ApiAction
 {
@@ -47,12 +47,20 @@ class GenerateToken extends ApiAction
     }
 
     async createUserIfNotExists() {
-        this.user = await User.query().insert({
-            email: this.googleUser.email,
-            password: '',
-            name: this.googleUser.name
-        });
-        await setupDefaultResources(this.user);
+        this.transaction = await User.startTransaction();
+        try {
+            this.user = await User.query().insert({
+                email: this.googleUser.email,
+                password: '',
+                name: this.googleUser.name
+            });
+            await setupDefaultResources(this.transaction, this.user);
+            await createStripeCustomer(this.transaction, this.user);
+            await this.transaction.commit();
+        } catch (err) {
+            await this.transaction.rollback();
+            throw err;
+        }
     }
 
     async createToken() {

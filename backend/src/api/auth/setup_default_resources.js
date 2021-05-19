@@ -1,21 +1,21 @@
 const { Project, Environment, Endpoint, Function } = require('../../common/db');
 const updatePackagesFolder = require('../package/update_packages_folder');
 
-async function createDefaultProject(user) {
-    return Project.query().insert({
+async function createDefaultProject(transaction, user) {
+    return Project.query(transaction).insert({
         user_id: user.id,
         name: 'default'
     });
 }
 
-async function createDefaultEnvironments(project) {
-    await Environment.query().insert({
+async function createDefaultEnvironments(transaction, project) {
+    await Environment.query(transaction).insert({
         user_id: project.user_id,
         project_id: project.id,
         name: 'dev',
         region: 'us-east-1'
     });
-    await Environment.query().insert({
+    await Environment.query(transaction).insert({
         user_id: project.user_id,
         project_id: project.id,
         name: 'prod',
@@ -23,8 +23,8 @@ async function createDefaultEnvironments(project) {
     });
 }
 
-async function createDefaultEndpoints(project) {
-    await Endpoint.query().insert({
+async function createDefaultEndpoints(transaction, project) {
+    await Endpoint.query(transaction).insert({
         user_id: project.user_id,
         project_id: project.id,
         user_name: 'Hello World',
@@ -43,8 +43,8 @@ async function createDefaultEndpoints(project) {
     });
 }
 
-async function createDefaultFunctions(project) {
-    await Function.query().insert({
+async function createDefaultFunctions(transaction, project) {
+    await Function.query(transaction).insert({
         user_id: project.user_id,
         project_id: project.id,
         user_name: 'My Function',
@@ -61,10 +61,10 @@ async function createDefaultFunctions(project) {
     });
 }
 
-module.exports = async (user) => {
-    let project = await createDefaultProject(user);
-    await createDefaultEnvironments(project);
-    await createDefaultEndpoints(project);
-    await createDefaultFunctions(project);
+module.exports = async (transaction, user) => {
+    let project = await createDefaultProject(transaction, user);
+    await createDefaultEnvironments(transaction, project);
+    await createDefaultEndpoints(transaction, project);
+    await createDefaultFunctions(transaction, project);
     await updatePackagesFolder(project.id);
 };
