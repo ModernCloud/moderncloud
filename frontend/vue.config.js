@@ -6,10 +6,10 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 5
+        maxChunks: 8
       }),
       new MonacoWebpackPlugin({
-        languages: ['javascript', 'typescript']
+        languages: ['javascript', 'python', 'go']
       }),
       new FileManagerPlugin({
         events: {

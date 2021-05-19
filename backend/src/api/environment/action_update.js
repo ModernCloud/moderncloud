@@ -52,15 +52,19 @@ class UpdateAction extends ApiAction
         let updateParams = {};
         if (this.validRequest.hasOwnProperty('name')) {
             updateParams.name = this.validRequest.name;
+            this.environment.name = this.validRequest.name;
         }
         if (this.validRequest.hasOwnProperty('region')) {
             updateParams.region = this.validRequest.region;
+            this.environment.region = this.validRequest.region;
         }
         if (this.validRequest.hasOwnProperty('access_key')) {
             updateParams.access_key = this.validRequest.access_key;
+            this.environment.access_key = this.validRequest.access_key;
         }
         if (this.validRequest.hasOwnProperty('secret_key')) {
             updateParams.secret_key = this.validRequest.secret_key;
+            this.environment.secret_key = this.validRequest.secret_key;
         }
         if (Object.keys(updateParams).length > 0) {
             await Environment.query().where('id', this.environment.id).update(updateParams);

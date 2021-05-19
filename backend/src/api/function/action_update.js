@@ -20,7 +20,7 @@ class UpdateAction extends ApiAction
             user_name: Joi.string().optional().label('Name'),
             main_file: Joi.string().optional().label('Main File'),
             handler: Joi.string().optional().label('Handler'),
-            runtime: Joi.string().optional().label('Runtime'),
+            runtime: Joi.string().allow('python3.8', 'nodejs14.x').required().label('Runtime'),
             code: Joi.string().optional().label('Code'),
             description: Joi.string().optional().allow(null, '').label('Description'),
             memory_size: Joi.number().optional().default(128).min(128).max(10240).label('Memory Size'),

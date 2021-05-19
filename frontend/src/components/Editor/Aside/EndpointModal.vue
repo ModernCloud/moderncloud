@@ -10,12 +10,18 @@
         <form @submit.prevent="submit">
           <div class="mb-2">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" v-model="form.user_name" placeholder="My Endpoint" />
+            <div class="d-flex">
+              <select class="form-select" v-model="form.runtime" style="width: 140px; margin-right: 5px;">
+                <option value="python3.8" :selected="form.runtime === 'python3.8'">Python 3.8</option>
+                <option value="nodejs14.x" :selected="form.runtime === 'nodejs14.x'">Node.js 14</option>
+              </select>
+              <input type="text" class="form-control" v-model="form.user_name" placeholder="My Endpoint" />
+            </div>
           </div>
           <div class="mb-2">
             <label class="form-label">Path</label>
             <div class="d-flex">
-              <select class="form-select" v-model="form.method" style="width: 120px; margin-right: 5px;">
+              <select class="form-select" v-model="form.method" style="width: 140px; margin-right: 5px;">
                 <option value="POST" :selected="form.method === 'POST'">POST</option>
                 <option value="GET" :selected="form.method === 'GET'">GET</option>
                 <option value="DELETE" :selected="form.method === 'DELETE'">DELETE</option>
@@ -72,6 +78,7 @@ export default {
       current_id: 0,
       form: {
         user_name: null,
+        runtime: 'nodejs14.x',
         method: 'POST',
         path: '/',
         description: null,
@@ -116,6 +123,7 @@ export default {
         let response = await axios.get(`/api/endpoints/${id}`);
         this.form.user_name = response.data.endpoint.user_name;
         this.form.method = response.data.endpoint.method;
+        this.form.runtime = response.data.endpoint.runtime;
         this.form.path = response.data.endpoint.path;
         this.form.description = response.data.endpoint.description;
         this.form.memory_size = response.data.endpoint.memory_size;
