@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS `package` (
     project_id BIGINT UNSIGNED NOT NULL,
     file_id BIGINT UNSIGNED DEFAULT NULL,
     file_type VARCHAR(20) DEFAULT NULL,
+    runtime VARCHAR(50) DEFAULT NULL,
     name VARCHAR(50) NOT NULL,
     version VARCHAR(10) NOT NULL,
     INDEX project_idx (project_id),

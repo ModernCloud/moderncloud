@@ -168,7 +168,8 @@ export default {
         ...this.form,
         project_id: this.$store.state.project.selected.id,
         file_id: this.currentFile.id,
-        file_type: this.currentFile.type
+        file_type: this.currentFile.type,
+        runtime: this.currentFile.runtime
       });
       this.$emit('added', response.data.id);
       CodeEditorEvents.$emit('addPackage', this.form.name, this.form.version);

@@ -16,15 +16,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/packages/sync', async (req, res) => {
-    console.log(req.headers, req.header('authorization'));
     try {
         if (req.header('authorization') !== `Bearar ${process.env.TOKEN}`) {
-            throw new Error('Access denied!');
+            return res.status(401).json({});
         }
-        await updatePackagesFolder(req.body.project_id);
+        await updatePackagesFolder(req.body.project_id, req.body.runtime || null);
         res.status(200).json({});
     } catch (e) {
-        console.log(e);
+        console.error(e);
         res.status(400).json({});
     }
 });

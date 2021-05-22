@@ -11,7 +11,7 @@ class UpdateAction extends ApiAction
         await this.validateParams();
         await this.loadPackage();
         await this.updatePackage();
-        await updatePackagesFolder(this.package.project_id);
+        await updatePackagesFolder(this.package.project_id, this.package.runtime);
         return this.response.success({}, 200);
     }
 

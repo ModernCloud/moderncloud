@@ -63,7 +63,8 @@ async function runPipInstall(job, lambda, packages) {
     let commands = [
         `python3.8 -m venv ${job.getLambdaPackagesPythonRoot(lambda.name)}`,
         `source ${job.getLambdaPackagesPythonRoot(lambda.name)}/bin/activate`,
-        `pip -q install -r ${job.getLambdaPackagesPythonRoot(lambda.name)}/requirements.txt`,
+        `pip -q install pip-tools`,
+        `pip-sync -q ${job.getLambdaPackagesPythonRoot(lambda.name)}/requirements.txt`,
         `deactivate`
     ];
     let result = shelljs.exec(commands.join(' && '), {silent: true});

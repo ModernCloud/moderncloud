@@ -9,7 +9,7 @@ class GetAction extends ApiAction
         await this.checkUser();
         await this.loadPackage();
         await this.deletePackage();
-        await updatePackagesFolder(this.package.project_id);
+        await updatePackagesFolder(this.package.project_id, this.package.runtime);
         return this.response.success({}, 200);
     }
 

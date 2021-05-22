@@ -19,16 +19,28 @@ async function checkUser(token) {
     return User.query().findById(jwtResult.data.id);
 }
 
-function launch(projectId, socket) {
+function launch(projectId, requestPath, socket) {
     const reader = new rpc.WebSocketMessageReader(socket);
     const writer = new rpc.WebSocketMessageWriter(socket);
-    const serverConnection = rpcServer.createServerProcess('ts', 'docker', [
-        'run',
-        '-v', `${process.env.PACKAGES_ROOT}/${projectId}:/packages`,
-        '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
-        'moderncloud/runner:0.3',
-        'node', '/runner/startserver.js', '--stdio'
-    ]);
+    let serverConnection;
+    if (requestPath === '/python') {
+        serverConnection = rpcServer.createServerProcess('python', 'docker', [
+            'run',
+            '-e', 'PYTHONPATH=/usr/lib/python3.8/site-packages:/packages/python/lib/python3.8/site-packages',
+            '-v', `${process.env.PACKAGES_ROOT}/${projectId}/python3.8:/packages`,
+            '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
+            'moderncloud/python-language-server:0.1',
+            'python3', '-m', 'pyls'
+        ]);
+    } else {
+        serverConnection = rpcServer.createServerProcess('ts', 'docker', [
+            'run',
+            '-v', `${process.env.PACKAGES_ROOT}/${projectId}/nodejs14.x:/packages`,
+            '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
+            'moderncloud/runner:0.3',
+            'node', '/runner/startserver.js', '--stdio'
+        ]);
+    }
     const socketConnection = rpcServer.createConnection(reader, writer, () => {
         socket.dispose();
     });
@@ -57,7 +69,9 @@ module.exports = server => {
             .where('user_id', user?.id)
             .where('id', requestUrl.searchParams.get('project_id'))
             .first();
-        if (user instanceof User && project instanceof Project && requestUrl.pathname === '/js') {
+        if (user instanceof User
+            && project instanceof Project
+            && ['/js', '/python'].indexOf(requestUrl.pathname) > -1) {
             wss.handleUpgrade(request, socket, head, webSocket => {
                 let socket = {
                     send: content => webSocket.send(content),
@@ -77,9 +91,9 @@ module.exports = server => {
                     dispose: () => webSocket.close()
                 };
                 if (webSocket.readyState === webSocket.OPEN) {
-                    launch(project.id, socket);
+                    launch(project.id, requestUrl.pathname, socket);
                 } else {
-                    webSocket.on('open', () => launch(project.id, socket));
+                    webSocket.on('open', () => launch(project.id, requestUrl.pathname, socket));
                 }
             });
         }

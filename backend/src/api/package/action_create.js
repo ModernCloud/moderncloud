@@ -11,7 +11,7 @@ class CreateAction extends ApiAction
         await this.validateParams();
         await this.loadProject();
         await this.createPackage();
-        await updatePackagesFolder(this.package.project_id);
+        await updatePackagesFolder(this.package.project_id, this.package.runtime);
         return this.response.success({id: this.package.id}, 201);
     }
 
@@ -20,8 +20,9 @@ class CreateAction extends ApiAction
             project_id: Joi.number().required(),
             name: Joi.string().required().label('Name'),
             version: Joi.string().optional().default('*').label('Version'),
-            file_id: Joi.number().allow(null).optional().default(null),
-            file_type: Joi.string().allow('endpoint', 'function', null).optional().default(null)
+            file_id: Joi.number(),
+            file_type: Joi.string().allow('endpoint', 'function'),
+            runtime: Joi.string()
         });
         this.validRequest = await schema.validateAsync(this.req.body || {});
     }
@@ -43,7 +44,8 @@ class CreateAction extends ApiAction
             name: this.validRequest.name,
             version: this.validRequest.version,
             file_id: this.validRequest.file_id,
-            file_type: this.validRequest.file_type
+            file_type: this.validRequest.file_type,
+            runtime: this.validRequest.runtime
         });
     }
 }

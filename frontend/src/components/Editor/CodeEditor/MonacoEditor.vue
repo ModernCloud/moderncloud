@@ -13,7 +13,8 @@ export default {
   data() {
     return {
       monacoEditor: null,
-      webSocket: null
+      nodejsWebSocket: null,
+      pythonWebSocket: null,
     }
   },
   watch: {
@@ -26,8 +27,11 @@ export default {
     this.setUpMonacoServices();
   },
   destroyed() {
-    if (this.webSocket) {
-      this.webSocket.close();
+    if (this.nodejsWebSocket) {
+      this.nodejsWebSocket.close();
+    }
+    if (this.pythonWebSocket) {
+      this.pythonWebSocket.close();
     }
   },
   methods: {
@@ -60,6 +64,7 @@ export default {
       });
       this.monacoEditor = monaco.editor.create(this.$refs.editor, {
         model: null,
+        language: 'javascript',
         theme: this.$store.state.account.settings.theme === 'dark' ? 'vs-dark' : 'vs-light',
         automaticLayout: true,
         folding: false,
@@ -105,17 +110,26 @@ export default {
       } catch (e) {
         MonacoServices.install(monaco, {rootUri: process.env.VUE_APP_ROOT_DIR});
       }
-      this.webSocket = this.createWebsocket();
+      this.nodejsWebSocket = this.createNodejsWebsocket();
+      this.pythonWebSocket = this.createPythonWebsocket();
       listen({
-        webSocket: this.webSocket,
+        webSocket: this.nodejsWebSocket,
         onConnection: connection => {
-          const languageClient = this.createLanguageClient(connection);
+          const languageClient = this.createNodejsLanguageClient(connection);
+          const disposable = languageClient.start();
+          connection.onClose(() => disposable.dispose());
+        }
+      });
+      listen({
+        webSocket: this.pythonWebSocket,
+        onConnection: connection => {
+          const languageClient = this.createPythonLanguageClient(connection);
           const disposable = languageClient.start();
           connection.onClose(() => disposable.dispose());
         }
       });
     },
-    createWebsocket() {
+    createNodejsWebsocket() {
       let url = process.env.VUE_APP_LSP_PROXY_SERVER
           + '/js?token='
           + this.$store.state.account.token
@@ -131,11 +145,44 @@ export default {
       };
       return new ReconnectingWebSocket(url, [], socketOptions);
     },
-    createLanguageClient(connection) {
+    createNodejsLanguageClient(connection) {
       return new MonacoLanguageClient({
-        name: "ModernCloud Language Client",
+        name: "ModernCloud Javascript Language Client",
         clientOptions: {
-          documentSelector: ['javascript', 'python', 'go'],
+          documentSelector: ['javascript'],
+          errorHandler: {
+            error: () => ErrorAction.Continue,
+            closed: () => CloseAction.DoNotRestart
+          }
+        },
+        connectionProvider: {
+          get: (errorHandler, closeHandler) => {
+            return Promise.resolve(createConnection(connection, errorHandler, closeHandler))
+          }
+        }
+      });
+    },
+    createPythonWebsocket() {
+      let url = process.env.VUE_APP_LSP_PROXY_SERVER
+          + '/python?token='
+          + this.$store.state.account.token
+          + '&project_id='
+          + this.$store.state.project.selected.id;
+      const socketOptions = {
+        maxReconnectionDelay: 10000,
+        minReconnectionDelay: 1000,
+        reconnectionDelayGrowFactor: 1.3,
+        connectionTimeout: 10000,
+        maxRetries: Infinity,
+        debug: false
+      };
+      return new ReconnectingWebSocket(url, [], socketOptions);
+    },
+    createPythonLanguageClient(connection) {
+      return new MonacoLanguageClient({
+        name: "ModernCloud Python Language Client",
+        clientOptions: {
+          documentSelector: ['python'],
           errorHandler: {
             error: () => ErrorAction.Continue,
             closed: () => CloseAction.DoNotRestart

@@ -18,7 +18,6 @@ class UpdateAction extends ApiAction
             project_id: Joi.number().required(),
             user_name: Joi.string().optional().label('Name'),
             method: Joi.string().allow('GET', 'POST', 'PUT', 'DELETE').optional().label('Method'),
-            runtime: Joi.string().allow('python3.8', 'nodejs14.x').required().label('Runtime'),
             path: Joi.string().optional().label('Path'),
             code: Joi.string().optional().label('Code'),
             description: Joi.string().optional().allow(null, '').label('Description'),
@@ -49,9 +48,6 @@ class UpdateAction extends ApiAction
         }
         if (this.validRequest.hasOwnProperty('path')) {
             updateParams.path = this.validRequest.path;
-        }
-        if (this.validRequest.hasOwnProperty('runtime')) {
-            updateParams.runtime = this.validRequest.runtime;
         }
         if (this.validRequest.hasOwnProperty('code')) {
             updateParams.code = this.validRequest.code;
