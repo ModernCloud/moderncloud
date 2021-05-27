@@ -144,3 +144,10 @@ CREATE TABLE IF NOT EXISTS `task_log` (
     created_at DATETIME NOT NULL,
     INDEX task_idx (task_id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS `python_package` (
+    name VARCHAR(255) NOT NULL,
+    version VARCHAR(20) NOT NULL,
+    INDEX name_idx (name),
+    UNIQUE KEY version_uniq(name, version)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;

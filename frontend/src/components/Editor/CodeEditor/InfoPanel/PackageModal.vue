@@ -8,7 +8,7 @@
       <div class="body" style="overflow: unset; max-height: unset;">
         <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
         <form @submit.prevent="submit">
-          <div class="mb-2" v-if="isNodeJs">
+          <div class="mb-2">
             <label class="form-label">Name</label>
             <v-select class="custom-vue-select" @search="searchPackage" v-model="selected" :options="searchResult">
               <template slot="no-options">
@@ -18,7 +18,7 @@
                 <div style="display: flex; align-items: center; padding: 5px 0;">
                   <div style="overflow: hidden; width: 350px;">
                     <strong>{{ option.label }}</strong>
-                    <p>{{ option.description }}</p>
+                    <p>{{ option.description || 'No description' }}</p>
                   </div>
                   <div style="margin-left: auto">{{ option.version }}</div>
                 </div>
@@ -29,10 +29,6 @@
                 </div>
               </template>
             </v-select>
-          </div>
-          <div class="mb-2" v-if="isPython">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" v-model="form.name" />
           </div>
           <div>
             <label class="form-label">Version</label>
@@ -80,12 +76,6 @@ export default {
     }
   },
   computed: {
-    isPython() {
-      return this.currentFile.runtime.indexOf('python') > -1;
-    },
-    isNodeJs() {
-      return this.currentFile.runtime.indexOf('nodejs') > -1;
-    },
     actionName() {
       return this.current_id > 0 ? 'Edit' : 'Add';
     }
@@ -186,17 +176,10 @@ export default {
       let that = this;
       this.searchTimeout = setTimeout(function () {
         let language = that.currentFile.runtime.indexOf('python') > -1 ? 'python' : 'javascript';
-        if (language === 'python') {
-          loading(false);
-          that.searchResult = [];
-          return;
-        }
         axios.get(`/api/packages/search-api?q=${escape(search)}&size=10&language=${language}`)
           .then(response => {
             loading(false);
-            that.searchResult = response.data.results.map(item => {
-              return {label: item.package.name, version: item.package.version, description: item.package.description}
-            });
+            that.searchResult = response.data;
           });
       }, 400);
     }

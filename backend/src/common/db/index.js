@@ -10,3 +10,4 @@ exports.Package = require('./models/Package');
 exports.Dynamodb = require('./models/Dynamodb');
 exports.Task = require('./models/Task');
 exports.TaskLog = require('./models/TaskLog');
+exports.PythonPackage = require('./models/PythonPackage');
