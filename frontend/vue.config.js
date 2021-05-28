@@ -9,7 +9,7 @@ module.exports = {
         maxChunks: 8
       }),
       new MonacoWebpackPlugin({
-        languages: ['javascript', 'python', 'go']
+        languages: ['javascript', 'typescript', 'python', 'go']
       }),
       new FileManagerPlugin({
         events: {

@@ -4,7 +4,7 @@
 
 <script>
 import {CodeEditorEvents} from '@/lib/code_editor_events';
-import * as monaco from 'monaco-editor';
+import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import ReconnectingWebSocket from "reconnecting-websocket";
 import { listen } from 'vscode-ws-jsonrpc';
 import {MonacoLanguageClient, ErrorAction, CloseAction, createConnection, MonacoServices} from "monaco-languageclient";
@@ -36,32 +36,6 @@ export default {
   },
   methods: {
     setUpMonacoEditor() {
-      monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: true,
-        noSyntaxValidation: true
-      });
-      monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
-        target: monaco.languages.typescript.ScriptTarget.ES2020,
-        allowJs: true,
-        allowNonTsExtensions: true,
-        experimentalDecorators: true,
-        module: monaco.languages.typescript.ModuleKind.CommonJS,
-        moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-        noEmit: true,
-        lib: ['es6']
-      });
-      monaco.languages.register({
-        id: 'javascript',
-        aliases: ['JavaScript', 'javascript', 'js'],
-        extensions: ['.js'],
-        mimetypes: ['text/javascript']
-      });
-      monaco.languages.register({
-        id: 'python',
-        aliases: ['Python', 'python', 'py'],
-        extensions: ['.py'],
-        mimetypes: ['text/x-python']
-      });
       this.monacoEditor = monaco.editor.create(this.$refs.editor, {
         model: null,
         language: 'javascript',
