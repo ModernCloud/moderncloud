@@ -3,3 +3,5 @@ node_modules
 .env
 .DS_STORE
 docker-compose.yml
+Vagrantfile
+.vagrant

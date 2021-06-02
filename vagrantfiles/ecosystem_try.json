@@ -1,0 +1,31 @@
+{
+  "apps": [
+    {
+      "name": "api",
+      "script": "npm",
+      "args": "run serve_api",
+      "cwd": "/vagrant/backend",
+      "error_file": "/vagrant/storage/logs/api.err.log",
+      "out_file": "/vagrant/storage/logs/api.out.log",
+      "exec_mode": "fork_mode"
+    },
+    {
+      "name": "lsp",
+      "script": "npm",
+      "args": "run serve",
+      "cwd": "/vagrant/language-server-proxy",
+      "error_file": "/vagrant/storage/logs/lsp.err.log",
+      "out_file": "/vagrant/storage/logs/lsp.out.log",
+      "exec_mode": "fork_mode"
+    },
+    {
+      "name": "worker",
+      "script": "npm",
+      "args": "run serve_worker",
+      "cwd": "/vagrant/backend",
+      "error_file": "/vagrant/storage/logs/worker.err.log",
+      "out_file": "/vagrant/storage/logs/worker.out.log",
+      "exec_mode": "fork_mode"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/impish64"
+  config.vm.box_check_update = false
+
+  config.vm.network "forwarded_port", guest: 8888, host: 8888
+  config.vm.network "forwarded_port", guest: 8808, host: 8808
+  config.vm.network "forwarded_port", guest: 3306, host: 3306
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 8081, host: 8081
+  config.vm.provision "bootstrap", type: "shell", path: "./vagrantfiles/boot.sh", run: "once", privileged: true
+  config.vm.provision "init", after: "bootstrap", type: "shell", path: "./vagrantfiles/init.sh", run: "once", privileged: true
+  config.vm.provision "mysql", after: "init", type: "shell", path: "./vagrantfiles/mysql.sh", run: "always", privileged: true
+  config.vm.provision "pm2", after: "mysql", type: "shell", inline: "pm2 startOrReload /vagrant/vagrantfiles/ecosystem_try.json", run: "always", privileged: true
+  config.vm.provision "nginx", after: "pm2", type: "shell", path: "./vagrantfiles/nginx.sh", run: "always", privileged: true
+end

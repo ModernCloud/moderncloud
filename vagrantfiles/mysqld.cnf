@@ -1,0 +1,6 @@
+[mysqld]
+user = mysql
+key_buffer_size = 16M
+myisam-recover-options  = BACKUP
+log_error = /vagrant/storage/logs/mysql.error.log
+max_binlog_size   = 100M

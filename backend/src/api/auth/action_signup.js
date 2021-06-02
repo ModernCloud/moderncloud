@@ -17,7 +17,9 @@ class SignupAction extends ApiAction
             await this.createUser();
             await this.createToken();
             await setupDefaultResources(this.transaction, this.user);
-            await createStripeCustomer(this.transaction, this.user);
+            if (process.env.BILLING_ENABLED) {
+                await createStripeCustomer(this.transaction, this.user);
+            }
             await this.transaction.commit();
         } catch (err) {
             await this.transaction.rollback();
