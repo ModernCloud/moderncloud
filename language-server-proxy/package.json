@@ -1,0 +1,23 @@
+{
+  "scripts": {
+    "serve": "node src/index.js",
+    "dev": "nodemon --watch ./src ./src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "jsonwebtoken": "8.5.1",
+    "knex": "0.95.1",
+    "lodash": "4.17.21",
+    "moment": "2.29.1",
+    "mysql": "2.18.1",
+    "nodemon": "2.0.4",
+    "objection": "2.2.14",
+    "rimraf": "3.0.2",
+    "shelljs": "0.8.4",
+    "uuid": "8.3.2",
+    "vscode-ws-jsonrpc": "0.2.0",
+    "ws": "7.4.5",
+    "twig": "1.15.4"
+  }
+}
