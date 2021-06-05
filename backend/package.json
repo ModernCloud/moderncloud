@@ -1,10 +1,12 @@
 {
   "scripts": {
     "test": "jest",
-    "serve_api": "node src/api",
-    "serve_worker": "node src/worker",
-    "dev_api": "nodemon --watch ./src/api --watch ./src/common src/api",
-    "dev_worker": "nodemon --watch ./src/common --watch ./src/worker src/worker"
+    "migration:migrate": "node migration/migrate",
+    "migration:new": "node migration/new",
+    "api:serve": "node src/api",
+    "api:dev": "nodemon --watch ./src/api --watch ./src/common src/api",
+    "worker:serve": "node src/worker",
+    "worker:dev": "nodemon --watch ./src/common --watch ./src/worker src/worker"
   },
   "dependencies": {
     "@aws-sdk/client-acm": "3.9.0",
@@ -27,9 +29,9 @@
     "knex": "0.95.1",
     "lodash": "4.17.21",
     "moment": "2.29.1",
-    "mysql": "2.18.1",
     "nodemon": "2.0.4",
     "objection": "2.2.14",
+    "pg": "8.6.0",
     "rimraf": "3.0.2",
     "shelljs": "0.8.4",
     "stripe": "8.145.0",
