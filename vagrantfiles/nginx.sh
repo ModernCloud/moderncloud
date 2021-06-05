@@ -1,4 +1,4 @@
 #!/bin/bash
-rm -rf /etc/nginx/sites-enabled/default
-ln -sf /vagrant/vagrantfiles/vhost.conf /etc/nginx/sites-enabled/default
-systemctl restart nginx
+rm -rf /etc/nginx/conf.d/default.conf
+ln -sf /vagrant/vagrantfiles/vhost.conf /etc/nginx/conf.d/default.conf
+service nginx restart

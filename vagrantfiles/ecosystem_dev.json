@@ -3,38 +3,38 @@
     {
       "name": "api",
       "script": "npm",
-      "args": "run dev_api",
+      "args": "run api:serve",
       "cwd": "/vagrant/backend",
       "error_file": "/vagrant/storage/logs/api.dev.err.log",
       "out_file": "/vagrant/storage/logs/api.dev.out.log",
-      "exec_mode": "fork_mode"
+      "exec_mode": "fork_mode",
+      "watch": ["/vagrant/backend"],
+      "watch_options" : {"usePolling": true},
+      "ignore_watch": ["node_modules"]
     },
     {
       "name": "lsp",
       "script": "npm",
-      "args": "run dev",
+      "args": "run serve",
       "cwd": "/vagrant/language-server-proxy",
       "error_file": "/vagrant/storage/logs/lsp.dev.err.log",
       "out_file": "/vagrant/storage/logs/lsp.dev.out.log",
-      "exec_mode": "fork_mode"
+      "exec_mode": "fork_mode",
+      "watch": ["/vagrant/language-server-proxy"],
+      "watch_options" : {"usePolling": true},
+      "ignore_watch": ["node_modules"]
     },
     {
       "name": "worker",
       "script": "npm",
-      "args": "run dev_worker",
+      "args": "run worker:serve",
       "cwd": "/vagrant/backend",
       "error_file": "/vagrant/storage/logs/worker.dev.err.log",
       "out_file": "/vagrant/storage/logs/worker.dev.out.log",
-      "exec_mode": "fork_mode"
-    },
-    {
-      "name": "frontend",
-      "script": "npm",
-      "args": "run serve",
-      "cwd": "/vagrant/frontend",
-      "error_file": "/vagrant/storage/logs/frontend.dev.err.log",
-      "out_file": "/vagrant/storage/logs/frontend.dev.out.log",
-      "exec_mode": "fork_mode"
+      "exec_mode": "fork_mode",
+      "watch": ["/vagrant/backend"],
+      "watch_options" : {"usePolling": true},
+      "ignore_watch": ["node_modules"]
     }
   ]
 }

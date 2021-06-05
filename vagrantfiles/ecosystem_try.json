@@ -3,7 +3,7 @@
     {
       "name": "api",
       "script": "npm",
-      "args": "run serve_api",
+      "args": "run api:serve",
       "cwd": "/vagrant/backend",
       "error_file": "/vagrant/storage/logs/api.err.log",
       "out_file": "/vagrant/storage/logs/api.out.log",
@@ -21,7 +21,7 @@
     {
       "name": "worker",
       "script": "npm",
-      "args": "run serve_worker",
+      "args": "run worker:serve",
       "cwd": "/vagrant/backend",
       "error_file": "/vagrant/storage/logs/worker.err.log",
       "out_file": "/vagrant/storage/logs/worker.out.log",
