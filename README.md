@@ -4,7 +4,7 @@
 
 ---
 
-ModernCloud is a browser-based serverless platform that lets developers build functions and endpoints in minutes.
+[ModernCloud](https://www.moderncloud.io) is a browser-based serverless platform that lets developers build functions and endpoints in minutes.
 
 Our long term vision is to build a holistic, easy-to-use interface for building cloud applications, end-to-end.
 
@@ -61,3 +61,13 @@ $ cd frontend
 $ npm install
 $ npm run serve
 ``` 
+
+## How can I contribute?
+
+There are multiple ways you can contribute. First, we value your ideas. Please share them on our [community page](https://github.com/ModernCloud/moderncloud/discussions). If you see any problem with the product, simply create an issue.
+
+If you want to go a step further, clone the repo, try and test the product and feel free to create a PR to make the product a bit better.
+
+If you want to reach us directly, shoot an email: contact@moderncloud.io
+
+Thanks for helping us out!
