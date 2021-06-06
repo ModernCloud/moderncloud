@@ -1,6 +1,33 @@
-# Motivation
+<p align="center">
+  <img src='https://www.moderncloud.io/assets/img/logo.png' width='40%'>
+</p>
 
-# How to try?
+---
+
+ModernCloud is a browser-based serverless platform that lets developers build functions and endpoints in minutes.
+
+Our long term vision is to build a holistic, easy-to-use interface for building cloud applications, end-to-end.
+
+AWS and Lambdas are just the start.
+
+## Motivation
+
+Advancements in cloud solutions have been fascinating in recent years. There are now many tools under our belt, and we can build sophisticated and resilient systems way easier than before. However, there's still a long way to go. We are still dealing with an incredible amount of overhead when building our solutions: setting up local dev environments, challenges of integrating different solutions, searching code snippets that work, and dealing with terrible interfaces that cloud providers provide us. ModernCloud aims to provide a browser-based interface that eliminates these overheads and provides a batteries-included platform that lets you focus on the stuff that matters.
+
+## Highlights
+
+<p align="center">
+  <img src='https://www.moderncloud.io/assets/img/image4.png?v=2' width='80%'>
+</p>
+
+- Browser-based interface, no need to set up a local dev environment
+- An inline vs-code editor with auto-complete support
+- Easily navigate your endpoints and functions in one place
+- Observability: dashboards and alerts for your functions and endpoint
+- Terraform based configuration, no custom layer
+- Github integration (coming soon)
+
+## How to try?
 
 We are using [Vagrant](https://www.vagrantup.com/intro) for development. Please check the [installation](https://learn.hashicorp.com/tutorials/vagrant/getting-started-install?in=vagrant/getting-started) page before you start.
 
