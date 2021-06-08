@@ -66,7 +66,7 @@
 <script>
 import axios from "axios";
 import IconX from "@/components/Icons/IconX";
-import {getErrorMessage} from "../../../lib/get_error_message";
+import {getErrorMessage} from "@/lib/get_error_message";
 
 export default {
   components: {IconX},
@@ -79,7 +79,7 @@ export default {
       form: {
         user_name: null,
         runtime: 'nodejs14.x',
-        method: 'POST',
+        method: 'GET',
         path: '/',
         description: null,
         memory_size: 128,
