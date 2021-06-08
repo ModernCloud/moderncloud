@@ -1,11 +1,5 @@
 import Vue from 'vue'
-import VueGapi from 'vue-gapi'
 Vue.config.productionTip = false
-
-Vue.use(VueGapi, {
-    clientId: '527078498280-cb2u7idhd401g1te5kqv5cs5tdn356rm.apps.googleusercontent.com',
-    scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-})
 
 import Notifications from 'vue-notification'
 Vue.use(Notifications);

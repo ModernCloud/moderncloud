@@ -3,14 +3,9 @@ CREATE TABLE "user"
     id BIGSERIAL NOT NULL PRIMARY KEY,
     name VARCHAR NOT NULL,
     email VARCHAR NOT NULL,
-    password VARCHAR NOT NULL,
-    stripe_customer_id VARCHAR DEFAULT NULL,
-    current_subscription_id VARCHAR DEFAULT NULL,
-    current_subscription_status VARCHAR DEFAULT NULL
+    password VARCHAR NOT NULL
 );
 CREATE UNIQUE INDEX user_email_uniq ON "user"(email);
-CREATE UNIQUE INDEX user_stripe_customer_uniq ON "user"(stripe_customer_id);
-CREATE UNIQUE INDEX user_current_subscription_idx ON "user"(current_subscription_id);
 
 CREATE TABLE project
 (

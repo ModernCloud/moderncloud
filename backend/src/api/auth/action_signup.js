@@ -5,7 +5,6 @@ const ApiAction = require('../action');
 const ApiError = require('../error');
 const { User } = require('../../common/db');
 const setupDefaultResources = require('./setup_default_resources');
-const createStripeCustomer = require('./create_stripe_customer');
 
 class SignupAction extends ApiAction
 {
@@ -17,7 +16,6 @@ class SignupAction extends ApiAction
             await this.createUser();
             await this.createToken();
             await setupDefaultResources(this.transaction, this.user);
-            await createStripeCustomer(this.transaction, this.user);
             await this.transaction.commit();
         } catch (err) {
             await this.transaction.rollback();
