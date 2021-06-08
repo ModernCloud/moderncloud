@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "serve": "node src/index.js",
-    "dev": "nodemon --watch ./src ./src/index.js"
+    "serve": "node src/index.js"
   },
   "dependencies": {
     "dotenv": "8.2.0",
@@ -11,7 +10,6 @@
     "lodash": "4.17.21",
     "moment": "2.29.1",
     "pg": "8.6.0",
-    "nodemon": "2.0.4",
     "objection": "2.2.14",
     "rimraf": "3.0.2",
     "shelljs": "0.8.4",
