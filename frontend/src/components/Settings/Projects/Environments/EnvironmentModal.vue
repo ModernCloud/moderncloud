@@ -27,7 +27,7 @@
             <input type="text" class="form-control" v-model="form.secret_key" :disabled="isDeployed" />
           </div>
           <div class="form-text" v-if="isDeployed">Please destroy resources first to change AWS credentials.</div>
-          <div class="form-text d-flex align-items-center"><IconFileText :stroke-width="1.5" :height="16" :width="16" style="margin-right: 3px;" /> <a href="https://www.moderncloud.io/docs/aws-credentials" target="_blank">Get your AWS Credentials</a></div>
+          <div class="form-text d-flex align-items-center"><IconFileText :stroke-width="1.5" :height="16" :width="16" style="margin-right: 3px;" /> <a href="https://www.moderncloud.io/docs/aws-credentials" target="_blank">How to get AWS Credentials?</a></div>
         </form>
       </div>
       <div class="actions">
