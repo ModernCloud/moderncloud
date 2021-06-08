@@ -1,0 +1,65 @@
+version: '3.8'
+services:
+  nginx:
+    container_name: moderncloud_nginx
+    image: nginx:latest
+    ports:
+      - 8080:80
+    depends_on:
+      - backend
+      - lsp
+    volumes:
+      - ./dockerfiles/vhost.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/frontend
+      - ./storage:/storage
+  backend:
+    container_name: moderncloud_backend
+    build:
+      context: ./
+      dockerfile: Dockerfile.backend
+    ports:
+      - 8888:8888
+    depends_on:
+      - postgres
+      - rabbitmq
+      - lsp
+    env_file:
+      - backend/.env
+    volumes:
+      - ./ecosystem_dev.json:/ecosystem.json
+      - ./backend:/data
+      - ./storage:/storage
+    working_dir: /data
+    command: pm2-runtime start /ecosystem.json --only='api,worker'
+  lsp:
+    container_name: moderncloud_lsp
+    build:
+      context: ./
+      dockerfile: Dockerfile.lsp
+    ports:
+      - 8808:8808
+    depends_on:
+      - postgres
+    env_file:
+      - language-server-proxy/.env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./ecosystem_dev.json:/ecosystem.json
+      - ./language-server-proxy:/data
+      - ./storage:/storage
+    working_dir: /data
+    command: pm2-runtime start /ecosystem.json --only='lsp'
+  postgres:
+    container_name: moderncloud_postgres
+    image: postgres:13.2
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: "moderncloud"
+      POSTGRES_DB: "moderncloud"
+      POSTGRES_PASSWORD: "password"
+  rabbitmq:
+    container_name: moderncloud_rabbitmq
+    image: rabbitmq:3.8-alpine
+    ports:
+      - 5672:5672

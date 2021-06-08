@@ -1,0 +1,31 @@
+{
+  "apps": [
+    {
+      "name": "api",
+      "script": "npm",
+      "args": "run api:serve",
+      "cwd": "/data",
+      "error_file": "/storage/logs/api.dev.err.log",
+      "out_file": "/storage/logs/api.dev.out.log",
+      "exec_mode": "fork_mode"
+    },
+    {
+      "name": "lsp",
+      "script": "npm",
+      "args": "run serve",
+      "cwd": "/data",
+      "error_file": "/storage/logs/lsp.dev.err.log",
+      "out_file": "/storage/logs/lsp.dev.out.log",
+      "exec_mode": "fork_mode"
+    },
+    {
+      "name": "worker",
+      "script": "npm",
+      "args": "run worker:serve",
+      "cwd": "/data",
+      "error_file": "/storage/logs/worker.dev.err.log",
+      "out_file": "/storage/logs/worker.dev.out.log",
+      "exec_mode": "fork_mode"
+    }
+  ]
+}

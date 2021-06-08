@@ -29,15 +29,15 @@ Advancements in cloud solutions have been fascinating in recent years. There are
 
 ## How to try?
 
-We are using [Vagrant](https://www.vagrantup.com/intro) for development. Please check the [installation](https://learn.hashicorp.com/tutorials/vagrant/getting-started-install?in=vagrant/getting-started) page before you start.
+We are using [Docker](https://www.docker.com) for development. Please check the [installation](https://docs.docker.com/get-docker/) page before you start.
 
-Please create your own environment files with the following commands. These environment files work out-of-the-box with our Vagrantfile. You can edit these files if you are planning to use on different system.
+Environment files work out-of-the-box with our Docker setup. You can edit these files if you are planning to use on different system.
 
 ```bash
-$ cp Vagrantfile.sample Vagrantfile
+$ cp docker-compose.yml.sample docker-compose.yml
 $ cp backend/env.sample backend/.env
 $ cp language-proxy-server/env.sample language-proxy-server/.env
-$ vagrant up
+$ docker compose up
 ```
 
 **Modern Cloud** is ready! :tada: You can access to the **Modern Cloud Console** via http://127.0.0.1:8080
@@ -46,10 +46,15 @@ $ vagrant up
 
 ### Backend
 
-If you want to make some changes on the project, please use **vagrantfiles/ecosystem_dev.json** for development. You can change this setting in Vagrantfile.
+If you want to make some changes on the project, please use **ecosystem_dev.json** for development. You can change this setting in docker-compose.yml.
 
-```ruby
-config.vm.provision "pm2", after: "migration", type: "shell", inline: "pm2-dev start /vagrant/vagrantfiles/ecosystem_dev.json >/dev/null 2>&1", run: "always", privileged: true
+```yml
+baclend:
+  volumes:
+    - ./ecosystem_dev.json:/ecosystem.json
+lsp:
+  volumes:
+    - ./ecosystem_dev.json:/ecosystem.json
 ```
 
 ### Frontend
