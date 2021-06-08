@@ -139,7 +139,7 @@ async function createDynamoDBFiles(job) {
                 environment: job.environment,
                 table: {
                     ...row,
-                    attributes: JSON.parse(row.attributes)
+                    attributes: row.attributes
                 }
             }
         )

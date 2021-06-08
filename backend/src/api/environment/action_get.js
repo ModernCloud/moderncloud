@@ -24,7 +24,9 @@ class GetAction extends ApiAction
         if (!(this.environment instanceof Environment)) {
             throw new ApiError('Environment not found!', 10504, 404);
         }
-        this.environment.output = JSON.parse(this.environment.output || '{}');
+        if (this.environment.output == null) {
+            this.environment.output = {};
+        }
     }
 
     async loadLastSuccessDeployment() {

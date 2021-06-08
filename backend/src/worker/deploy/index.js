@@ -31,9 +31,7 @@ class TaskDeploy {
         if (!(this.environment instanceof Environment)) {
             throw new Error(`Environment not found!`);
         }
-        if (this.environment.certificate_validation_options != null) {
-            this.environment.certificate_validation_options = JSON.parse(this.environment.certificate_validation_options);
-        } else {
+        if (this.environment.certificate_validation_options == null) {
             this.environment.certificate_validation_options = {};
         }
     }

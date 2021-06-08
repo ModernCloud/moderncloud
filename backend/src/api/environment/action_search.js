@@ -26,7 +26,9 @@ class SearchAction extends ApiAction
             .where('project_id', this.validRequest.project_id)
             .orderBy('name');
         for (const index in this.environments) {
-            this.environments[index].output = JSON.parse(this.environments[index].output || '{}');
+            if (this.environments[index].output == null) {
+                this.environments[index].output = {};
+            }
             await this.loadLastDeployment(index);
             await this.loadLastSuccessDeployment(index);
         }

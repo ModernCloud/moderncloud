@@ -141,7 +141,7 @@ export default {
         this.form.write_capacity = response.data.table.write_capacity;
         this.form.hash_key = response.data.table.hash_key;
         this.form.range_key = response.data.table.range_key;
-        this.form.attributes = JSON.parse(response.data.table.attributes || []);
+        this.form.attributes = response.data.table.attributes;
       } catch (e) {
         this.errorMessage = getErrorMessage(e);
       } finally {
