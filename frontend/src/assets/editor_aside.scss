@@ -189,10 +189,12 @@ aside#editor-aside {
             }
           }
 
-          &:hover {
+          &:hover, &.active {
             background: #F1F3F8;
             border-radius: 5px;
+          }
 
+          &:hover {
             .action-menu {
               display: flex;
               justify-content: space-between;

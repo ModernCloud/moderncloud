@@ -18,7 +18,7 @@
             <a href="javascript:;" class="link" @click="openNewModal"><IconSquarePlus :width="18" :height="18" /> New Function</a>
           </div>
           <div v-for="item in items" :key="item.id">
-            <div class="item">
+            <div :class="{item: true, active: isCurrentFile(item.id)}">
               <a href="javascript:;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" class="link">
                 <div class="item-name">{{item.user_name}}</div>
               </a>
@@ -112,6 +112,10 @@ export default {
     async updated(id) {
       await this.loadItems();
       await this.openFile(id);
+    },
+    isCurrentFile(fileId) {
+      return this.$store.state.project.currentFile.id === fileId
+          && this.$store.state.project.currentFile.type === 'function';
     },
     async openFile(id) {
       this.fileIsOpening = id;
