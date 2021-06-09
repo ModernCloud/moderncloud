@@ -3,7 +3,7 @@
     <Confirm ref="confirmModal" message="Selected function will be deleted. Do you want to continue?" @yes="deleteItem" />
     <FunctionModal ref="modal" @added="added" @updated="updated" />
     <div class="section-title" @click="showContent=!showContent" :class="{active: showContent}">
-      <IconFunction :width="18" :height="18" style="margin-right: 5px;" />
+      <IconFunction :width="18" :height="18" class="section-icon" />
       Functions
       <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
       <div style="margin-left: auto; color: #90959D;">

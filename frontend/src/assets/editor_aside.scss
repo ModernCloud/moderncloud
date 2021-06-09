@@ -126,6 +126,10 @@ aside#editor-aside {
         cursor: pointer;
         border: none;
 
+        .section-icon {
+          margin-right: 10px;
+        }
+
         &:hover, &:active {
           background: #F1F3F8;
           border-radius: 5px;
@@ -138,8 +142,8 @@ aside#editor-aside {
           font-weight: 400;
           display: flex;
           align-items: center;
-          padding: 0 5px;
-          margin-left: 2px;
+          padding: 0 0 0 8px;
+          margin-left: 25px;
           font-size: 13px;
           position: relative;
 
@@ -155,7 +159,8 @@ aside#editor-aside {
           }
 
           &.new-link {
-            margin-left: 0;
+            margin-left: 25px;
+            padding-left: 6px;
 
             svg {
               margin-right: 5px;
@@ -168,7 +173,8 @@ aside#editor-aside {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            width: 145px;
+            max-width: 100px;
+            display: inline-block;
           }
 
           .action-menu {
