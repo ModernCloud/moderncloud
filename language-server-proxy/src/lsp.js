@@ -29,8 +29,8 @@ function launch(projectId, requestPath, socket) {
             '-e', 'PYTHONPATH=/usr/lib/python3.8/site-packages:/packages/python/lib/python3.8/site-packages',
             '-v', `${process.env.PACKAGES_ROOT}/${projectId}/python3.8:/packages`,
             '-a', 'STDIN', '-a', 'STDOUT', '-a', 'STDERR', '-i', '--rm',
-            'moderncloud/python-language-server:0.1',
-            'jedi-language-server'
+            'moderncloud/python-language-server:0.2',
+            'python3', '/startserver.py'
         ]);
     } else {
         serverConnection = rpcServer.createServerProcess('ts', 'docker', [
