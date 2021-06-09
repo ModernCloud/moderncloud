@@ -3,7 +3,7 @@
     <Confirm ref="confirmModal" message="Selected endpoint will be deleted. Do you want to continue?" @yes="deleteItem" />
     <EndpointModal ref="modal" @added="added" @updated="updated" />
     <div class="section-title" @click="showContent = !showContent" :class="{active: showContent}">
-      <IconCircles :width="18" :height="18" style="margin-right: 5px;" />
+      <IconCircles :width="18" :height="18" class="section-icon" />
       Endpoints
       <span v-if="loading" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
       <div style="margin-left: auto; color: #90959D;">
@@ -15,22 +15,15 @@
       <div v-if="showContent" class="content">
         <div v-if="loading === false">
           <div class="item new-link">
-            <a href="javascript:;" class="link" @click="openNewModal">
-              <IconSquarePlus :width="18" :height="18" /> New Endpoint
-            </a>
+            <a href="javascript:;" class="link" @click="openNewModal"><IconSquarePlus :width="18" :height="18" /> New Endpoint</a>
           </div>
           <div v-for="item in items" :key="item.id">
             <div class="item">
-              <a href="javascript:;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" style="padding-left: 0px;" class="link">
-                <small :style="{
-                  width: '35px',
-                  'display': 'inline-block',
-                  'font-weight': 600,
-                  'margin-right': '5px',
-                  'color': methodLabelColor(item.method),
-                  'font-size': '9px'
-                }">{{item.method}}</small>
-                <div class="item-name">{{item.user_name}}</div>
+              <a href="javascript:;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" class="link">
+                <div class="item-name">
+                  {{item.user_name}}
+                </div>
+                <small :style="{'margin-left': '5px', color: methodLabelColor(item.method)}">{{item.method}}</small>
               </a>
               <div class="action-menu">
                 <a href="javascript:;" @click="openEditModal(item.id)">
