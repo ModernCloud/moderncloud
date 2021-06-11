@@ -2,7 +2,8 @@ FROM node:14.16.0-alpine3.10
 MAINTAINER Modern Cloud <contact@moderncloud.io>
 RUN npm config set package-lock false && \
     npm install -g pm2 && \
-    wget https://releases.hashicorp.com/terraform/0.15.5/terraform_0.15.5_linux_amd64.zip && \
-    unzip terraform_0.15.5_linux_amd64.zip && \
-    rm -f terraform_0.15.5_linux_amd64.zip && \
+    pm2 install pm2-logrotate && \
+    wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip && \
+    unzip terraform_1.0.0_linux_amd64.zip && \
+    rm -f terraform_1.0.0_linux_amd64.zip && \
     mv terraform /usr/bin/terraform
