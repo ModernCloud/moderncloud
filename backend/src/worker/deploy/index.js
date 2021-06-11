@@ -1,10 +1,12 @@
 const moment = require('moment');
-const {Task, TaskLog, Environment, Project} = require('../../common/db');
 const path = require('path');
+const {Task, Environment, Project} = require('../../common/db');
+const TaskLogger = require('../task_logger');
 
 class TaskDeploy {
     constructor(task, json) {
         this.task = task;
+        this.taskLogger = new TaskLogger(task);
         this.json = json;
     }
 
@@ -41,19 +43,6 @@ class TaskDeploy {
         await Task.query()
             .where('id', this.task.id)
             .update({'current_status': status, 'updated_at': currentDate});
-    }
-
-    async addLog(detail) {
-        let currentDate = moment().utc().format('YYYY-MM-DD HH:mm:ss');
-        await Task.query()
-            .where('id', this.task.id)
-            .update({'updated_at': currentDate});
-
-        await TaskLog.query().insert({
-            task_id: this.task.id,
-            detail: detail,
-            created_at: currentDate
-        });
     }
 
     getProjectRoot() {

@@ -1,47 +1,63 @@
-const shelljs = require('shelljs');
 const {Environment} = require('../../../common/db');
+const Command = require('../../command');
 
 async function runInit(job) {
-    await job.addLog(`$ terraform init`);
-    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} init -backend-config="access_key=$TF_VAR_aws_access_key" -backend-config="secret_key=$TF_VAR_aws_secret_key" -input=false -no-color -force-copy`, {silent: true});
-    if (result.stdout) {
-        await job.addLog(result.stdout);
-    }
-    if (result.stderr) {
-        await job.addLog(result.stderr);
-    }
-    if (result.code > 0) {
+    let command = `terraform init \
+-backend-config="access_key=$TF_VAR_aws_access_key" \
+-backend-config="secret_key=$TF_VAR_aws_secret_key" \
+-input=false -no-color -force-copy`;
+    let result = await Command.run({
+        logger: job.taskLogger,
+        command: command,
+        options: {
+            cwd: job.getTerraformRoot(),
+            env: {
+                TF_VAR_aws_region: job.environment.region,
+                TF_VAR_aws_access_key: job.environment.access_key,
+                TF_VAR_aws_secret_key: job.environment.secret_key
+            }
+        }
+    })
+    if (result.exitCode > 0) {
         throw new Error(`Failed: terraform init | Task: ${job.task.id}`);
     }
 }
 
 async function runApply(job) {
-    await job.addLog(`$ terraform apply -auto-approve`);
-    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} apply -input=false -auto-approve -no-color`, {silent: true});
-    if (result.stdout) {
-        await job.addLog(result.stdout);
-    }
-    if (result.stderr) {
-        await job.addLog(result.stderr);
-    }
-    if (result.code > 0) {
+    let result = await Command.run({
+        logger: job.taskLogger,
+        command: `terraform apply -input=false -auto-approve -no-color`,
+        options: {
+            cwd: job.getTerraformRoot(),
+            env: {
+                TF_VAR_aws_region: job.environment.region,
+                TF_VAR_aws_access_key: job.environment.access_key,
+                TF_VAR_aws_secret_key: job.environment.secret_key
+            }
+        }
+    });
+    if (result.exitCode > 0) {
         throw new Error(`Failed: terraform apply | Task: ${job.task.id}`);
     }
 }
 
 async function runOutput(job) {
-    await job.addLog(`$ terraform output -json`);
-    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} output -json -no-color`, {silent: true});
-    if (result.stdout) {
-        await job.addLog(result.stdout);
-    }
-    if (result.stderr) {
-        await job.addLog(result.stderr);
-    }
-    if (result.code > 0) {
+    let result = await Command.run({
+        logger: job.taskLogger,
+        command: `terraform output -json -no-color`,
+        options: {
+            cwd: job.getTerraformRoot(),
+            env: {
+                TF_VAR_aws_region: job.environment.region,
+                TF_VAR_aws_access_key: job.environment.access_key,
+                TF_VAR_aws_secret_key: job.environment.secret_key
+            }
+        }
+    });
+    if (result.exitCode > 0) {
         throw new Error(`Failed: terraform output | Task: ${job.task.id}`);
     }
-    return JSON.parse(result.stdout);
+    return JSON.parse(result.stdout());
 }
 
 async function updateEnvironmentOutputs(job, json) {
@@ -57,9 +73,6 @@ async function updateEnvironmentOutputs(job, json) {
 
 module.exports = {
     run: async (job) => {
-        shelljs.env['TF_VAR_aws_region'] = job.environment.region;
-        shelljs.env['TF_VAR_aws_access_key'] = job.environment.access_key;
-        shelljs.env['TF_VAR_aws_secret_key'] = job.environment.secret_key;
         await runInit(job);
         await runApply(job);
         let output = await runOutput(job);

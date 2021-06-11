@@ -32,7 +32,7 @@ async function pipInstall(projectId) {
         {packages: packages}
     )
     let commands = [
-        `python3.8 -m venv ${runtimePackageFolder}`,
+        `python3 -m venv ${runtimePackageFolder}`,
         `source ${runtimePackageFolder}/bin/activate`,
         `pip -q install pip-tools`,
         `pip-sync -q ${runtimePackageFolder}/requirements.txt`,

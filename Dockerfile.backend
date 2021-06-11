@@ -1,6 +1,7 @@
 FROM node:14.16.0-alpine3.10
 MAINTAINER Modern Cloud <contact@moderncloud.io>
-RUN npm config set package-lock false && \
+RUN apk --no-cache add python3 py-pip && \
+    npm config set package-lock false && \
     npm install -g pm2 && \
     pm2 install pm2-logrotate && \
     wget https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip && \

@@ -58,5 +58,6 @@ pre {
   word-wrap: break-word;
   font-weight: 400;
   font-size: 13px;
+  margin-bottom: 0;
 }
 </style>

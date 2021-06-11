@@ -1,16 +1,20 @@
-const shelljs = require('shelljs');
 const { Environment } = require('../../../common/db');
+const Command = require('../../command');
 
 async function runDestroy(job) {
-    await job.addLog(`$ terraform destroy -auto-approve`);
-    let result = shelljs.exec(`terraform -chdir=${job.getTerraformRoot()} destroy -auto-approve -input=false -no-color`, {silent: true});
-    if (result.stdout) {
-        await job.addLog(result.stdout);
-    }
-    if (result.stderr) {
-        await job.addLog(result.stderr);
-    }
-    if (result.code > 0) {
+    let result = await Command.run({
+        logger: job.taskLogger,
+        command: `terraform destroy -auto-approve -input=false -no-color`,
+        options: {
+            cwd: job.getTerraformRoot(),
+            env: {
+                TF_VAR_aws_region: job.environment.region,
+                TF_VAR_aws_access_key: job.environment.access_key,
+                TF_VAR_aws_secret_key: job.environment.secret_key
+            }
+        }
+    });
+    if (result.exitCode > 0) {
         throw new Error(`Failed: terraform destroy | Task: ${job.task.id}`);
     }
 }
@@ -28,9 +32,6 @@ async function updateEnvironment(job) {
 
 module.exports = {
     run: async (job) => {
-        shelljs.env['TF_VAR_aws_region'] = job.environment.region;
-        shelljs.env['TF_VAR_aws_access_key'] = job.environment.access_key;
-        shelljs.env['TF_VAR_aws_secret_key'] = job.environment.secret_key;
         await runDestroy(job);
         await updateEnvironment(job);
     }

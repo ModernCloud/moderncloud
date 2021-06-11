@@ -1,9 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const shelljs = require('shelljs');
 const rimraf = require('rimraf');
 const { Endpoint, Function, Package } = require('../../../common/db');
 const render = require('../../../common/template/render');
+const Command = require('../../command');
 
 async function createEndpointDependencies(job) {
     let endpoints = await Endpoint.query().where('project_id', job.project.id).orderBy('name');
@@ -44,10 +44,14 @@ async function runNpmInstall(job, lambda, packages) {
         path.join(job.getLambdaPackagesNodejsRoot(lambda.name), 'package.json'),
         {packages: packages}
     )
-    await job.addLog(`$ npm install --no-fund --no-audit --prod --no-optional --ignore-scripts --no-bin-links --prefix ${lambda.name}`);
-    let result = shelljs.exec(`npm install --no-fund --no-audit --prod --no-optional --ignore-scripts --no-bin-links --prefix "${job.getLambdaPackagesNodejsRoot(lambda.name)}"`, {silent: true});
-    await job.addLog(result.stdout || result.stderr);
-    if (result.code > 0) {
+    let result = await Command.run({
+        logger: job.taskLogger,
+        command: `npm install --no-fund --no-audit --prod --no-optional --ignore-scripts --no-bin-links`,
+        options: {
+            cwd: job.getLambdaPackagesNodejsRoot(lambda.name)
+        }
+    });
+    if (result.exitCode > 0) {
         throw new Error(`Failed: npm install --prefix "${job.getLambdaPackagesNodejsRoot(lambda.name)}" | Task: ${job.task.id}`);
     }
 }
@@ -59,17 +63,17 @@ async function runPipInstall(job, lambda, packages) {
         path.join(job.getLambdaPackagesPythonRoot(lambda.name), 'requirements.txt'),
         {packages: packages}
     )
-    await job.addLog(`$ pip install -r requirements.txt --prefix ${lambda.name}`);
     let commands = [
-        `python3.8 -m venv ${job.getLambdaPackagesPythonRoot(lambda.name)}`,
+        `python3 -m venv ${job.getLambdaPackagesPythonRoot(lambda.name)}`,
         `source ${job.getLambdaPackagesPythonRoot(lambda.name)}/bin/activate`,
-        `pip -q install pip-tools`,
-        `pip-sync -q ${job.getLambdaPackagesPythonRoot(lambda.name)}/requirements.txt`,
-        `deactivate`
+        `pip install pip-tools`,
+        `pip-sync ${job.getLambdaPackagesPythonRoot(lambda.name)}/requirements.txt`
     ];
-    let result = shelljs.exec(commands.join(' && '), {silent: true});
-    await job.addLog(result.stdout || result.stderr);
-    if (result.code > 0) {
+    let result = await Command.run({
+        logger: job.taskLogger,
+        command: commands.join(' && ')
+    });
+    if (result.exitCode > 0) {
         throw new Error(`Failed: pip install -r requirements.txt --prefix "${job.getLambdaPackagesNodejsRoot(lambda.name)}" | Task: ${job.task.id}`);
     }
 }
