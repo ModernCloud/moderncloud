@@ -8,7 +8,7 @@
       "error_file": "/storage/logs/api.dev.err.log",
       "out_file": "/storage/logs/api.dev.out.log",
       "exec_mode": "fork_mode",
-      "watch": true,
+      "watch": ["/data/src/api", "/data/src/common"],
       "ignore_watch": ["node_modules"]
     },
     {
@@ -30,7 +30,7 @@
       "error_file": "/storage/logs/worker.dev.err.log",
       "out_file": "/storage/logs/worker.dev.out.log",
       "exec_mode": "fork_mode",
-      "watch": true,
+      "watch": ["/data/src/worker", "/data/src/common"],
       "ignore_watch": ["node_modules"]
     }
   ]
