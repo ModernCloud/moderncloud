@@ -1,7 +1,7 @@
 const moment = require('moment');
 const {Task, TaskLog} = require('../common/db');
 
-class TaskLogger {
+class DBLogger {
     constructor(task) {
         this.task = task;
     }
@@ -25,4 +25,4 @@ class TaskLogger {
     }
 }
 
-module.exports = TaskLogger;
+module.exports = DBLogger;

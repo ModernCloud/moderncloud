@@ -1,23 +1,22 @@
 require('dotenv').config();
-const path = require('path');
 const amqp = require('amqplib');
-const { Task } = require('../common/db');
+const WorkerTask = require('./worker_task');
 
 async function run() {
     const conn = await amqp.connect(process.env.RABBITMQ_HOST);
     const channel = await conn.createChannel();
     await channel.assertQueue('worker');
-    channel.prefetch(1);
+    channel.prefetch(20);
     channel.consume('worker', async (message) => {
+        let workerTask;
         try {
-            let json = JSON.parse(Buffer.from(message.content).toString());
-            let task = await Task.query().where('id', json.task_id).first();
-            if (!(task instanceof Task)) {
-                throw new Error(`Task not found: ${json.task_id}`);
-            }
-            let Job = require(path.join(__dirname, task.name));
-            await (new Job(task, json)).run();
+            let jobMessage = JSON.parse(Buffer.from(message.content).toString());
+            workerTask = await WorkerTask.factory(jobMessage);
+            await workerTask.run();
         } catch (e) {
+            if (workerTask instanceof WorkerTask) {
+                await workerTask.updateTaskStatus(2);
+            }
             console.log(e);
         }
         channel.ack(message);
