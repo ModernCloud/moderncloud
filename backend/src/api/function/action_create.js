@@ -26,27 +26,21 @@ class CreateAction extends ApiAction
     async createFunction() {
         let mainFile = 'index.js';
         let handler = 'index.handler';
-        let code = `exports.handler = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({"time": Date.now()}),
-  }
+        let code = `
+exports.handler = (event, context, callback) => {
+   console.log("Received event: ", event);
+   callback(null, {
+       "greetings": "Hello World!"
+   });
 }`;
         if (this.validRequest.runtime.indexOf('python') > -1) {
             mainFile = 'index.py';
             code = `
-import json
-
-def handler(event, context):
-    message = "Hello World!"  
+def lambda_handler(event, context):
+    print("Received event: ", event)
     return {
-        "statusCode": 200,
-        "headers": {"Content-Type": "application/json"},
-        "body": json.dumps({
-            "Message ": message
-        })
-    }
-`;
+        "greetings": "Hello World!"
+    }`;
         }
         this.function = await Function.query().insert({
             user_id: this.currentUser.id,

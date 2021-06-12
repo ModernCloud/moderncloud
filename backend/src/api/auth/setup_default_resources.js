@@ -52,11 +52,12 @@ async function createDefaultFunctions(transaction, project) {
         main_file: 'index.js',
         handler: 'index.handler',
         runtime: 'nodejs14.x',
-        code: `exports.handler = async (event, context) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({time: Date.now(), message: "my function"}),
-  }
+        code: `
+exports.handler = (event, context, callback) => {
+   console.log("Received event: ", event);
+   callback(null, {
+       "greetings": "Hello World!"
+   });
 }`,
     });
 }
