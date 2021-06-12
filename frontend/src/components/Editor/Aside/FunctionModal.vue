@@ -10,7 +10,13 @@
         <form @submit.prevent="submit">
           <div class="mb-2">
             <label class="form-label">Name</label>
-            <input type="text" class="form-control" v-model="form.user_name" />
+            <div class="d-flex">
+              <select class="form-select" v-model="form.runtime" style="width: 140px; margin-right: 5px;">
+                <option value="python3.8" :selected="form.runtime === 'python3.8'">Python 3.8</option>
+                <option value="nodejs14.x" :selected="form.runtime === 'nodejs14.x'">Node.js 14</option>
+              </select>
+              <input type="text" class="form-control" v-model="form.user_name" placeholder="My Function" />
+            </div>
           </div>
           <div class="row">
             <div class="col">
@@ -48,7 +54,7 @@
 <script>
 import axios from "axios";
 import IconX from "@/components/Icons/IconX";
-import {getErrorMessage} from "../../../lib/get_error_message";
+import {getErrorMessage} from "@/lib/get_error_message";
 
 export default {
   components: {IconX},
@@ -60,6 +66,7 @@ export default {
       current_id: 0,
       form: {
         user_name: null,
+        runtime: 'nodejs14.x',
         description: null,
         memory_size: 128,
         timeout: 3
@@ -98,6 +105,7 @@ export default {
       this.loading = true;
       try {
         let response = await axios.get(`/api/functions/${id}`);
+        this.form.runtime = response.data.function.runtime;
         this.form.user_name = response.data.function.user_name;
         this.form.description = response.data.function.description;
         this.form.memory_size = response.data.function.memory_size;
