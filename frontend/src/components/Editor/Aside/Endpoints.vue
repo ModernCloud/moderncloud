@@ -19,11 +19,12 @@
           </div>
           <div v-for="item in items" :key="item.id">
             <div :class="{item: true, active: isCurrentFile(item.id)}">
-              <a href="javascript:;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" class="link">
+              <a href="javascript:;" @click="openFile(item.id)" class="link">
                 <div class="item-name">
                   {{item.user_name}}
                 </div>
                 <small :style="{'margin-left': '5px', color: methodLabelColor(item.method)}">{{item.method}}</small>
+                <span v-if="item.id === fileIsOpening || item.id === fileIsDeleting" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
               </a>
               <div class="action-menu">
                 <a href="javascript:;" @click="openEditModal(item.id)">
@@ -52,6 +53,7 @@ import IconChevronDown from "@/components/Icons/IconChevronDown";
 import IconCircles from "@/components/Icons/IconCircles";
 import IconEdit from "@/components/Icons/IconEdit";
 import IconDelete from "@/components/Icons/IconDelete";
+import findIndex from "lodash/findIndex";
 
 export default {
   components: {
@@ -69,7 +71,8 @@ export default {
       loading: false,
       showContent: false,
       items: [],
-      fileIsOpening: null
+      fileIsOpening: null,
+      fileIsDeleting: null
     }
   },
   watch: {
@@ -121,6 +124,9 @@ export default {
           && this.$store.state.project.currentFile.type === 'endpoint';
     },
     async openFile(id) {
+      if (this.fileIsDeleting === id) {
+        return;
+      }
       this.fileIsOpening = id;
       try {
         let response = await axios.get('/api/endpoints/' + id);
@@ -156,14 +162,16 @@ export default {
       }
     },
     async deleteItem(selectedItem) {
-      this.loading = true;
+      this.fileIsDeleting = selectedItem.id;
       try {
-        await axios.delete('/api/endpoints/' + selectedItem.id);
         CodeEditorEvents.$emit('closeFile', {id: selectedItem.id, type: 'endpoint', sourceCode: null});
+        await axios.delete('/api/endpoints/' + selectedItem.id);
+        let index = findIndex(this.items, {id: selectedItem.id});
+        this.items.splice(index, 1);
       } catch (e) {
         console.log(e);
       } finally {
-        await this.loadItems();
+        this.fileIsDeleting = null;
       }
     },
     methodLabelColor(method) {

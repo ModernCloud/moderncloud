@@ -19,8 +19,9 @@
           </div>
           <div v-for="item in items" :key="item.id">
             <div :class="{item: true, active: isCurrentFile(item.id)}">
-              <a href="javascript:;" @click="openFile(item.id)" :loading="item.id === fileIsOpening" class="link">
+              <a href="javascript:;" @click="openFile(item.id)" class="link">
                 <div class="item-name">{{item.user_name}}</div>
+                <span v-if="item.id === fileIsOpening || item.id === fileIsDeleting" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
               </a>
               <div class="action-menu">
                 <a href="javascript:;" @click="openEditModal(item.id)">
@@ -49,6 +50,7 @@ import IconChevronRight from "@/components/Icons/IconChevronRight";
 import IconChevronDown from "@/components/Icons/IconChevronDown";
 import IconEdit from "@/components/Icons/IconEdit";
 import IconDelete from "@/components/Icons/IconDelete";
+import findIndex from "lodash/findIndex";
 
 export default {
   components: {
@@ -67,6 +69,7 @@ export default {
       showContent: false,
       items: [],
       fileIsOpening: null,
+      fileIsDeleting: null,
     }
   },
   watch: {
@@ -118,6 +121,9 @@ export default {
           && this.$store.state.project.currentFile.type === 'function';
     },
     async openFile(id) {
+      if (this.fileIsDeleting === id) {
+        return;
+      }
       this.fileIsOpening = id;
       try {
         let response = await axios.get('/api/functions/' + id);
@@ -151,14 +157,16 @@ export default {
       }
     },
     async deleteItem(selectedItem) {
-      this.loading = true;
+      this.fileIsDeleting = selectedItem.id;
       try {
-        await axios.delete('/api/functions/' + selectedItem.id);
         CodeEditorEvents.$emit('closeFile', {id: selectedItem.id, type: 'function', sourceCode: null});
+        await axios.delete('/api/functions/' + selectedItem.id);
+        let index = findIndex(this.items, {id: selectedItem.id});
+        this.items.splice(index, 1);
       } catch (e) {
         console.log(e);
       } finally {
-        await this.loadItems();
+        this.fileIsDeleting = null;
       }
     }
   }

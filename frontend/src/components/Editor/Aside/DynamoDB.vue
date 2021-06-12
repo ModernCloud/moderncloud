@@ -21,6 +21,7 @@
             <div class="item">
               <a href="javascript:;" class="link" @click="openEditModal(item.id)">
                 <div class="item-name">{{item.name}}</div>
+                <span v-if="item.id === fileIsDeleting" class="spinner-grow text-primary spinner-grow-sm" style="margin-left: 5px; width: 5px; height: 5px;" role="status" aria-hidden="true"></span>
               </a>
               <div class="action-menu">
                 <a href="javascript:;" @click="$refs.confirmModal.show({id: item.id})">
@@ -44,6 +45,7 @@ import IconChevronRight from "@/components/Icons/IconChevronRight";
 import IconChevronDown from "@/components/Icons/IconChevronDown";
 import IconSquarePlus from "@/components/Icons/IconSquarePlus";
 import IconDelete from "@/components/Icons/IconDelete";
+import findIndex from "lodash/findIndex";
 
 export default {
   components: {
@@ -59,7 +61,8 @@ export default {
     return {
       loading: false,
       showContent: false,
-      items: []
+      items: [],
+      fileIsDeleting: null
     }
   },
   watch: {
@@ -101,13 +104,15 @@ export default {
       await this.loadItems();
     },
     async deleteItem(selectedItem) {
-      this.loading = true;
+      this.fileIsDeleting = selectedItem.id;
       try {
         await axios.delete('/api/dynamodb/' + selectedItem.id);
+        let index = findIndex(this.items, {id: selectedItem.id});
+        this.items.splice(index, 1);
       } catch (e) {
         console.log(e);
       } finally {
-        await this.loadItems();
+        this.fileIsDeleting = null;
       }
     }
   }
