@@ -30,7 +30,7 @@ services:
       - ./backend:/data
       - ./storage:/storage
     working_dir: /data
-    command: pm2-runtime start /ecosystem.json --only='api,worker'
+    command: sh -c "npm run migration:migrate && pm2-runtime start /ecosystem.json --only='api,worker'"
   lsp:
     container_name: moderncloud_lsp
     build:
