@@ -31,7 +31,7 @@
               <span class="text-primary" v-if="environment.last_deployment.current_status === 0">Running</span>
               <span class="text-success" v-if="environment.last_deployment.current_status === 1">Success</span>
               <span class="text-danger" v-if="environment.last_deployment.current_status === 2">Failed</span>
-              - (<a href="javascript:;" @click="$emit('show-logs', environment.last_deployment.logs)">Logs</a>)
+              - (<a href="javascript:;" @click="$emit('show-logs', {task: environment.last_deployment})">Logs</a>)
               <div v-if="isRunning">Started {{calculateDiff}} ago</div>
               <div v-if="isRunning === false">Completed in {{calculateDiff}}</div>
             </div>
@@ -141,6 +141,7 @@ export default {
           let deployment = response.data.task;
           deployment.logs = response.data.logs;
           this.environment.last_deployment = deployment;
+          this.$emit('show-logs', {task: deployment, update: true});
           if (deployment.current_status === 0) {
             this.isRunning = true;
             this.createStatusChecker(deploymentId);

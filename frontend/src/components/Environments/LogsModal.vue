@@ -1,13 +1,13 @@
 <template>
   <div v-if="visible" class="fullscreen">
     <div style="height: 50px; padding-left: 20px; border-bottom: 1px solid #ddd; display: flex; align-items: center; background: #fff;">
-      <a href="javascript:;" @click="visible = false; logs = []">
+      <a href="javascript:;" @click="hide()">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
       </a>
     </div>
     <div class="fullscreen-wrapper">
       <div style="padding: 20px;">
-        <pre v-for="(log, index) in logs" :key="`log-${index}`">{{log.detail}}</pre>
+        <pre v-for="(log, index) in task.logs" :key="`log-${index}`">{{log.detail}}</pre>
         <pre style="height: 50px;"></pre>
       </div>
     </div>
@@ -19,13 +19,24 @@ export default {
   data() {
     return {
       visible: false,
-      logs: []
+      timeoutId: null,
+      task: null
     }
   },
+  destroyed() {
+    this.hide();
+  },
   methods: {
-    show(logs) {
+    show(settings) {
+      if (this.visible === false && settings.update) {
+        return;
+      }
       this.visible = true;
-      this.logs = logs;
+      this.task = settings.task;
+    },
+    hide() {
+      this.visible = false;
+      this.task = null;
     }
   }
 }

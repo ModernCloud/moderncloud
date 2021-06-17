@@ -24,7 +24,8 @@ class GetAction extends ApiAction
     async loadLogs() {
         this.logs = await TaskLog.query()
             .where('task_id', this.task.id)
-            .orderBy('created_at');
+            .orderBy('created_at')
+            .orderBy('id', 'desc');
     }
 }
 
