@@ -63,6 +63,7 @@ Development server port is 8081. Please use http://127.0.0.1:8081 to access the 
 
 ```bash
 $ cd frontend
+$ npm install -g @vue/cli
 $ npm install
 $ npm run serve
 ``` 
