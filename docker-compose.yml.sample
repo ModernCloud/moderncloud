@@ -30,7 +30,7 @@ services:
       - ./backend:/data
       - ./storage:/storage
     working_dir: /data
-    command: sh -c "npm run migration:migrate && pm2-runtime start /ecosystem.json --only='api,worker'"
+    command: sh -c "npm install && npm run migration:migrate && pm2-runtime start /ecosystem.json --only='api,worker'"
   lsp:
     container_name: moderncloud_lsp
     build:
@@ -48,7 +48,7 @@ services:
       - ./language-server-proxy:/data
       - ./storage:/storage
     working_dir: /data
-    command: pm2-runtime start /ecosystem.json --only='lsp'
+    command: sh -c "npm install && pm2-runtime start /ecosystem.json --only='lsp'"
   postgres:
     container_name: moderncloud_postgres
     image: postgres:13.2
