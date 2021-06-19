@@ -4,15 +4,13 @@
 
 ---
 
-[ModernCloud](https://www.moderncloud.io) is a browser-based serverless platform that lets developers build functions and endpoints in minutes.
+[ModernCloud](https://www.moderncloud.io) is a browser-based serverless platform that lets developers build functions and endpoints in minutes. 
 
-Our long term vision is to build a holistic, easy-to-use interface for building cloud applications, end-to-end.
-
-AWS and Lambdas are just the start.
+Our long term vision is to build a holistic, easy-to-use interface for building cloud applications, end-to-end. AWS and Lambdas are just the start.
 
 ## Motivation
 
-Advancements in cloud solutions have been fascinating in recent years. There are now many tools under our belt, and we can build sophisticated and resilient systems way easier than before. However, there's still a long way to go. We are still dealing with an incredible amount of overhead when building our solutions: setting up local dev environments, challenges of integrating different solutions, searching code snippets that work, and dealing with terrible interfaces that cloud providers provide us. ModernCloud aims to provide a browser-based interface that eliminates these overheads and provides a batteries-included platform that lets you focus on the stuff that matters.
+Advancements in cloud solutions have been fascinating in recent years. There are now several tools under our belt, and we can build sophisticated and resilient systems way easier than before. However, there's still a long way to go. We are still dealing with an incredible amount of overhead when building our solutions: setting up local dev environments, challenges around integrating different solutions, searching code snippets that work, and dealing with terrible interfaces that cloud providers give us. ModernCloud aims to provide a browser-based interface that eliminates these overheads and provides a batteries-included platform that lets you focus on the stuff that matters.
 
 ## Highlights
 
@@ -63,6 +61,7 @@ Development server port is 8081. Please use http://127.0.0.1:8081 to access the 
 
 ```bash
 $ cd frontend
+$ npm install -g @vue/cli
 $ npm install
 $ npm run serve
 ``` 
