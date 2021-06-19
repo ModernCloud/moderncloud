@@ -2,7 +2,8 @@ const state = {
     token: null,
     user: null,
     settings: {
-        theme: 'light'
+        theme: 'light',
+        accordion: {}
     }
 };
 
@@ -11,7 +12,8 @@ const mutations = {
         state.token = null;
         state.user = null;
         state.settings = {
-            theme: 'light'
+            theme: 'light',
+            accordion: {}
         };
     },
 
@@ -29,6 +31,10 @@ const mutations = {
             state.settings.theme = theme;
         }
         document.getElementsByTagName('body').item(0).setAttribute('data-theme', state.settings.theme);
+    },
+
+    accordionStatus(state, payload) {
+        state.settings.accordion[payload.name] = payload.status;
     }
 }
 

@@ -66,7 +66,7 @@ export default {
   data() {
     return {
       loading: false,
-      showContent: false,
+      showContent: this.$store.state.account.settings.accordion['functions'] ?? false,
       items: [],
       fileIsOpening: null,
       fileIsDeleting: null,
@@ -75,6 +75,9 @@ export default {
   watch: {
     async '$store.state.project.selected'() {
       await this.loadItems();
+    },
+    showContent(newValue) {
+      this.$store.commit('accordionStatus', {name: 'functions', status: newValue});
     }
   },
   async mounted() {

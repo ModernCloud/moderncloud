@@ -60,7 +60,7 @@ export default {
   data() {
     return {
       loading: false,
-      showContent: false,
+      showContent: this.$store.state.account.settings.accordion['dynamodb'] ?? false,
       items: [],
       fileIsDeleting: null
     }
@@ -68,6 +68,9 @@ export default {
   watch: {
     async '$store.state.project.selected'() {
       await this.loadItems();
+    },
+    showContent(newValue) {
+      this.$store.commit('accordionStatus', {name: 'dynamodb', status: newValue});
     }
   },
   async mounted() {
