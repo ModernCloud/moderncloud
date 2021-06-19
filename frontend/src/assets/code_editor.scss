@@ -162,7 +162,7 @@
     border-left: 1px solid #EFF1F4;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 1fr;
     overflow: hidden;
 
     .header-menu {
@@ -240,15 +240,32 @@
     }
 
     > .body {
-      padding: 8px;
+      padding: 0 8px 8px 8px;
       overflow: hidden;
 
       .section-link {
         border-bottom: 1px solid #EFF1F4;
         padding: 15px 8px;
         color: #3C4149;
-        display: block;
         margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-left: auto;
+        }
+
+        &.go-back {
+          border-bottom: 0;
+          height: 50px;
+          padding: 0;
+          margin: 0;
+
+          svg {
+            margin-left: 0;
+            margin-right: 10px;
+          }
+        }
       }
 
       .section-header {

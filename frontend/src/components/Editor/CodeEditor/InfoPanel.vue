@@ -1,39 +1,14 @@
 <template>
   <div class="info-panel">
-    <div class="header-menu">
-      <div style="flex-grow: 1">
-        <div class="button" @click="menu_visible = !menu_visible">
-          <div class="title">
-            <h3 v-if="isOverview"><IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview</h3>
-            <h3 v-if="isDeployment"><IconDeployment :stroke-width="1.5" :width="18" :height="18" /> Deployment</h3>
-            <h3 v-if="isPackages"><IconPackage :stroke-width="1.5" :width="18" :height="18" /> Packages</h3>
-            <h3 v-if="isLogs"><IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs</h3>
-          </div>
-          <div class="icon">
-            <IconChevronDown :width="20" :height="20" :stroke-width="1.5" />
-          </div>
-        </div>
-        <div class="options" v-if="menu_visible">
-          <div class="option-item" @click="showMode('deployment')">
-            <IconDeployment :stroke-width="1.5" :width="18" :height="18" /> Deployment
-            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isDeployment" />
-          </div>
-          <div class="option-item" @click="showMode('overview')">
-            <IconOverview :stroke-width="1.5" :width="18" :height="18" /> Overview
-            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isOverview" />
-          </div>
-          <div class="option-item" @click="showMode('packages')">
-            <IconPackage :stroke-width="1.5" :width="18" :height="18" /> Packages
-            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isPackages" />
-          </div>
-          <div class="option-item" @click="showMode('logs')">
-            <IconLogs :stroke-width="1.5" :width="18" :height="18" /> Logs
-            <IconCheck class="check" :stroke-width="2" :width="24" :height="24" v-if="isLogs" />
-          </div>
-        </div>
-      </div>
-    </div>
     <perfect-scrollbar class="body" :options="{suppressScrollX: true}">
+      <div v-if="isDeployment">
+        <a href="javascript:;" class="section-link" @click="showMode('overview')">Overview <IconArrowNarrowRight /></a>
+        <a href="javascript:;" class="section-link" @click="showMode('packages')">Packages <IconArrowNarrowRight /></a>
+        <a href="javascript:;" class="section-link" @click="showMode('logs')">Logs <IconArrowNarrowRight /></a>
+      </div>
+      <div v-if="isDeployment === false">
+        <a href="javascript:;" class="section-link go-back" @click="showMode('deployment')"><IconChevronLeft /> Return</a>
+      </div>
       <Overview v-if="isOverview" :file="file" />
       <Deployment v-if="isDeployment" :file="file" />
       <Packages v-if="isPackages" :file="file" />
@@ -47,21 +22,13 @@ import Overview from "@/components/Editor/CodeEditor/InfoPanel/Overview";
 import Deployment from "@/components/Editor/CodeEditor/InfoPanel/Deployment";
 import Packages from "@/components/Editor/CodeEditor/InfoPanel/Packages";
 import Logs from "@/components/Editor/CodeEditor/InfoPanel/Logs";
-import IconDeployment from "@/components/Icons/IconDeployment";
-import IconLogs from "@/components/Icons/IconLogs";
-import IconOverview from "@/components/Icons/IconOverview";
-import IconChevronDown from "@/components/Icons/IconChevronDown";
-import IconCheck from "@/components/Icons/IconCheck";
-import IconPackage from "@/components/Icons/IconPackage";
+import IconArrowNarrowRight from "@/components/Icons/IconArrowNarrowRight";
+import IconChevronLeft from "@/components/Icons/IconChevronLeft";
 
 export default {
   components: {
-    IconPackage,
-    IconCheck,
-    IconChevronDown,
-    IconOverview,
-    IconLogs,
-    IconDeployment,
+    IconChevronLeft,
+    IconArrowNarrowRight,
     Deployment,
     Overview,
     Packages,
