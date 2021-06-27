@@ -162,81 +162,15 @@
     border-left: 1px solid #EFF1F4;
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 1fr;
+    grid-template-rows: 50px 1fr;
     overflow: hidden;
 
-    .header-menu {
+    .file {
       display: flex;
       align-items: center;
-      position: relative;
+      padding-left: 16px;
+      padding-right: 16px;
       border-bottom: 1px solid #EFF1F4;
-      padding: 0 10px;
-
-      .button {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-        padding: 4px 4px;
-        border-radius: 5px;
-
-        &:hover {
-          background: #F1F3F8;
-        }
-
-        .icon {
-          color: #6B6F77;
-        }
-
-        .title {
-          flex-grow: 1;
-
-          h3 {
-            font-size: 16px;
-            font-weight: 400;
-            color: #3C4149;
-            margin: 0;
-            padding: 0;
-
-            svg {
-              color: #6B6F77;
-              margin-right: 5px;
-            }
-          }
-        }
-      }
-
-      .options {
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        top: 50px;
-        border-radius: 12px;
-        background: #fff;
-        padding: 15px 20px;
-        z-index: 10000;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, .4);
-
-        .option-item {
-          cursor: pointer;
-          color: #3C4149;
-          margin-bottom: 8px;
-          clear: both;
-
-          &:last-child {
-            margin-bottom: 0px;
-          }
-
-          svg:first-child {
-            margin-right: 5px;
-          }
-
-          .check {
-            margin-left: auto;
-            color: #5269C9;
-            float: right;
-          }
-        }
-      }
     }
 
     > .body {

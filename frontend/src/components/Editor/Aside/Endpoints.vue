@@ -14,10 +14,15 @@
     <transition name="slide">
       <div v-if="showContent" class="content">
         <div v-if="loading === false">
+          <div class="search">
+            <div><IconSearch :width="18" :height="18" /></div>
+            <input type="text" placeholder="Search" v-model="search" />
+            <a href="javascript:;" @click="search = null" v-if="search"><IconX :width="14" :height="14" /></a>
+          </div>
           <div class="item new-link">
             <a href="javascript:;" class="link" @click="openNewModal"><IconSquarePlus :width="18" :height="18" /> New Endpoint</a>
           </div>
-          <div v-for="item in items" :key="item.id">
+          <div v-for="item in filteredItems" :key="item.id">
             <div :class="{item: true, active: isCurrentFile(item.id)}">
               <a href="javascript:;" @click="openFile(item.id)" class="link">
                 <div class="item-name">
@@ -54,9 +59,13 @@ import IconCircles from "@/components/Icons/IconCircles";
 import IconEdit from "@/components/Icons/IconEdit";
 import IconDelete from "@/components/Icons/IconDelete";
 import findIndex from "lodash/findIndex";
+import IconSearch from "../../Icons/IconSearch";
+import IconX from "../../Icons/IconX";
 
 export default {
   components: {
+    IconX,
+    IconSearch,
     IconDelete,
     IconEdit,
     IconCircles,
@@ -72,7 +81,8 @@ export default {
       showContent: this.$store.state.account.settings.accordion['endpoints'] ?? false,
       items: [],
       fileIsOpening: null,
-      fileIsDeleting: null
+      fileIsDeleting: null,
+      search: null
     }
   },
   watch: {
@@ -81,6 +91,17 @@ export default {
     },
     showContent(newValue) {
       this.$store.commit('accordionStatus', {name: 'endpoints', status: newValue});
+    }
+  },
+  computed: {
+    filteredItems() {
+      if (this.search == null) {
+        return this.items;
+      }
+      let searchQuery = this.search.toLowerCase();
+      return this.items.filter(item => {
+        return item.user_name.toLowerCase().indexOf(searchQuery) > -1;
+      });
     }
   },
   async mounted() {

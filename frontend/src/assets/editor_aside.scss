@@ -3,6 +3,28 @@ aside#editor-aside {
   grid-template-columns: auto;
   grid-template-rows: 90px auto 130px;
 
+  .search {
+    padding-left: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    input {
+      background: transparent;
+      width: 142px;
+      outline-style: none;
+      box-shadow: none;
+      border-color: transparent;
+      color: #3C4149;
+      font-weight: 400;
+      font-size: 13px;
+    }
+
+    svg {
+      color: #666;
+    }
+  }
+
   .footer {
     .buttons {
       position: relative;
@@ -230,6 +252,12 @@ aside#editor-aside {
 
 [data-theme="dark"] {
   aside#editor-aside {
+    .search {
+      input {
+        color: #F7F8F8;
+      }
+    }
+
     .footer {
       .button-feedback {
         color: rgba(255, 255, 255, .5);

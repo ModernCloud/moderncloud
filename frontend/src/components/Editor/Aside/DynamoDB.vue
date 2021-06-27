@@ -14,10 +14,15 @@
     <transition name="slide">
       <div v-if="showContent" class="content">
         <div v-if="loading === false">
+          <div class="search">
+            <div><IconSearch :width="18" :height="18" /></div>
+            <input type="text" placeholder="Search" v-model="search" />
+            <a href="javascript:;" @click="search = null" v-if="search"><IconX :width="14" :height="14" /></a>
+          </div>
           <div class="item new-link">
             <a href="javascript:;" class="link" @click="openNewModal"><IconSquarePlus :width="18" :height="18" /> New Table</a>
           </div>
-          <div v-for="item in items" :key="item.id">
+          <div v-for="item in filteredItems" :key="item.id">
             <div class="item">
               <a href="javascript:;" class="link" @click="openEditModal(item.id)">
                 <div class="item-name">{{item.name}}</div>
@@ -46,9 +51,13 @@ import IconChevronDown from "@/components/Icons/IconChevronDown";
 import IconSquarePlus from "@/components/Icons/IconSquarePlus";
 import IconDelete from "@/components/Icons/IconDelete";
 import findIndex from "lodash/findIndex";
+import IconSearch from "../../Icons/IconSearch";
+import IconX from "../../Icons/IconX";
 
 export default {
   components: {
+    IconX,
+    IconSearch,
     IconDelete,
     IconSquarePlus,
     IconChevronDown,
@@ -62,7 +71,8 @@ export default {
       loading: false,
       showContent: this.$store.state.account.settings.accordion['dynamodb'] ?? false,
       items: [],
-      fileIsDeleting: null
+      fileIsDeleting: null,
+      search: null
     }
   },
   watch: {
@@ -71,6 +81,17 @@ export default {
     },
     showContent(newValue) {
       this.$store.commit('accordionStatus', {name: 'dynamodb', status: newValue});
+    }
+  },
+  computed: {
+    filteredItems() {
+      if (this.search == null) {
+        return this.items;
+      }
+      let searchQuery = this.search.toLowerCase();
+      return this.items.filter(item => {
+        return item.name.toLowerCase().indexOf(searchQuery) > -1;
+      });
     }
   },
   async mounted() {

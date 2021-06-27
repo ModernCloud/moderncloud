@@ -3,7 +3,7 @@
     <div class="empty-state" v-if="$store.state.project.files.length === 0">
       <div>
         <h2>Welcome Back {{$store.state.account.user.name}}</h2>
-        <p>Did you know that you can create an endpoint and then mix it with some magic stuff to get awesome results.</p>
+        <p>Create your endpoints and functions in minutes with ModernCloud.</p>
       </div>
     </div>
     <div class="code-state" v-if="$store.state.project.files.length > 0">
