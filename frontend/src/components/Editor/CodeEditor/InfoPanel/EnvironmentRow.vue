@@ -21,9 +21,6 @@
         <div v-if="environment.last_deployment === null" class="alert alert-warning">
           {{ resourceType }} has not been deployed yet in this environment.
         </div>
-        <div v-if="isFileDeployed === false" class="alert alert-warning">
-          This is a new <strong>{{ resourceType }}</strong>. Please click to <strong>Deploy</strong> button to see related informations.
-        </div>
         <div class="informations" v-if="environment.last_deployment !== null">
           <div class="information">
             <div class="name">Last Status :</div>
