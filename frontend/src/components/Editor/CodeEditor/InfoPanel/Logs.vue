@@ -12,6 +12,9 @@
         <div class="time">{{formatDate(logStream.lastIngestionTime)}}</div>
         <div class="name">{{logStream.logStreamName}}</div>
       </div>
+      <div v-if="logStreams.length === 0" class="stream" style="border-bottom: 0">
+        No logs have been found yet.
+      </div>
     </div>
   </div>
 </template>
