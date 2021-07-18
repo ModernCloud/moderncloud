@@ -129,7 +129,8 @@ class StepUpdateTerraformFiles {
             .where('project_id', this.workerTask.project.id)
             .where('file_id', lambdaRow.id)
             .where('file_type', lambdaRow instanceof Endpoint ? 'endpoint' : 'function')
-            .count() > 0;
+            .count();
+        hasPackage = hasPackage[0].count > 0;
         if (hasPackage) {
             let layerName = `${this.workerTask.project.name}_${this.workerTask.environment.name}_${lambdaRow.name}`;
             render(
