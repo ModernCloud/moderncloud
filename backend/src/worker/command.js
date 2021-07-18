@@ -7,15 +7,15 @@ class Result {
     }
 
     stdout() {
-        return this.output.filter(line => line.type === 'stdout').map(line => line.message).join();
+        return this.output.filter(line => line.type === 'stdout').map(line => line.message).join('');
     }
 
     stderr() {
-        return this.output.filter(line => line.type === 'stderr').map(line => line.message).join();
+        return this.output.filter(line => line.type === 'stderr').map(line => line.message).join('');
     }
 
     all() {
-        return this.output.map(line => line.message).join();
+        return this.output.map(line => line.message).join('');
     }
 }
 
