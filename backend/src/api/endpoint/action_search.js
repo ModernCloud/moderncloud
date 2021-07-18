@@ -22,8 +22,7 @@ class SearchAction extends ApiAction
         this.endpoints = await Endpoint.query()
             .where('user_id', this.currentUser.id)
             .where('project_id', this.validRequest.project_id)
-            .orderBy('path')
-            .orderBy('method');
+            .orderBy('user_name');
     }
 }
 
