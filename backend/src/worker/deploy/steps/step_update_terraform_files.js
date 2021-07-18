@@ -85,12 +85,22 @@ class StepUpdateTerraformFiles {
 
     async createApiGatewayFiles() {
         let endpoints = await Endpoint.query().where('project_id', this.workerTask.project.id);
+        let paths = {};
+        for (const endpoint of endpoints) {
+            if (paths.hasOwnProperty(endpoint.path) === false) {
+                paths[endpoint.path] = {
+                    path: endpoint.path,
+                    endpoints: []
+                };
+            }
+            paths[endpoint.path].endpoints.push(endpoint);
+        }
         render(
             path.join(this.workerTask.getTerraformTemplates(), 'api_gateway.tf.twig'),
             path.join(this.workerTask.getTerraformRoot(), `api_gateway_${this.workerTask.project.name}.tf`),
             {
                 project: this.workerTask.project,
-                endpoints: endpoints,
+                paths: paths,
                 environment: this.workerTask.environment,
                 hasValidCertificate: get(this.workerTask.environment, 'certificate_validation_options.ValidationStatus', 'PENDING_VALIDATION') === 'SUCCESS'
             }

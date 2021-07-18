@@ -11,16 +11,18 @@ resource "aws_api_gateway_rest_api" "{{project.name}}_{{environment.name}}_api_g
       version = "1.0"
     }
     paths = {
-    {% for endpoint in endpoints %}
-      "{{endpoint.path}}" = {
-          lower("{{endpoint.method}}") = {
-            x-amazon-apigateway-integration = {
-              httpMethod           = "POST"
-              passthroughBehavior  = "when_no_match"
-              type                 = "AWS_PROXY"
-              uri                  = aws_lambda_function.{{endpoint.name}}_function.invoke_arn
+    {% for path in paths %}
+      "{{path.path}}" = {
+          {% for endpoint in path.endpoints %}
+            lower("{{endpoint.method}}") = {
+              x-amazon-apigateway-integration = {
+                httpMethod           = "POST"
+                passthroughBehavior  = "when_no_match"
+                type                 = "AWS_PROXY"
+                uri                  = aws_lambda_function.{{endpoint.name}}_function.invoke_arn
+              }
             }
-          }
+          {% endfor %}
         }
       {% endfor %}
     }
